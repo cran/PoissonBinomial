@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<title>Approximate Procedures</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Approximate Procedures</h1>
+
+
+
+<p>In this package, the following approximation algorithms for computing the Poisson Binomial distribution with Bernoulli probabilities <span class="math inline">\(p_1, ..., p_n\)</span> are implemented:</p>
+<ul>
+<li>the <em>Poisson Approximation</em> approach,</li>
+<li>the <em>Arithmetic Mean Binomial Approximation</em> procedure,</li>
+<li><em>Geometric Mean Binomial Approximation</em> algorithms and</li>
+<li><em>Normal</em> and <em>Refined Normal Approximation</em>s.</li>
+</ul>
+<p>The computation of these procedures is optimized and accelerated by some simple preliminary considerations:</p>
+<ol style="list-style-type: decimal">
+<li>Are all <span class="math inline">\(p_i\)</span> equal?<br />
+In This case, we have an ordinary binomial distribution. The specified method of computation is then ignored.</li>
+<li>Are all of the <span class="math inline">\(p_i (i = 1, ..., n)\)</span> 0 or 1?<br />
+If one <span class="math inline">\(p_i\)</span> is 1, it is impossible to measure 0 successes. Following the same logic, if two <span class="math inline">\(p_i\)</span> are 1, we cannot observe 0 and 1 successes and so on. In general, a number of <span class="math inline">\(n_1 &gt; 0\)</span> values <span class="math inline">\(p_i = 1\)</span> makes it impossible to measure <span class="math inline">\(0, ..., n_1 - 1\)</span> successes. Likewise, if <span class="math inline">\(n_0 &gt; 0\)</span> of the <span class="math inline">\(p_i = 0\)</span>, we cannot observe <span class="math inline">\(n - n_0 + 1, ..., n\)</span> successes. This leads to three cases (the specified method of computation is ignored in any of them):
+<ol style="list-style-type: lower-alpha">
+<li>All <span class="math inline">\(p_i = 0\)</span>: The only observable value is <span class="math inline">\(0\)</span>, i.e. <span class="math inline">\(P(X = 0) = 1\)</span> and <span class="math inline">\(P(X \neq 0) = 0\)</span>.</li>
+<li>All <span class="math inline">\(p_i = 1\)</span>: The only observable value is <span class="math inline">\(n\)</span>, i.e. <span class="math inline">\(P(X = n) = 1\)</span> and <span class="math inline">\(P(X \neq n) = 0\)</span>.</li>
+<li>All <span class="math inline">\(p_i \in \{0, 1\}\)</span>: The only observable value is <span class="math inline">\(n_1\)</span>, i.e. <span class="math inline">\(P(X = n_1) = 1\)</span> and <span class="math inline">\(P(X \neq n_1) = 0\)</span>.</li>
+</ol></li>
+<li>Are there <span class="math inline">\(p_i \notin \{0, 1\}\)</span>?<br />
+Then the only observable values are <span class="math inline">\(n_1, n_1 + 1, ..., n - n_0\)</span>, i.e. <span class="math inline">\(P(X \in \{n_1, ..., n - n_0\}) &gt; 0\)</span> and <span class="math inline">\(P(X &lt; n_1) = P(X &gt; n - n_0) = 0\)</span>. As a result, <span class="math inline">\(X\)</span> can be expressed as <span class="math inline">\(X = n_1 + Y\)</span> with <span class="math inline">\(Y \sim PBin(\{p_i|0 &lt; p_i &lt; 1\})\)</span> and <span class="math inline">\(|\{p_i|0 &lt; p_i &lt; 1\}| = n - n_0 - n_1\)</span>. Thus, the Poisson Binomial distribution must only be computed for <span class="math inline">\(Y\)</span>.</li>
+</ol>
+<p>These cases are illustrated in the following example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(PoissonBinomial)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co"># Case 1</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">rep</span>(<span class="fl">0.3</span>, <span class="dv">7</span>))</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; [1] 0.0823543 0.2470629 0.3176523 0.2268945 0.0972405 0.0250047 0.0035721</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; [8] 0.0002187</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw">dbinom</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">7</span>, <span class="dv">7</span>, <span class="fl">0.3</span>)</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; [1] 0.0823543 0.2470629 0.3176523 0.2268945 0.0972405 0.0250047 0.0035721</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt; [8] 0.0002187</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co"># equal results</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co"># Case 2</span></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>))</a>
+<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co">#&gt; [1] 1 0 0 0 0 0 0 0</span></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co">#&gt; [1] 0 0 0 0 0 0 0 1</span></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co">#&gt; [1] 0 0 0 1 0 0 0 0</span></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19"></a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co"># Case 3</span></a>
+<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.4</span>, <span class="fl">0.2</span>, <span class="fl">0.8</span>, <span class="fl">0.1</span>, <span class="dv">1</span>), <span class="dt">method =</span> <span class="st">&quot;RefinedNormal&quot;</span>)</a>
+<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="co">#&gt; [1] 0.000000000 0.103624625 0.411600821 0.373552231 0.101048473 0.009882034</span></a>
+<a class="sourceLine" id="cb1-23" data-line-number="23"><span class="co">#&gt; [7] 0.000000000 0.000000000</span></a></code></pre></div>
+<div id="poisson-approximation" class="section level2">
+<h2>Poisson Approximation</h2>
+<p>The <em>Poisson Approximation</em> (DC) approach is requested with <code>method = &quot;Poisson&quot;</code>. It is based on a Poisson distribution, whose parameter is the sum of the probabilities of success.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">wt &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, pp, wt, <span class="st">&quot;Poisson&quot;</span>)</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt;  [1] 2.263593e-16 8.154460e-15 1.468798e-13 1.763753e-12 1.588454e-11</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt;  [6] 1.144462e-10 6.871428e-10 3.536273e-09 1.592402e-08 6.373926e-08</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; [11] 2.296169e-07 7.519830e-07 2.257479e-06 6.255718e-06 1.609704e-05</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; [16] 3.865908e-05 8.704191e-05 1.844490e-04 3.691482e-04 6.999128e-04</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; [21] 1.260697e-03 2.162661e-03 3.541299e-03 5.546660e-03 8.325631e-03</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; [26] 1.199704e-02 1.662255e-02 2.217842e-02 2.853445e-02 3.544609e-02</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt; [31] 4.256414e-02 4.946284e-02 5.568342e-02 6.078674e-02 6.440607e-02</span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; [36] 6.629115e-02 6.633610e-02 6.458699e-02 6.122916e-02 5.655755e-02</span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; [41] 5.093630e-02 4.475488e-02 3.838734e-02 3.216003e-02 2.633059e-02</span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; [46] 2.107875e-02 1.650760e-02 1.265269e-02 9.495953e-03 6.981348e-03</span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt; [51] 5.029979e-03 3.552981e-03 2.461424e-03 1.673044e-03 1.116119e-03</span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt; [56] 7.310458e-04 4.702766e-04 2.972182e-04 1.846053e-04 1.127169e-04</span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt; [61] 6.767601e-05 3.996702e-05</span></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, wt, <span class="st">&quot;Poisson&quot;</span>)</a>
+<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt;  [1] 2.263593e-16 8.380820e-15 1.552606e-13 1.919013e-12 1.780355e-11</span></a>
+<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co">#&gt;  [6] 1.322498e-10 8.193925e-10 4.355666e-09 2.027968e-08 8.401894e-08</span></a>
+<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="co">#&gt; [11] 3.136359e-07 1.065619e-06 3.323097e-06 9.578815e-06 2.567585e-05</span></a>
+<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">#&gt; [16] 6.433494e-05 1.513768e-04 3.358259e-04 7.049740e-04 1.404887e-03</span></a>
+<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co">#&gt; [21] 2.665584e-03 4.828245e-03 8.369543e-03 1.391620e-02 2.224184e-02</span></a>
+<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="co">#&gt; [26] 3.423887e-02 5.086142e-02 7.303984e-02 1.015743e-01 1.370204e-01</span></a>
+<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="co">#&gt; [31] 1.795845e-01 2.290474e-01 2.847308e-01 3.455175e-01 4.099236e-01</span></a>
+<a class="sourceLine" id="cb2-27" data-line-number="27"><span class="co">#&gt; [36] 4.762147e-01 5.425508e-01 6.071378e-01 6.683670e-01 7.249245e-01</span></a>
+<a class="sourceLine" id="cb2-28" data-line-number="28"><span class="co">#&gt; [41] 7.758608e-01 8.206157e-01 8.590031e-01 8.911631e-01 9.174937e-01</span></a>
+<a class="sourceLine" id="cb2-29" data-line-number="29"><span class="co">#&gt; [46] 9.385724e-01 9.550800e-01 9.677327e-01 9.772287e-01 9.842100e-01</span></a>
+<a class="sourceLine" id="cb2-30" data-line-number="30"><span class="co">#&gt; [51] 9.892400e-01 9.927930e-01 9.952544e-01 9.969275e-01 9.980436e-01</span></a>
+<a class="sourceLine" id="cb2-31" data-line-number="31"><span class="co">#&gt; [56] 9.987746e-01 9.992449e-01 9.995421e-01 9.997267e-01 9.998394e-01</span></a>
+<a class="sourceLine" id="cb2-32" data-line-number="32"><span class="co">#&gt; [61] 9.999071e-01 9.999471e-01</span></a></code></pre></div>
+<p>A comparison with exact computation shows that the approximation quality of the PA procedure increases with smaller probabilities of success. The reason is that the Poisson Binomial distribution approaches a Poisson distribution when the probabilities are very small.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co"># U(0, 1) random probabilities of success</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;Poisson&quot;</span>)</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt;  [1] 0.0000150619 0.0001822993 0.0011107465 0.0045470352 0.0140856079</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt;  [6] 0.0352676152 0.0744661281 0.1366424859 0.2229381586 0.3294015353</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; [11] 0.4476114664 0.5669319503 0.6773366314 0.7716336284 0.8464201879</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; [16] 0.9017789057 0.9401955801 0.9652869616 0.9807646392 0.9898095840</span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; [21] 0.9948310399</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp)</a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt;  [1] 4.401037e-11 7.917222e-09 3.703782e-07 8.322882e-06 1.097831e-04</span></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt;  [6] 9.409389e-04 5.583409e-03 2.396866e-02 7.694213e-02 1.898556e-01</span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt; [11] 3.696636e-01 5.845355e-01 7.771823e-01 9.061530e-01 9.699956e-01</span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; [16] 9.929871e-01 9.988588e-01 9.998799e-01 9.999928e-01 9.999998e-01</span></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt; [21] 1.000000e+00</span></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="kw">summary</span>(<span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;Poisson&quot;</span>) <span class="op">-</span><span class="st"> </span><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp))</a>
+<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></a>
+<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="co">#&gt; -1.345e-01 -3.459e-02  1.506e-05  2.190e-04  3.433e-02  1.460e-01</span></a>
+<a class="sourceLine" id="cb3-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb3-21" data-line-number="21"><span class="co"># U(0, 0.01) random probabilities of success</span></a>
+<a class="sourceLine" id="cb3-22" data-line-number="22">pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">20</span>, <span class="dv">0</span>, <span class="fl">0.01</span>)</a>
+<a class="sourceLine" id="cb3-23" data-line-number="23"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;Poisson&quot;</span>)</a>
+<a class="sourceLine" id="cb3-24" data-line-number="24"><span class="co">#&gt;  [1] 0.9095763 0.9957827 0.9998678 0.9999969 0.9999999 1.0000000 1.0000000</span></a>
+<a class="sourceLine" id="cb3-25" data-line-number="25"><span class="co">#&gt;  [8] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000</span></a>
+<a class="sourceLine" id="cb3-26" data-line-number="26"><span class="co">#&gt; [15] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000</span></a>
+<a class="sourceLine" id="cb3-27" data-line-number="27"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp)</a>
+<a class="sourceLine" id="cb3-28" data-line-number="28"><span class="co">#&gt;  [1] 0.9093051 0.9960293 0.9998912 0.9999979 1.0000000 1.0000000 1.0000000</span></a>
+<a class="sourceLine" id="cb3-29" data-line-number="29"><span class="co">#&gt;  [8] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000</span></a>
+<a class="sourceLine" id="cb3-30" data-line-number="30"><span class="co">#&gt; [15] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000</span></a>
+<a class="sourceLine" id="cb3-31" data-line-number="31"><span class="kw">summary</span>(<span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;Poisson&quot;</span>) <span class="op">-</span><span class="st"> </span><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp))</a>
+<a class="sourceLine" id="cb3-32" data-line-number="32"><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></a>
+<a class="sourceLine" id="cb3-33" data-line-number="33"><span class="co">#&gt; -2.467e-04 -1.000e-11  0.000e+00  0.000e+00  0.000e+00  2.712e-04</span></a></code></pre></div>
+</div>
+<div id="arithmetic-mean-binomial-approximation" class="section level2">
+<h2>Arithmetic Mean Binomial Approximation</h2>
+<p>The <em>Arithmetic Mean Binomial Approximation</em> (AMBA) approach is requested with <code>method = &quot;Mean&quot;</code>. It is based on a Binomial distribution, whose parameter is the arithmetic mean of the probabilities of success.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">wt &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="kw">mean</span>(<span class="kw">rep</span>(pp, wt))</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; [1] 0.5905641</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, pp, wt, <span class="st">&quot;Mean&quot;</span>)</a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;  [1] 2.204668e-24 1.939788e-22 8.393759e-21 2.381049e-19 4.979863e-18</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;  [6] 8.188480e-17 1.102354e-15 1.249300e-14 1.216331e-13 1.033156e-12</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt; [11] 7.749086e-12 5.182139e-11 3.114432e-10 1.693217e-09 8.373498e-09</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; [16] 3.784379e-08 1.569327e-07 5.991812e-07 2.112610e-06 6.896287e-06</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; [21] 2.088890e-05 5.882491e-05 1.542694e-04 3.773093e-04 8.616897e-04</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt; [26] 1.839474e-03 3.673702e-03 6.868933e-03 1.203071e-02 1.974641e-02</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; [31] 3.038072e-02 4.382068e-02 5.925587e-02 7.510979e-02 8.921887e-02</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt; [36] 9.927353e-02 1.034154e-01 1.007871e-01 9.181496e-02 7.810121e-02</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt; [41] 6.195859e-02 4.577391e-02 3.143980e-02 2.003761e-02 1.182352e-02</span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt; [46] 6.442647e-03 3.232269e-03 1.487928e-03 6.259647e-04 2.395401e-04</span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt; [51] 8.292214e-05 2.579729e-05 7.155695e-06 1.752667e-06 3.745215e-07</span></a>
+<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt; [56] 6.875325e-08 1.062521e-08 1.344354e-09 1.337294e-10 9.807932e-12</span></a>
+<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt; [61] 4.716227e-13 1.110223e-14</span></a>
+<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, wt, <span class="st">&quot;Mean&quot;</span>)</a>
+<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt;  [1] 2.204668e-24 1.961834e-22 8.589942e-21 2.466948e-19 5.226557e-18</span></a>
+<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co">#&gt;  [6] 8.711136e-17 1.189465e-15 1.368247e-14 1.353155e-13 1.168472e-12</span></a>
+<a class="sourceLine" id="cb4-24" data-line-number="24"><span class="co">#&gt; [11] 8.917558e-12 6.073895e-11 3.721822e-10 2.065399e-09 1.043890e-08</span></a>
+<a class="sourceLine" id="cb4-25" data-line-number="25"><span class="co">#&gt; [16] 4.828268e-08 2.052154e-07 8.043966e-07 2.917007e-06 9.813294e-06</span></a>
+<a class="sourceLine" id="cb4-26" data-line-number="26"><span class="co">#&gt; [21] 3.070220e-05 8.952711e-05 2.437965e-04 6.211058e-04 1.482796e-03</span></a>
+<a class="sourceLine" id="cb4-27" data-line-number="27"><span class="co">#&gt; [26] 3.322270e-03 6.995972e-03 1.386490e-02 2.589561e-02 4.564203e-02</span></a>
+<a class="sourceLine" id="cb4-28" data-line-number="28"><span class="co">#&gt; [31] 7.602274e-02 1.198434e-01 1.790993e-01 2.542091e-01 3.434279e-01</span></a>
+<a class="sourceLine" id="cb4-29" data-line-number="29"><span class="co">#&gt; [36] 4.427015e-01 5.461169e-01 6.469040e-01 7.387189e-01 8.168201e-01</span></a>
+<a class="sourceLine" id="cb4-30" data-line-number="30"><span class="co">#&gt; [41] 8.787787e-01 9.245526e-01 9.559924e-01 9.760300e-01 9.878536e-01</span></a>
+<a class="sourceLine" id="cb4-31" data-line-number="31"><span class="co">#&gt; [46] 9.942962e-01 9.975285e-01 9.990164e-01 9.996424e-01 9.998819e-01</span></a>
+<a class="sourceLine" id="cb4-32" data-line-number="32"><span class="co">#&gt; [51] 9.999648e-01 9.999906e-01 9.999978e-01 9.999995e-01 9.999999e-01</span></a>
+<a class="sourceLine" id="cb4-33" data-line-number="33"><span class="co">#&gt; [56] 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00</span></a>
+<a class="sourceLine" id="cb4-34" data-line-number="34"><span class="co">#&gt; [61] 1.000000e+00 1.000000e+00</span></a></code></pre></div>
+<p>A comparison with exact computation shows that the approximation quality of the AMBA procedure increases when the probabilities of success are closer to each other. The reason is that, although the expectation remains unchanged, the distribution’s variance becomes smaller the less the probabilities differ. Since this variance is minimized by equal probabilities (but still underestimated), the AMBA method is best suited for situations with very similar probabilities of success.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co"># U(0, 1) random probabilities of success</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;Mean&quot;</span>)</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt;  [1] 9.203176e-08 2.389209e-06 2.962532e-05 2.335750e-04 1.315355e-03</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt;  [6] 5.635673e-03 1.911545e-02 5.276191e-02 1.209989e-01 2.345484e-01</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt; [11] 3.904335e-01 5.672973e-01 7.328465e-01 8.599918e-01 9.393327e-01</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; [16] 9.789409e-01 9.943885e-01 9.989247e-01 9.998683e-01 9.999923e-01</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt; [21] 1.000000e+00</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp)</a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt;  [1] 4.401037e-11 7.917222e-09 3.703782e-07 8.322882e-06 1.097831e-04</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt;  [6] 9.409389e-04 5.583409e-03 2.396866e-02 7.694213e-02 1.898556e-01</span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt; [11] 3.696636e-01 5.845355e-01 7.771823e-01 9.061530e-01 9.699956e-01</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">#&gt; [16] 9.929871e-01 9.988588e-01 9.998799e-01 9.999928e-01 9.999998e-01</span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">#&gt; [21] 1.000000e+00</span></a>
+<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="kw">summary</span>(<span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;Mean&quot;</span>) <span class="op">-</span><span class="st"> </span><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp))</a>
+<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></a>
+<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="co">#&gt; -4.616e-02 -4.470e-03  9.000e-08  0.000e+00  4.695e-03  4.469e-02</span></a>
+<a class="sourceLine" id="cb5-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="co"># U(0.4, 0.6) random probabilities of success</span></a>
+<a class="sourceLine" id="cb5-22" data-line-number="22">pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">20</span>, <span class="fl">0.3</span>, <span class="fl">0.5</span>)</a>
+<a class="sourceLine" id="cb5-23" data-line-number="23"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;Mean&quot;</span>)</a>
+<a class="sourceLine" id="cb5-24" data-line-number="24"><span class="co">#&gt;  [1] 4.348271e-05 6.107425e-04 4.125869e-03 1.788299e-02 5.602047e-02</span></a>
+<a class="sourceLine" id="cb5-25" data-line-number="25"><span class="co">#&gt;  [6] 1.356249e-01 2.654363e-01 4.347835e-01 6.142845e-01 7.703982e-01</span></a>
+<a class="sourceLine" id="cb5-26" data-line-number="26"><span class="co">#&gt; [11] 8.824113e-01 9.488333e-01 9.813277e-01 9.943711e-01 9.986251e-01</span></a>
+<a class="sourceLine" id="cb5-27" data-line-number="27"><span class="co">#&gt; [16] 9.997350e-01 9.999612e-01 9.999960e-01 9.999997e-01 1.000000e+00</span></a>
+<a class="sourceLine" id="cb5-28" data-line-number="28"><span class="co">#&gt; [21] 1.000000e+00</span></a>
+<a class="sourceLine" id="cb5-29" data-line-number="29"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp)</a>
+<a class="sourceLine" id="cb5-30" data-line-number="30"><span class="co">#&gt;  [1] 4.015121e-05 5.746240e-04 3.945015e-03 1.733239e-02 5.489718e-02</span></a>
+<a class="sourceLine" id="cb5-31" data-line-number="31"><span class="co">#&gt;  [6] 1.340486e-01 2.639932e-01 4.342003e-01 6.148558e-01 7.717620e-01</span></a>
+<a class="sourceLine" id="cb5-32" data-line-number="32"><span class="co">#&gt; [11] 8.838897e-01 9.499333e-01 9.819393e-01 9.946318e-01 9.987105e-01</span></a>
+<a class="sourceLine" id="cb5-33" data-line-number="33"><span class="co">#&gt; [16] 9.997562e-01 9.999651e-01 9.999965e-01 9.999998e-01 1.000000e+00</span></a>
+<a class="sourceLine" id="cb5-34" data-line-number="34"><span class="co">#&gt; [21] 1.000000e+00</span></a>
+<a class="sourceLine" id="cb5-35" data-line-number="35"><span class="kw">summary</span>(<span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;Mean&quot;</span>) <span class="op">-</span><span class="st"> </span><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp))</a>
+<a class="sourceLine" id="cb5-36" data-line-number="36"><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></a>
+<a class="sourceLine" id="cb5-37" data-line-number="37"><span class="co">#&gt; -1.478e-03 -2.607e-04 -3.900e-08  0.000e+00  1.809e-04  1.576e-03</span></a>
+<a class="sourceLine" id="cb5-38" data-line-number="38"></a>
+<a class="sourceLine" id="cb5-39" data-line-number="39"><span class="co"># U(0.49, 0.51) random probabilities of success</span></a>
+<a class="sourceLine" id="cb5-40" data-line-number="40">pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">20</span>, <span class="fl">0.39</span>, <span class="fl">0.41</span>)</a>
+<a class="sourceLine" id="cb5-41" data-line-number="41"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;Mean&quot;</span>)</a>
+<a class="sourceLine" id="cb5-42" data-line-number="42"><span class="co">#&gt;  [1] 3.638616e-05 5.218267e-04 3.598132e-03 1.591075e-02 5.081748e-02</span></a>
+<a class="sourceLine" id="cb5-43" data-line-number="43"><span class="co">#&gt;  [6] 1.253300e-01 2.495921e-01 4.153745e-01 5.950801e-01 7.549145e-01</span></a>
+<a class="sourceLine" id="cb5-44" data-line-number="44"><span class="co">#&gt; [11] 8.721969e-01 9.433198e-01 9.789027e-01 9.935096e-01 9.983815e-01</span></a>
+<a class="sourceLine" id="cb5-45" data-line-number="45"><span class="co">#&gt; [16] 9.996814e-01 9.999524e-01 9.999949e-01 9.999997e-01 1.000000e+00</span></a>
+<a class="sourceLine" id="cb5-46" data-line-number="46"><span class="co">#&gt; [21] 1.000000e+00</span></a>
+<a class="sourceLine" id="cb5-47" data-line-number="47"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp)</a>
+<a class="sourceLine" id="cb5-48" data-line-number="48"><span class="co">#&gt;  [1] 3.636149e-05 5.215550e-04 3.596747e-03 1.590645e-02 5.080849e-02</span></a>
+<a class="sourceLine" id="cb5-49" data-line-number="49"><span class="co">#&gt;  [6] 1.253169e-01 2.495796e-01 4.153687e-01 5.950840e-01 7.549255e-01</span></a>
+<a class="sourceLine" id="cb5-50" data-line-number="50"><span class="co">#&gt; [11] 8.722095e-01 9.433296e-01 9.789083e-01 9.935120e-01 9.983823e-01</span></a>
+<a class="sourceLine" id="cb5-51" data-line-number="51"><span class="co">#&gt; [16] 9.996816e-01 9.999524e-01 9.999949e-01 9.999997e-01 1.000000e+00</span></a>
+<a class="sourceLine" id="cb5-52" data-line-number="52"><span class="co">#&gt; [21] 1.000000e+00</span></a>
+<a class="sourceLine" id="cb5-53" data-line-number="53"><span class="kw">summary</span>(<span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;Mean&quot;</span>) <span class="op">-</span><span class="st"> </span><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp))</a>
+<a class="sourceLine" id="cb5-54" data-line-number="54"><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></a>
+<a class="sourceLine" id="cb5-55" data-line-number="55"><span class="co">#&gt; -1.258e-05 -2.472e-06 -4.410e-10  0.000e+00  1.385e-06  1.301e-05</span></a></code></pre></div>
+</div>
+<div id="geometric-mean-binomial-approximation---variant-a" class="section level2">
+<h2>Geometric Mean Binomial Approximation - Variant A</h2>
+<p>The <em>Geometric Mean Binomial Approximation (Variant A)</em> (GMBA-A) approach is requested with <code>method = &quot;GeoMean&quot;</code>. It is based on a Binomial distribution, whose parameter is the geometric mean of the probabilities of success: <span class="math display">\[\hat{p} = \sqrt[n]{p_1 \cdot ... \cdot p_n}\]</span></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">wt &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="kw">prod</span>(<span class="kw">rep</span>(pp, wt))<span class="op">^</span>(<span class="dv">1</span><span class="op">/</span><span class="kw">sum</span>(wt))</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; [1] 0.4669916</span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, pp, wt, <span class="st">&quot;GeoMean&quot;</span>)</a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt;  [1] 2.141782e-17 1.144670e-15 3.008684e-14 5.184208e-13 6.586057e-12</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt;  [6] 6.578175e-11 5.379195e-10 3.703028e-09 2.189958e-08 1.129911e-07</span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; [11] 5.147813e-07 2.091103e-06 7.633772e-06 2.520966e-05 7.572779e-05</span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; [16] 2.078916e-04 5.236606e-04 1.214475e-03 2.601021e-03 5.157435e-03</span></a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; [21] 9.489168e-03 1.623184e-02 2.585712e-02 3.841422e-02 5.328923e-02</span></a>
+<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">#&gt; [26] 6.909972e-02 8.382634e-02 9.520502e-02 1.012875e-01 1.009827e-01</span></a>
+<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">#&gt; [31] 9.437363e-02 8.268481e-02 6.791600e-02 5.229152e-02 3.772988e-02</span></a>
+<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt; [36] 2.550094e-02 1.613623e-02 9.552467e-03 5.285892e-03 2.731219e-03</span></a>
+<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co">#&gt; [41] 1.316117e-03 5.906156e-04 2.464113e-04 9.539397e-05 3.419132e-05</span></a>
+<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co">#&gt; [46] 1.131690e-05 3.448772e-06 9.643463e-07 2.464308e-07 5.728188e-08</span></a>
+<a class="sourceLine" id="cb6-18" data-line-number="18"><span class="co">#&gt; [51] 1.204491e-08 2.276152e-09 3.835067e-10 5.705769e-11 7.406076e-12</span></a>
+<a class="sourceLine" id="cb6-19" data-line-number="19"><span class="co">#&gt; [56] 8.257839e-13 7.760459e-14 5.884182e-15 4.440892e-16 0.000000e+00</span></a>
+<a class="sourceLine" id="cb6-20" data-line-number="20"><span class="co">#&gt; [61] 0.000000e+00 0.000000e+00</span></a>
+<a class="sourceLine" id="cb6-21" data-line-number="21"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, wt, <span class="st">&quot;GeoMean&quot;</span>)</a>
+<a class="sourceLine" id="cb6-22" data-line-number="22"><span class="co">#&gt;  [1] 2.141782e-17 1.166088e-15 3.125293e-14 5.496737e-13 7.135731e-12</span></a>
+<a class="sourceLine" id="cb6-23" data-line-number="23"><span class="co">#&gt;  [6] 7.291748e-11 6.108370e-10 4.313865e-09 2.621345e-08 1.392046e-07</span></a>
+<a class="sourceLine" id="cb6-24" data-line-number="24"><span class="co">#&gt; [11] 6.539859e-07 2.745088e-06 1.037886e-05 3.558852e-05 1.113163e-04</span></a>
+<a class="sourceLine" id="cb6-25" data-line-number="25"><span class="co">#&gt; [16] 3.192079e-04 8.428685e-04 2.057343e-03 4.658364e-03 9.815799e-03</span></a>
+<a class="sourceLine" id="cb6-26" data-line-number="26"><span class="co">#&gt; [21] 1.930497e-02 3.553681e-02 6.139393e-02 9.980815e-02 1.530974e-01</span></a>
+<a class="sourceLine" id="cb6-27" data-line-number="27"><span class="co">#&gt; [26] 2.221971e-01 3.060234e-01 4.012285e-01 5.025160e-01 6.034986e-01</span></a>
+<a class="sourceLine" id="cb6-28" data-line-number="28"><span class="co">#&gt; [31] 6.978723e-01 7.805571e-01 8.484731e-01 9.007646e-01 9.384945e-01</span></a>
+<a class="sourceLine" id="cb6-29" data-line-number="29"><span class="co">#&gt; [36] 9.639954e-01 9.801316e-01 9.896841e-01 9.949700e-01 9.977012e-01</span></a>
+<a class="sourceLine" id="cb6-30" data-line-number="30"><span class="co">#&gt; [41] 9.990173e-01 9.996080e-01 9.998544e-01 9.999498e-01 9.999840e-01</span></a>
+<a class="sourceLine" id="cb6-31" data-line-number="31"><span class="co">#&gt; [46] 9.999953e-01 9.999987e-01 9.999997e-01 9.999999e-01 1.000000e+00</span></a>
+<a class="sourceLine" id="cb6-32" data-line-number="32"><span class="co">#&gt; [51] 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00</span></a>
+<a class="sourceLine" id="cb6-33" data-line-number="33"><span class="co">#&gt; [56] 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00</span></a>
+<a class="sourceLine" id="cb6-34" data-line-number="34"><span class="co">#&gt; [61] 1.000000e+00 1.000000e+00</span></a></code></pre></div>
+<p>It is known that the geometric mean of the probabilities of success is always smaller than their arithmetic mean. Thus, we get a stochastically <em>smaller</em> binomial distribution. A comparison with exact computation shows that the approximation quality of the GMBA-A procedure increases when the probabilities of success are closer to each other:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co"># U(0, 1) random probabilities of success</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;GeoMean&quot;</span>)</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt;  [1] 4.557123e-06 8.198697e-05 7.069000e-04 3.892259e-03 1.539324e-02</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt;  [6] 4.665926e-02 1.130642e-01 2.258924e-01 3.816534e-01 5.580885e-01</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; [11] 7.229676e-01 8.503062e-01 9.314414e-01 9.738587e-01 9.918765e-01</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; [16] 9.979993e-01 9.996248e-01 9.999497e-01 9.999957e-01 9.999998e-01</span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt; [21] 1.000000e+00</span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp)</a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;  [1] 4.401037e-11 7.917222e-09 3.703782e-07 8.322882e-06 1.097831e-04</span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;  [6] 9.409389e-04 5.583409e-03 2.396866e-02 7.694213e-02 1.898556e-01</span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt; [11] 3.696636e-01 5.845355e-01 7.771823e-01 9.061530e-01 9.699956e-01</span></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt; [16] 9.929871e-01 9.988588e-01 9.998799e-01 9.999928e-01 9.999998e-01</span></a>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt; [21] 1.000000e+00</span></a>
+<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="kw">summary</span>(<span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;GeoMean&quot;</span>) <span class="op">-</span><span class="st"> </span><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp))</a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt;     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. </span></a>
+<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt; 0.000000 0.000082 0.015284 0.091276 0.154259 0.368233</span></a>
+<a class="sourceLine" id="cb7-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co"># U(0.4, 0.6) random probabilities of success</span></a>
+<a class="sourceLine" id="cb7-22" data-line-number="22">pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">20</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>)</a>
+<a class="sourceLine" id="cb7-23" data-line-number="23"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;GeoMean&quot;</span>)</a>
+<a class="sourceLine" id="cb7-24" data-line-number="24"><span class="co">#&gt;  [1] 1.317886e-06 2.682989e-05 2.614174e-04 1.623781e-03 7.228045e-03</span></a>
+<a class="sourceLine" id="cb7-25" data-line-number="25"><span class="co">#&gt;  [6] 2.458627e-02 6.658945e-02 1.479004e-01 2.757911e-01 4.408407e-01</span></a>
+<a class="sourceLine" id="cb7-26" data-line-number="26"><span class="co">#&gt; [11] 6.165699e-01 7.711979e-01 8.834478e-01 9.503083e-01 9.826659e-01</span></a>
+<a class="sourceLine" id="cb7-27" data-line-number="27"><span class="co">#&gt; [16] 9.951936e-01 9.989829e-01 9.998459e-01 9.999851e-01 9.999993e-01</span></a>
+<a class="sourceLine" id="cb7-28" data-line-number="28"><span class="co">#&gt; [21] 1.000000e+00</span></a>
+<a class="sourceLine" id="cb7-29" data-line-number="29"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp)</a>
+<a class="sourceLine" id="cb7-30" data-line-number="30"><span class="co">#&gt;  [1] 1.046635e-06 2.202850e-05 2.213291e-04 1.414007e-03 6.457121e-03</span></a>
+<a class="sourceLine" id="cb7-31" data-line-number="31"><span class="co">#&gt;  [6] 2.247333e-02 6.211355e-02 1.404076e-01 2.657427e-01 4.299645e-01</span></a>
+<a class="sourceLine" id="cb7-32" data-line-number="32"><span class="co">#&gt; [11] 6.070461e-01 7.644671e-01 8.796371e-01 9.486034e-01 9.820764e-01</span></a>
+<a class="sourceLine" id="cb7-33" data-line-number="33"><span class="co">#&gt; [16] 9.950416e-01 9.989554e-01 9.998428e-01 9.999850e-01 9.999993e-01</span></a>
+<a class="sourceLine" id="cb7-34" data-line-number="34"><span class="co">#&gt; [21] 1.000000e+00</span></a>
+<a class="sourceLine" id="cb7-35" data-line-number="35"><span class="kw">summary</span>(<span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;GeoMean&quot;</span>) <span class="op">-</span><span class="st"> </span><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp))</a>
+<a class="sourceLine" id="cb7-36" data-line-number="36"><span class="co">#&gt;      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. </span></a>
+<a class="sourceLine" id="cb7-37" data-line-number="37"><span class="co">#&gt; 0.000e+00 4.801e-06 5.895e-04 2.789e-03 4.476e-03 1.088e-02</span></a>
+<a class="sourceLine" id="cb7-38" data-line-number="38"></a>
+<a class="sourceLine" id="cb7-39" data-line-number="39"><span class="co"># U(0.49, 0.51) random probabilities of success</span></a>
+<a class="sourceLine" id="cb7-40" data-line-number="40">pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">20</span>, <span class="fl">0.49</span>, <span class="fl">0.51</span>)</a>
+<a class="sourceLine" id="cb7-41" data-line-number="41"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;GeoMean&quot;</span>)</a>
+<a class="sourceLine" id="cb7-42" data-line-number="42"><span class="co">#&gt;  [1] 9.491177e-07 1.994056e-05 2.004457e-04 1.283995e-03 5.891288e-03</span></a>
+<a class="sourceLine" id="cb7-43" data-line-number="43"><span class="co">#&gt;  [6] 2.064168e-02 5.753534e-02 1.313580e-01 2.513773e-01 4.114796e-01</span></a>
+<a class="sourceLine" id="cb7-44" data-line-number="44"><span class="co">#&gt; [11] 5.876766e-01 7.479324e-01 8.681818e-01 9.422168e-01 9.792521e-01</span></a>
+<a class="sourceLine" id="cb7-45" data-line-number="45"><span class="co">#&gt; [16] 9.940733e-01 9.987072e-01 9.997980e-01 9.999799e-01 9.999990e-01</span></a>
+<a class="sourceLine" id="cb7-46" data-line-number="46"><span class="co">#&gt; [21] 1.000000e+00</span></a>
+<a class="sourceLine" id="cb7-47" data-line-number="47"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp)</a>
+<a class="sourceLine" id="cb7-48" data-line-number="48"><span class="co">#&gt;  [1] 9.472606e-07 1.990710e-05 2.001610e-04 1.282476e-03 5.885583e-03</span></a>
+<a class="sourceLine" id="cb7-49" data-line-number="49"><span class="co">#&gt;  [6] 2.062570e-02 5.750067e-02 1.312985e-01 2.512954e-01 4.113886e-01</span></a>
+<a class="sourceLine" id="cb7-50" data-line-number="50"><span class="co">#&gt; [11] 5.875946e-01 7.478727e-01 8.681469e-01 9.422007e-01 9.792463e-01</span></a>
+<a class="sourceLine" id="cb7-51" data-line-number="51"><span class="co">#&gt; [16] 9.940718e-01 9.987069e-01 9.997980e-01 9.999799e-01 9.999990e-01</span></a>
+<a class="sourceLine" id="cb7-52" data-line-number="52"><span class="co">#&gt; [21] 1.000000e+00</span></a>
+<a class="sourceLine" id="cb7-53" data-line-number="53"><span class="kw">summary</span>(<span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;GeoMean&quot;</span>) <span class="op">-</span><span class="st"> </span><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp))</a>
+<a class="sourceLine" id="cb7-54" data-line-number="54"><span class="co">#&gt;      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. </span></a>
+<a class="sourceLine" id="cb7-55" data-line-number="55"><span class="co">#&gt; 0.000e+00 3.394e-08 5.704e-06 2.338e-05 3.486e-05 9.105e-05</span></a></code></pre></div>
+</div>
+<div id="geometric-mean-binomial-approximation---variant-b" class="section level2">
+<h2>Geometric Mean Binomial Approximation - Variant B</h2>
+<p>The <em>Geometric Mean Binomial Approximation (Variant B)</em> (GMBA-B) approach is requested with <code>method = &quot;GeoMeanCounter&quot;</code>. It is based on a Binomial distribution, whose parameter is 1 minus the geometric mean of the probabilities of <strong>failure</strong>: <span class="math display">\[\hat{p} = 1 - \sqrt[n]{(1 - p_1) \cdot ... \cdot (1 - p_n)}\]</span></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">wt &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">prod</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">rep</span>(pp, wt))<span class="op">^</span>(<span class="dv">1</span><span class="op">/</span><span class="kw">sum</span>(wt))</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; [1] 0.7275426</span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, pp, wt, <span class="st">&quot;GeoMeanCounter&quot;</span>)</a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt;  [1] 3.574462e-35 5.822379e-33 4.664248e-31 2.449471e-29 9.484189e-28</span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt;  [6] 2.887121e-26 7.195512e-25 1.509685e-23 2.721134e-22 4.279009e-21</span></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt; [11] 5.941642e-20 7.356037e-19 8.184508e-18 8.237686e-17 7.541858e-16</span></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; [16] 6.310225e-15 4.844429e-14 3.424255e-13 2.235148e-12 1.350769e-11</span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt; [21] 7.574609e-11 3.948978e-10 1.917264e-09 8.681177e-09 3.670379e-08</span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt; [26] 1.450549e-07 5.363170e-07 1.856461e-06 6.019586e-06 1.829121e-05</span></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt; [31] 5.209921e-05 1.391205e-04 3.482749e-04 8.172712e-04 1.797236e-03</span></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt; [36] 3.702208e-03 7.139892e-03 1.288219e-02 2.172588e-02 3.421374e-02</span></a>
+<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt; [41] 5.024851e-02 6.872559e-02 8.738947e-02 1.031108e-01 1.126377e-01</span></a>
+<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt; [46] 1.136267e-01 1.055364e-01 8.994057e-02 7.004907e-02 4.962603e-02</span></a>
+<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt; [51] 3.180393e-02 1.831737e-02 9.406320e-03 4.265268e-03 1.687339e-03</span></a>
+<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">#&gt; [56] 5.734528e-04 1.640669e-04 3.843049e-05 7.077304e-06 9.609416e-07</span></a>
+<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co">#&gt; [61] 8.553338e-08 3.744258e-09</span></a>
+<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, wt, <span class="st">&quot;GeoMeanCounter&quot;</span>)</a>
+<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="co">#&gt;  [1] 3.574462e-35 5.858123e-33 4.722829e-31 2.496699e-29 9.733859e-28</span></a>
+<a class="sourceLine" id="cb8-23" data-line-number="23"><span class="co">#&gt;  [6] 2.984460e-26 7.493958e-25 1.584624e-23 2.879597e-22 4.566969e-21</span></a>
+<a class="sourceLine" id="cb8-24" data-line-number="24"><span class="co">#&gt; [11] 6.398339e-20 7.995871e-19 8.984095e-18 9.136095e-17 8.455467e-16</span></a>
+<a class="sourceLine" id="cb8-25" data-line-number="25"><span class="co">#&gt; [16] 7.155772e-15 5.560007e-14 3.980256e-13 2.633173e-12 1.614086e-11</span></a>
+<a class="sourceLine" id="cb8-26" data-line-number="26"><span class="co">#&gt; [21] 9.188695e-11 4.867847e-10 2.404049e-09 1.108523e-08 4.778901e-08</span></a>
+<a class="sourceLine" id="cb8-27" data-line-number="27"><span class="co">#&gt; [26] 1.928440e-07 7.291610e-07 2.585622e-06 8.605207e-06 2.689642e-05</span></a>
+<a class="sourceLine" id="cb8-28" data-line-number="28"><span class="co">#&gt; [31] 7.899562e-05 2.181161e-04 5.663910e-04 1.383662e-03 3.180899e-03</span></a>
+<a class="sourceLine" id="cb8-29" data-line-number="29"><span class="co">#&gt; [36] 6.883107e-03 1.402300e-02 2.690519e-02 4.863107e-02 8.284481e-02</span></a>
+<a class="sourceLine" id="cb8-30" data-line-number="30"><span class="co">#&gt; [41] 1.330933e-01 2.018189e-01 2.892084e-01 3.923192e-01 5.049569e-01</span></a>
+<a class="sourceLine" id="cb8-31" data-line-number="31"><span class="co">#&gt; [46] 6.185836e-01 7.241200e-01 8.140606e-01 8.841097e-01 9.337357e-01</span></a>
+<a class="sourceLine" id="cb8-32" data-line-number="32"><span class="co">#&gt; [51] 9.655396e-01 9.838570e-01 9.932633e-01 9.975286e-01 9.992159e-01</span></a>
+<a class="sourceLine" id="cb8-33" data-line-number="33"><span class="co">#&gt; [56] 9.997894e-01 9.999534e-01 9.999919e-01 9.999989e-01 9.999999e-01</span></a>
+<a class="sourceLine" id="cb8-34" data-line-number="34"><span class="co">#&gt; [61] 1.000000e+00 1.000000e+00</span></a></code></pre></div>
+<p>It is known that the geometric mean of the probabilities of success is always greater than their arithmetic mean. Thus, we get a stochastically <em>larger</em> binomial distribution. A comparison with exact computation shows that the approximation quality of the GMBA-B procedure again increases when the probabilities of success are closer to each other:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co"># U(0, 1) random probabilities of success</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;GeoMeanCounter&quot;</span>)</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt;  [1] 4.401037e-11 2.063865e-09 4.609691e-08 6.523654e-07 6.565109e-06</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt;  [6] 4.998354e-05 2.990694e-04 1.442248e-03 5.705124e-03 1.874809e-02</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt; [11] 5.167146e-02 1.203540e-01 2.385610e-01 4.054872e-01 5.970141e-01</span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt; [16] 7.728165e-01 8.988859e-01 9.669560e-01 9.929899e-01 9.992785e-01</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt; [21] 1.000000e+00</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp)</a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;  [1] 4.401037e-11 7.917222e-09 3.703782e-07 8.322882e-06 1.097831e-04</span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;  [6] 9.409389e-04 5.583409e-03 2.396866e-02 7.694213e-02 1.898556e-01</span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt; [11] 3.696636e-01 5.845355e-01 7.771823e-01 9.061530e-01 9.699956e-01</span></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt; [16] 9.929871e-01 9.988588e-01 9.998799e-01 9.999928e-01 9.999998e-01</span></a>
+<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt; [21] 1.000000e+00</span></a>
+<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="kw">summary</span>(<span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;GeoMeanCounter&quot;</span>) <span class="op">-</span><span class="st"> </span><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp))</a>
+<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></a>
+<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">#&gt; -0.5386214 -0.2201706 -0.0225264 -0.1345901 -0.0001032  0.0000000</span></a>
+<a class="sourceLine" id="cb9-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb9-21" data-line-number="21"><span class="co"># U(0.4, 0.6) random probabilities of success</span></a>
+<a class="sourceLine" id="cb9-22" data-line-number="22">pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">20</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>)</a>
+<a class="sourceLine" id="cb9-23" data-line-number="23"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;GeoMeanCounter&quot;</span>)</a>
+<a class="sourceLine" id="cb9-24" data-line-number="24"><span class="co">#&gt;  [1] 1.046635e-06 2.178508e-05 2.169721e-04 1.377226e-03 6.262548e-03</span></a>
+<a class="sourceLine" id="cb9-25" data-line-number="25"><span class="co">#&gt;  [6] 2.175051e-02 6.011109e-02 1.361203e-01 2.584891e-01 4.201335e-01</span></a>
+<a class="sourceLine" id="cb9-26" data-line-number="26"><span class="co">#&gt; [11] 5.962922e-01 7.549505e-01 8.728399e-01 9.447141e-01 9.803177e-01</span></a>
+<a class="sourceLine" id="cb9-27" data-line-number="27"><span class="co">#&gt; [16] 9.944269e-01 9.987952e-01 9.998135e-01 9.999816e-01 9.999991e-01</span></a>
+<a class="sourceLine" id="cb9-28" data-line-number="28"><span class="co">#&gt; [21] 1.000000e+00</span></a>
+<a class="sourceLine" id="cb9-29" data-line-number="29"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp)</a>
+<a class="sourceLine" id="cb9-30" data-line-number="30"><span class="co">#&gt;  [1] 1.046635e-06 2.202850e-05 2.213291e-04 1.414007e-03 6.457121e-03</span></a>
+<a class="sourceLine" id="cb9-31" data-line-number="31"><span class="co">#&gt;  [6] 2.247333e-02 6.211355e-02 1.404076e-01 2.657427e-01 4.299645e-01</span></a>
+<a class="sourceLine" id="cb9-32" data-line-number="32"><span class="co">#&gt; [11] 6.070461e-01 7.644671e-01 8.796371e-01 9.486034e-01 9.820764e-01</span></a>
+<a class="sourceLine" id="cb9-33" data-line-number="33"><span class="co">#&gt; [16] 9.950416e-01 9.989554e-01 9.998428e-01 9.999850e-01 9.999993e-01</span></a>
+<a class="sourceLine" id="cb9-34" data-line-number="34"><span class="co">#&gt; [21] 1.000000e+00</span></a>
+<a class="sourceLine" id="cb9-35" data-line-number="35"><span class="kw">summary</span>(<span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;GeoMeanCounter&quot;</span>) <span class="op">-</span><span class="st"> </span><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp))</a>
+<a class="sourceLine" id="cb9-36" data-line-number="36"><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></a>
+<a class="sourceLine" id="cb9-37" data-line-number="37"><span class="co">#&gt; -1.075e-02 -4.287e-03 -6.147e-04 -2.755e-03 -4.357e-06  0.000e+00</span></a>
+<a class="sourceLine" id="cb9-38" data-line-number="38"></a>
+<a class="sourceLine" id="cb9-39" data-line-number="39"><span class="co"># U(0.49, 0.51) random probabilities of success</span></a>
+<a class="sourceLine" id="cb9-40" data-line-number="40">pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">20</span>, <span class="fl">0.49</span>, <span class="fl">0.51</span>)</a>
+<a class="sourceLine" id="cb9-41" data-line-number="41"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;GeoMeanCounter&quot;</span>)</a>
+<a class="sourceLine" id="cb9-42" data-line-number="42"><span class="co">#&gt;  [1] 9.472606e-07 1.990526e-05 2.001278e-04 1.282193e-03 5.884073e-03</span></a>
+<a class="sourceLine" id="cb9-43" data-line-number="43"><span class="co">#&gt;  [6] 2.062003e-02 5.748478e-02 1.312640e-01 2.512363e-01 4.113072e-01</span></a>
+<a class="sourceLine" id="cb9-44" data-line-number="44"><span class="co">#&gt; [11] 5.875040e-01 7.477911e-01 8.680875e-01 9.421661e-01 9.792303e-01</span></a>
+<a class="sourceLine" id="cb9-45" data-line-number="45"><span class="co">#&gt; [16] 9.940660e-01 9.987053e-01 9.997977e-01 9.999799e-01 9.999990e-01</span></a>
+<a class="sourceLine" id="cb9-46" data-line-number="46"><span class="co">#&gt; [21] 1.000000e+00</span></a>
+<a class="sourceLine" id="cb9-47" data-line-number="47"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp)</a>
+<a class="sourceLine" id="cb9-48" data-line-number="48"><span class="co">#&gt;  [1] 9.472606e-07 1.990710e-05 2.001610e-04 1.282476e-03 5.885583e-03</span></a>
+<a class="sourceLine" id="cb9-49" data-line-number="49"><span class="co">#&gt;  [6] 2.062570e-02 5.750067e-02 1.312985e-01 2.512954e-01 4.113886e-01</span></a>
+<a class="sourceLine" id="cb9-50" data-line-number="50"><span class="co">#&gt; [11] 5.875946e-01 7.478727e-01 8.681469e-01 9.422007e-01 9.792463e-01</span></a>
+<a class="sourceLine" id="cb9-51" data-line-number="51"><span class="co">#&gt; [16] 9.940718e-01 9.987069e-01 9.997980e-01 9.999799e-01 9.999990e-01</span></a>
+<a class="sourceLine" id="cb9-52" data-line-number="52"><span class="co">#&gt; [21] 1.000000e+00</span></a>
+<a class="sourceLine" id="cb9-53" data-line-number="53"><span class="kw">summary</span>(<span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;GeoMeanCounter&quot;</span>) <span class="op">-</span><span class="st"> </span><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp))</a>
+<a class="sourceLine" id="cb9-54" data-line-number="54"><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></a>
+<a class="sourceLine" id="cb9-55" data-line-number="55"><span class="co">#&gt; -9.052e-05 -3.466e-05 -5.669e-06 -2.324e-05 -3.377e-08  0.000e+00</span></a></code></pre></div>
+</div>
+<div id="normal-approximation" class="section level2">
+<h2>Normal Approximation</h2>
+<p>The <em>Normal Approximation</em> (NA) approach is requested with <code>method = &quot;Normal&quot;</code>. It is based on a Normal distribution, whose parameters are derived from the theoretical mean and variance of the input probabilities of success.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">wt &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="kw">mean</span>(<span class="kw">rep</span>(pp, wt))</a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt; [1] 0.5905641</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, pp, wt, <span class="st">&quot;Normal&quot;</span>)</a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;  [1] 2.552770e-32 1.207834e-30 5.219650e-29 2.022022e-27 7.021785e-26</span></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt;  [6] 2.185917e-24 6.100302e-23 1.526188e-21 3.423032e-20 6.882841e-19</span></a>
+<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt; [11] 1.240755e-17 2.005270e-16 2.905604e-15 3.774712e-14 4.396661e-13</span></a>
+<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt; [16] 4.591569e-12 4.299381e-11 3.609645e-10 2.717342e-09 1.834224e-08</span></a>
+<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt; [21] 1.110185e-07 6.025326e-07 2.932337e-06 1.279682e-05 5.007841e-05</span></a>
+<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co">#&gt; [26] 1.757379e-04 5.530339e-04 1.560683e-03 3.949650e-03 8.963710e-03</span></a>
+<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt; [31] 1.824341e-02 3.329786e-02 5.450317e-02 8.000636e-02 1.053238e-01</span></a>
+<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt; [36] 1.243451e-01 1.316535e-01 1.250080e-01 1.064497e-01 8.129267e-02</span></a>
+<a class="sourceLine" id="cb10-16" data-line-number="16"><span class="co">#&gt; [41] 5.567468e-02 3.419491e-02 1.883477e-02 9.303614e-03 4.121280e-03</span></a>
+<a class="sourceLine" id="cb10-17" data-line-number="17"><span class="co">#&gt; [46] 1.637186e-03 5.832371e-04 1.863241e-04 5.337829e-05 1.371282e-05</span></a>
+<a class="sourceLine" id="cb10-18" data-line-number="18"><span class="co">#&gt; [51] 3.159002e-06 6.525712e-07 1.208800e-07 2.007813e-08 2.990389e-09</span></a>
+<a class="sourceLine" id="cb10-19" data-line-number="19"><span class="co">#&gt; [56] 3.993563e-10 4.782064e-11 5.134337e-12 4.942713e-13 4.263256e-14</span></a>
+<a class="sourceLine" id="cb10-20" data-line-number="20"><span class="co">#&gt; [61] 3.330669e-15 2.220446e-16</span></a>
+<a class="sourceLine" id="cb10-21" data-line-number="21"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, wt, <span class="st">&quot;Normal&quot;</span>)</a>
+<a class="sourceLine" id="cb10-22" data-line-number="22"><span class="co">#&gt;  [1] 2.552770e-32 1.233362e-30 5.342987e-29 2.075452e-27 7.229330e-26</span></a>
+<a class="sourceLine" id="cb10-23" data-line-number="23"><span class="co">#&gt;  [6] 2.258210e-24 6.326123e-23 1.589449e-21 3.581977e-20 7.241039e-19</span></a>
+<a class="sourceLine" id="cb10-24" data-line-number="24"><span class="co">#&gt; [11] 1.313165e-17 2.136587e-16 3.119262e-15 4.086639e-14 4.805325e-13</span></a>
+<a class="sourceLine" id="cb10-25" data-line-number="25"><span class="co">#&gt; [16] 5.072102e-12 4.806591e-11 4.090305e-10 3.126373e-09 2.146861e-08</span></a>
+<a class="sourceLine" id="cb10-26" data-line-number="26"><span class="co">#&gt; [21] 1.324871e-07 7.350197e-07 3.667357e-06 1.646417e-05 6.654258e-05</span></a>
+<a class="sourceLine" id="cb10-27" data-line-number="27"><span class="co">#&gt; [26] 2.422805e-04 7.953144e-04 2.355997e-03 6.305647e-03 1.526936e-02</span></a>
+<a class="sourceLine" id="cb10-28" data-line-number="28"><span class="co">#&gt; [31] 3.351276e-02 6.681062e-02 1.213138e-01 2.013201e-01 3.066439e-01</span></a>
+<a class="sourceLine" id="cb10-29" data-line-number="29"><span class="co">#&gt; [36] 4.309891e-01 5.626426e-01 6.876506e-01 7.941003e-01 8.753930e-01</span></a>
+<a class="sourceLine" id="cb10-30" data-line-number="30"><span class="co">#&gt; [41] 9.310676e-01 9.652625e-01 9.840973e-01 9.934009e-01 9.975222e-01</span></a>
+<a class="sourceLine" id="cb10-31" data-line-number="31"><span class="co">#&gt; [46] 9.991594e-01 9.997426e-01 9.999290e-01 9.999823e-01 9.999960e-01</span></a>
+<a class="sourceLine" id="cb10-32" data-line-number="32"><span class="co">#&gt; [51] 9.999992e-01 9.999999e-01 1.000000e+00 1.000000e+00 1.000000e+00</span></a>
+<a class="sourceLine" id="cb10-33" data-line-number="33"><span class="co">#&gt; [56] 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00</span></a>
+<a class="sourceLine" id="cb10-34" data-line-number="34"><span class="co">#&gt; [61] 1.000000e+00 1.000000e+00</span></a></code></pre></div>
+<p>A comparison with exact computation shows that the approximation quality of the NA procedure increases with larger numbers of probabilities of success:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co"># U(0, 1) random probabilities of success</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="kw">summary</span>(<span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;Normal&quot;</span>) <span class="op">-</span><span class="st"> </span><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp))</a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; -5.342e-03 -1.607e-03  2.291e-05  1.000e-08  1.830e-03  4.266e-03</span></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co"># U(0.4, 0.6) random probabilities of success</span></a>
+<a class="sourceLine" id="cb11-10" data-line-number="10">pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">1000</span>)</a>
+<a class="sourceLine" id="cb11-11" data-line-number="11"><span class="kw">summary</span>(<span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;Normal&quot;</span>) <span class="op">-</span><span class="st"> </span><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp))</a>
+<a class="sourceLine" id="cb11-12" data-line-number="12"><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></a>
+<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="co">#&gt; -5.836e-05  0.000e+00  0.000e+00  0.000e+00  0.000e+00  6.357e-05</span></a>
+<a class="sourceLine" id="cb11-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb11-15" data-line-number="15"><span class="co"># U(0.49, 0.51) random probabilities of success</span></a>
+<a class="sourceLine" id="cb11-16" data-line-number="16">pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">100000</span>)</a>
+<a class="sourceLine" id="cb11-17" data-line-number="17"><span class="kw">summary</span>(<span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;Normal&quot;</span>) <span class="op">-</span><span class="st"> </span><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp))</a>
+<a class="sourceLine" id="cb11-18" data-line-number="18"><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></a>
+<a class="sourceLine" id="cb11-19" data-line-number="19"><span class="co">#&gt; -4.769e-07  0.000e+00  0.000e+00  0.000e+00  0.000e+00  3.699e-07</span></a></code></pre></div>
+</div>
+<div id="refined-normal-approximation" class="section level2">
+<h2>Refined Normal Approximation</h2>
+<p>The <em>Refined Normal Approximation</em> (RNA) approach is requested with <code>method = &quot;RefinedNormal&quot;</code>. It is based on a Normal distribution, whose parameters are derived from the theoretical mean, variance and skewness of the input probabilities of success.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3">wt &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="kw">mean</span>(<span class="kw">rep</span>(pp, wt))</a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt; [1] 0.5905641</span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, pp, wt, <span class="st">&quot;RefinedNormal&quot;</span>)</a>
+<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt;  [1] 2.579548e-31 1.128297e-29 4.507210e-28 1.611452e-26 5.156486e-25</span></a>
+<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt;  [6] 1.476806e-23 3.785627e-22 8.685911e-21 1.783953e-19 3.280039e-18</span></a>
+<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="co">#&gt; [11] 5.399492e-17 7.959230e-16 1.050796e-14 1.242802e-13 1.317210e-12</span></a>
+<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co">#&gt; [16] 1.251531e-11 1.066498e-10 8.155390e-10 5.599786e-09 3.455053e-08</span></a>
+<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co">#&gt; [21] 1.917106e-07 9.574753e-07 4.308224e-06 1.748069e-05 6.401569e-05</span></a>
+<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="co">#&gt; [26] 2.117447e-04 6.329842e-04 1.710740e-03 4.180480e-03 9.234968e-03</span></a>
+<a class="sourceLine" id="cb12-14" data-line-number="14"><span class="co">#&gt; [31] 1.843341e-02 3.322175e-02 5.401115e-02 7.912655e-02 1.043358e-01</span></a>
+<a class="sourceLine" id="cb12-15" data-line-number="15"><span class="co">#&gt; [36] 1.236782e-01 1.316360e-01 1.256489e-01 1.074322e-01 8.218619e-02</span></a>
+<a class="sourceLine" id="cb12-16" data-line-number="16"><span class="co">#&gt; [41] 5.618825e-02 3.428872e-02 1.865323e-02 9.032795e-03 3.886960e-03</span></a>
+<a class="sourceLine" id="cb12-17" data-line-number="17"><span class="co">#&gt; [46] 1.483178e-03 5.004545e-04 1.487517e-04 3.873113e-05 8.757189e-06</span></a>
+<a class="sourceLine" id="cb12-18" data-line-number="18"><span class="co">#&gt; [51] 1.693868e-06 2.722346e-07 3.388544e-08 2.218356e-09 0.000000e+00</span></a>
+<a class="sourceLine" id="cb12-19" data-line-number="19"><span class="co">#&gt; [56] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00</span></a>
+<a class="sourceLine" id="cb12-20" data-line-number="20"><span class="co">#&gt; [61] 0.000000e+00 0.000000e+00</span></a>
+<a class="sourceLine" id="cb12-21" data-line-number="21"><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, wt, <span class="st">&quot;RefinedNormal&quot;</span>)</a>
+<a class="sourceLine" id="cb12-22" data-line-number="22"><span class="co">#&gt;  [1] 2.579548e-31 1.154092e-29 4.622620e-28 1.657678e-26 5.322254e-25</span></a>
+<a class="sourceLine" id="cb12-23" data-line-number="23"><span class="co">#&gt;  [6] 1.530028e-23 3.938629e-22 9.079774e-21 1.874750e-19 3.467514e-18</span></a>
+<a class="sourceLine" id="cb12-24" data-line-number="24"><span class="co">#&gt; [11] 5.746244e-17 8.533855e-16 1.136134e-14 1.356415e-13 1.452852e-12</span></a>
+<a class="sourceLine" id="cb12-25" data-line-number="25"><span class="co">#&gt; [16] 1.396817e-11 1.206179e-10 9.361569e-10 6.535943e-09 4.108647e-08</span></a>
+<a class="sourceLine" id="cb12-26" data-line-number="26"><span class="co">#&gt; [21] 2.327971e-07 1.190272e-06 5.498496e-06 2.297918e-05 8.699487e-05</span></a>
+<a class="sourceLine" id="cb12-27" data-line-number="27"><span class="co">#&gt; [26] 2.987396e-04 9.317238e-04 2.642463e-03 6.822944e-03 1.605791e-02</span></a>
+<a class="sourceLine" id="cb12-28" data-line-number="28"><span class="co">#&gt; [31] 3.449132e-02 6.771307e-02 1.217242e-01 2.008508e-01 3.051866e-01</span></a>
+<a class="sourceLine" id="cb12-29" data-line-number="29"><span class="co">#&gt; [36] 4.288648e-01 5.605008e-01 6.861497e-01 7.935820e-01 8.757682e-01</span></a>
+<a class="sourceLine" id="cb12-30" data-line-number="30"><span class="co">#&gt; [41] 9.319564e-01 9.662451e-01 9.848984e-01 9.939312e-01 9.978181e-01</span></a>
+<a class="sourceLine" id="cb12-31" data-line-number="31"><span class="co">#&gt; [46] 9.993013e-01 9.998018e-01 9.999505e-01 9.999892e-01 9.999980e-01</span></a>
+<a class="sourceLine" id="cb12-32" data-line-number="32"><span class="co">#&gt; [51] 9.999997e-01 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00</span></a>
+<a class="sourceLine" id="cb12-33" data-line-number="33"><span class="co">#&gt; [56] 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00</span></a>
+<a class="sourceLine" id="cb12-34" data-line-number="34"><span class="co">#&gt; [61] 1.000000e+00 1.000000e+00</span></a></code></pre></div>
+<p>A comparison with exact computation shows that the approximation quality of the RNA procedure increases with larger numbers of probabilities of success:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co"># U(0, 1) random probabilities of success</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4">pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="kw">summary</span>(<span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;RefinedNormal&quot;</span>) <span class="op">-</span><span class="st"> </span><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp))</a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; -4.517e-03 -1.285e-03  3.278e-05 -7.600e-08  1.232e-03  4.431e-03</span></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="co"># U(0.4, 0.6) random probabilities of success</span></a>
+<a class="sourceLine" id="cb13-10" data-line-number="10">pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">1000</span>)</a>
+<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="kw">summary</span>(<span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;RefinedNormal&quot;</span>) <span class="op">-</span><span class="st"> </span><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp))</a>
+<a class="sourceLine" id="cb13-12" data-line-number="12"><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></a>
+<a class="sourceLine" id="cb13-13" data-line-number="13"><span class="co">#&gt; -4.107e-05  0.000e+00  0.000e+00  0.000e+00  0.000e+00  4.117e-05</span></a>
+<a class="sourceLine" id="cb13-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb13-15" data-line-number="15"><span class="co"># U(0.49, 0.51) random probabilities of success</span></a>
+<a class="sourceLine" id="cb13-16" data-line-number="16">pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">100000</span>)</a>
+<a class="sourceLine" id="cb13-17" data-line-number="17"><span class="kw">summary</span>(<span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, <span class="dt">method =</span> <span class="st">&quot;RefinedNormal&quot;</span>) <span class="op">-</span><span class="st"> </span><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp))</a>
+<a class="sourceLine" id="cb13-18" data-line-number="18"><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></a>
+<a class="sourceLine" id="cb13-19" data-line-number="19"><span class="co">#&gt; -4.167e-07  0.000e+00  0.000e+00  0.000e+00  0.000e+00  4.167e-07</span></a></code></pre></div>
+</div>
+<div id="performance-comparisons" class="section level2">
+<h2>Performance Comparisons</h2>
+<p>To assess the performance of the approximation procedures, we use the <code>microbenchmark</code> package. Each algorithm has to calculate the PMF repeatedly based on random probability vectors. The run times are then summarized in a table that presents, among other statistics, their minima, maxima and means. The following results were recorded on an AMD Ryzen 7 1800X with 32 GiB of RAM and Ubuntu 18.04.3 (running inside a VirtualBox VM; the host system is Windows 10 Education).</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">library</span>(microbenchmark)</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw">set.seed</span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4">f1 &lt;-<span class="st"> </span><span class="cf">function</span>() <span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">runif</span>(<span class="dv">4000</span>), <span class="dt">method =</span> <span class="st">&quot;Normal&quot;</span>)</a>
+<a class="sourceLine" id="cb14-5" data-line-number="5">f2 &lt;-<span class="st"> </span><span class="cf">function</span>() <span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">runif</span>(<span class="dv">4000</span>), <span class="dt">method =</span> <span class="st">&quot;RefinedNormal&quot;</span>)</a>
+<a class="sourceLine" id="cb14-6" data-line-number="6">f3 &lt;-<span class="st"> </span><span class="cf">function</span>() <span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">runif</span>(<span class="dv">4000</span>), <span class="dt">method =</span> <span class="st">&quot;Poisson&quot;</span>)</a>
+<a class="sourceLine" id="cb14-7" data-line-number="7">f4 &lt;-<span class="st"> </span><span class="cf">function</span>() <span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">runif</span>(<span class="dv">4000</span>), <span class="dt">method =</span> <span class="st">&quot;Mean&quot;</span>)</a>
+<a class="sourceLine" id="cb14-8" data-line-number="8">f5 &lt;-<span class="st"> </span><span class="cf">function</span>() <span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">runif</span>(<span class="dv">4000</span>), <span class="dt">method =</span> <span class="st">&quot;GeoMean&quot;</span>)</a>
+<a class="sourceLine" id="cb14-9" data-line-number="9">f6 &lt;-<span class="st"> </span><span class="cf">function</span>() <span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">runif</span>(<span class="dv">4000</span>), <span class="dt">method =</span> <span class="st">&quot;GeoMeanCounter&quot;</span>)</a>
+<a class="sourceLine" id="cb14-10" data-line-number="10">f7 &lt;-<span class="st"> </span><span class="cf">function</span>() <span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">runif</span>(<span class="dv">4000</span>), <span class="dt">method =</span> <span class="st">&quot;DivideFFT&quot;</span>)</a>
+<a class="sourceLine" id="cb14-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb14-12" data-line-number="12"><span class="kw">microbenchmark</span>(<span class="kw">f1</span>(), <span class="kw">f2</span>(), <span class="kw">f3</span>(), <span class="kw">f4</span>(), <span class="kw">f5</span>(), <span class="kw">f6</span>(), <span class="kw">f7</span>())</a>
+<a class="sourceLine" id="cb14-13" data-line-number="13"><span class="co">#&gt; Unit: microseconds</span></a>
+<a class="sourceLine" id="cb14-14" data-line-number="14"><span class="co">#&gt;  expr      min        lq      mean    median        uq       max neval</span></a>
+<a class="sourceLine" id="cb14-15" data-line-number="15"><span class="co">#&gt;  f1()  511.019  545.8695  597.1294  566.8085  630.1375  1479.055   100</span></a>
+<a class="sourceLine" id="cb14-16" data-line-number="16"><span class="co">#&gt;  f2()  683.382  703.8960  832.6612  723.2970  801.8245  4456.861   100</span></a>
+<a class="sourceLine" id="cb14-17" data-line-number="17"><span class="co">#&gt;  f3() 1141.181 1177.4195 1235.5048 1209.0490 1266.3210  2092.215   100</span></a>
+<a class="sourceLine" id="cb14-18" data-line-number="18"><span class="co">#&gt;  f4() 1178.211 1217.7395 1310.6949 1248.4020 1317.0965  4420.985   100</span></a>
+<a class="sourceLine" id="cb14-19" data-line-number="19"><span class="co">#&gt;  f5() 1308.455 1332.4700 1459.2589 1358.8390 1434.2505  4699.747   100</span></a>
+<a class="sourceLine" id="cb14-20" data-line-number="20"><span class="co">#&gt;  f6() 1310.949 1332.3295 1505.7112 1358.1880 1437.8325  5187.021   100</span></a>
+<a class="sourceLine" id="cb14-21" data-line-number="21"><span class="co">#&gt;  f7() 5532.098 5689.6645 6582.6371 5843.7885 6184.0165 13121.207   100</span></a></code></pre></div>
+<p>Clearly, the NA procedure is the fastest, followed by the RNA method, which needs roughly 30-40% more time, and the PA, AMBA and GMBA approaches that need almost twice as long as the NA algorithm. AMBA, GMBA-A and GMBA-B procedures exhibit almost equal mean execution speed, with the AMBA algorithm being slightly faster. All of the approximation procedures outperform the fastest exact approach, DC-FFT, by far. Even the slowest approximate algorithm is around 4x as fast as DC-FFT.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

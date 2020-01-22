@@ -1,0 +1,76 @@
+---
+title: "Usage with Rcpp"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Usage with Rcpp}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Each procedure's probability mass function (PMF) and cumulative distribution function (CDF) was implemented in *C++* using the `Rcpp` package. By means of `Rcpp::interface`, these functions are exported to both the package's *R* namespace and *C++* headers. That way, the following functions can then be used by other packages that use `Rcpp`:
+
+```
+/***   Exact Procedures   ***/
+
+// Direct Convolution (DC)
+NumericVector dpb_conv(IntegerVector obs, NumericVector probs);             // PMF
+NumericVector ppb_conv(IntegerVector obs, NumericVector probs);             // CDF
+
+// Divide & Conquer FFT Tree Convolution (DC-FFT)
+NumericVector dpb_dc(IntegerVector obs, NumericVector probs);               // PMF
+NumericVector ppb_dc(IntegerVector obs, NumericVector probs);               // CDF
+
+// Discrete Fourier Transformation of the Characteristic Function (DFT-CF)
+NumericVector dpb_dftcf(IntegerVector obs, NumericVector probs);            // PMF
+NumericVector ppb_dftcf(IntegerVector obs, NumericVector probs);            // CDF
+
+// Recursive Formula (RF)
+NumericVector dpb_rf(IntegerVector obs, NumericVector probs);               // PMF
+NumericVector ppb_rf(IntegerVector obs, NumericVector probs);               // CDF
+
+
+/***   Approximations   ***/
+
+// Arithmetic Mean Binomial Approximation (AMBA)
+NumericVector dpb_mean(IntegerVector obs, NumericVector probs);             // PMF
+NumericVector dpb_mean(IntegerVector obs, NumericVector probs);             // CDF
+
+// Geometric Mean Binomial Approximations (GMBA)
+NumericVector dpb_gmba(IntegerVector obs, NumericVector probs, bool anti);  // PMF
+NumericVector dpb_gmba(IntegerVector obs, NumericVector probs, bool anti);  // CDF
+
+// Poisson Approximation (PA)
+NumericVector dpb_pa(IntegerVector obs, NumericVector probs);               // PMF
+NumericVector dpb_pa(IntegerVector obs, NumericVector probs);               // CDF
+
+// Normal Approximations (NA, RNA)
+NumericVector dpb_na(IntegerVector obs, NumericVector probs, bool refined); // PMF
+NumericVector dpb_na(IntegerVector obs, NumericVector probs, bool refined); // CDF
+```
+
+
+## Making the functions usable
+
+There are only a few simple steps to follow:
+
+1. Add the `Rcpp` and `PoissonBinomial` packages to the `Imports` and `LinkingTo` fields of the `DESCRIPTION` file.
+2. Add `#include <PoissonBinomial.h>` to source (`.cpp`) and/or header (`.h`, `.hpp`) files in which these functions are to be used.
+3. Optional: Add `using namespace PoissonBinomial;`. Without it, the use of functions of this package must be fully qualified with `PoissonBinomial::`, e.g. `PoissonBinomial::dpb_dc` instead of `dpb_dc`
+
+
+## Important Remarks
+
+For better performance, the PMFs and CDFs do not check any of their parameters for plausibility! This must be done by the user by means of *R* or *C/C++* functions. It must be made sure that
+
+* the observations in the `obs` vector are within $[0, n]$ (with $n$ being the length of `probs`), 
+* the probabilities in the `probs` vector are in $(0, 1)$ (most procedures allow zeros or ones nonetheless) and
+* for `dpb_gmba`, `ppb_gmba`, `dpb_na` and `ppb_na`: the probabilities in the `probs` vector **must not** contain zeros or ones.
+
+Furthermore, the CDFs only compute lower-tail cumulative probabilities, i.e. $P(X \leq k)$. If upper-tail probabilities $P(X > k)$ are needed, they must be computed "manually". The same applies for logarithmic probabilities, which can be calculated using `Rcpp::log` for instance.

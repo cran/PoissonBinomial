@@ -1,0 +1,164 @@
+---
+title: "Exact Procedures"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Exact Procedures}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+In this package, the following exact algorithms for computing the Poisson Binomial distribution with Bernoulli probabilities $p_1, ..., p_n$ are implemented:
+
+* the *Direct Convolution* approach of [Biscarri, Zhao & Brunner (2018)](http://dx.doi.org/10.1016/j.csda.2018.01.007),
+* the *Divide & Conquer FFT Tree Convolution* procedure of [Biscarri, Zhao & Brunner (2018)](http://dx.doi.org/10.1016/j.csda.2018.01.007),
+* the *Discrete Fourier Transformation of the Characteristic Function* algorithm of [Hong (2013)](http://dx.doi.org/10.1016/j.csda.2012.10.006) and
+* the *Recursive Formula* of [Barlow & Heidtmann (1984)](http://dx.doi.org/10.1109/TR.1984.5221843).
+
+The computation of these procedures is optimized and accelerated by some simple preliminary considerations:
+
+1. Are all $p_i$ equal?    
+In This case, we have an ordinary binomial distribution. The specified method of computation is then ignored.
+2. Are all of the $p_i (i = 1, ..., n)$ 0 or 1?    
+If one $p_i$ is 1, it is impossible to measure 0 successes. Following the same logic, if two $p_i$ are 1, we cannot observe 0 and 1 successes and so on. In general, a number of $n_1 > 0$ values $p_i = 1$ makes it impossible to measure $0, ..., n_1 - 1$ successes. Likewise, if $n_0 > 0$ of the $p_i = 0$, we cannot observe $n - n_0 + 1, ..., n$ successes. This leads to three cases (the specified method of computation is ignored in any of them):
+    a) All $p_i = 0$: The only observable value is $0$, i.e. $P(X = 0) = 1$ and $P(X \neq 0) = 0$.
+    b) All $p_i = 1$: The only observable value is $n$, i.e. $P(X = n) = 1$ and $P(X \neq n) = 0$.
+    c) All $p_i \in \{0, 1\}$: The only observable value is $n_1$, i.e. $P(X = n_1) = 1$ and $P(X \neq n_1) = 0$.
+3. Are there $p_i \notin \{0, 1\}$?    
+Then the only observable values are $n_1, n_1 + 1, ..., n - n_0$, i.e. $P(X \in \{n_1, ..., n - n_0\}) > 0$ and $P(X < n_1) = P(X > n - n_0) = 0$. As a result, $X$ can be expressed as $X = n_1 + Y$ with $Y \sim PBin(\{p_i|0 < p_i < 1\})$ and $|\{p_i|0 < p_i < 1\}| = n - n_0 - n_1$. Thus, the Poisson Binomial distribution must only be computed for $Y$.
+
+These cases are illustrated in the following example:
+
+```{r ex}
+library(PoissonBinomial)
+
+# Case 1
+dpbinom(NULL, rep(0.3, 7))
+dbinom(0:7, 7, 0.3)
+# equal results
+
+# Case 2
+dpbinom(NULL, c(0, 0, 0, 0, 0, 0, 0))
+dpbinom(NULL, c(1, 1, 1, 1, 1, 1, 1))
+dpbinom(NULL, c(0, 0, 0, 0, 1, 1, 1))
+
+# Case 3
+dpbinom(NULL, c(0, 0, 0.4, 0.2, 0.8, 0.1, 1))
+```
+
+
+## Direct Convolution
+
+The *Direct Convolution* (DC) approach is requested with `method = "Convolve"`.
+
+```{r directconv}
+set.seed(1)
+pp <- runif(10)
+wt <- sample(1:10, 10, TRUE)
+
+dpbinom(NULL, pp, wt, "Convolve")
+ppbinom(NULL, pp, wt, "Convolve")
+```
+
+
+## Divide & Conquer FFT Tree Convolution
+
+The *Divide & Conquer FFT Tree Convolution* (DC-FFT) approach is requested with `method = "DivideFFT"`.
+
+```{r dividefft1}
+set.seed(1)
+pp <- runif(10)
+wt <- sample(1:10, 10, TRUE)
+
+dpbinom(NULL, pp, wt, "DivideFFT")
+ppbinom(NULL, pp, wt, "DivideFFT")
+```
+
+By design, as proposed by [Biscarri, Zhao & Brunner (2018)](http://dx.doi.org/10.1016/j.csda.2018.01.007), its results are identical to the DC procedure, if $n \leq 750$. Thus, differences can be observed for larger $n > 750$:
+
+```{r dividefft2}
+set.seed(1)
+pp1 <- runif(751)
+pp2 <- pp1[1:750]
+
+sum(abs(dpbinom(NULL, pp2, method = "DivideFFT") - dpbinom(NULL, pp2, method = "Convolve")))
+sum(abs(dpbinom(NULL, pp1, method = "DivideFFT") - dpbinom(NULL, pp1, method = "Convolve")))
+```
+
+The reason is that the DC-FFT method splits the input `probs` vector into as equally sized parts as possible and computes their distributions separately with the DC approach. The results of the portions are then convoluted by means of the Fast Fourier Transformation. As proposed by [Biscarri, Zhao & Brunner (2018)](http://dx.doi.org/10.1016/j.csda.2018.01.007), no splitting is done for $n \leq 750$. In addition, the DC-FFT procedure does not produce probabilities $\leq 5.55e\text{-}17$, i.e. smaller values are rounded off to 0, if $n > 750$, whereas the smallest possible result of the DC algorithm is $\sim 1e\text{-}323$. This is most likely caused by the used FFTW3 library.
+
+```{r dividefft3}
+set.seed(1)
+pp1 <- runif(751)
+
+d1 <- dpbinom(NULL, pp1, method = "DivideFFT")
+d2 <- dpbinom(NULL, pp1, method = "Convolve")
+
+min(d1[d1 > 0])
+min(d2[d2 > 0])
+```
+
+
+## Discrete Fourier Transformation of the Characteristic Function
+
+The *Discrete Fourier Transformation of the Characteristic Function* (DFT-CF) approach is requested with `method = "Characteristic"`.
+
+```{r dftcf}
+set.seed(1)
+pp <- runif(10)
+wt <- sample(1:10, 10, TRUE)
+
+dpbinom(NULL, pp, wt, "Characteristic")
+ppbinom(NULL, pp, wt, "Characteristic")
+```
+
+As can be seen, the DFT-CF procedure does not produce probabilities $\leq 5.55e\text{-}17$, i.e. smaller values are rounded off to 0, most likely due to the used FFTW3 library.
+
+
+## Recursive Formula
+
+The *Recursive Formula* (RF) approach is requested with `method = "Recursive"`.
+
+```{r rf1}
+set.seed(1)
+pp <- runif(10)
+wt <- sample(1:10, 10, TRUE)
+
+dpbinom(NULL, pp, wt, "Recursive")
+ppbinom(NULL, pp, wt, "Recursive")
+```
+
+Obviously, the RF procedure does produce probabilities $\leq 5.55e\text{-}17$, because it does not rely on the FFTW3 library. Furthermore, it yields the same results as the DC method.
+
+```{r rf2}
+set.seed(1)
+pp <- runif(1000)
+wt <- sample(1:10, 1000, TRUE)
+
+sum(abs(dpbinom(NULL, pp, wt, "Convolve") - dpbinom(NULL, pp, wt, "Recursive")))
+```
+
+
+## Performance Comparisons
+
+To assess the performance of the exact procedures, we use the `microbenchmark` package. Each algorithm has to calculate the PMF repeatedly based on random probability vectors. The run times are then summarized in a table that presents, among other statistics, their minima, maxima and means. The following results were recorded on an AMD Ryzen 7 1800X with 32 GiB of RAM and Ubuntu 18.04.3 (running inside a VirtualBox VM; the host system is Windows 10 Education).
+
+```{r benchmark}
+library(microbenchmark)
+set.seed(1)
+
+f1 <- function() dpbinom(NULL, runif(4000), method = "DivideFFT")
+f2 <- function() dpbinom(NULL, runif(4000), method = "Convolve")
+f3 <- function() dpbinom(NULL, runif(4000), method = "Characteristic")
+f4 <- function() dpbinom(NULL, runif(4000), method = "Recursive")
+
+microbenchmark(f1(), f2(), f3(), f4())
+```
+
+Clearly, the DC-FFT procedure is the fastest, followed by the DC and DFT-CF methods, which need roughly 3 times as much time, and the RF approach. DC and DFT-CF procedures exhibit almost equal mean execution speed, with the DC algorithm being slightly faster (and with some advantage in precision, as stated before). The RF approach is the slowest one and its computation takes roughly twice as long as those of the DC procedure.
