@@ -8,7 +8,7 @@
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
 
@@ -115,9 +115,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -286,7 +283,8 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
@@ -833,13 +831,13 @@ Then the only observable values are <span class="math inline">\(n_1, n_1 + 1, ..
 <a class="sourceLine" id="cb14-12" data-line-number="12"><span class="kw">microbenchmark</span>(<span class="kw">f1</span>(), <span class="kw">f2</span>(), <span class="kw">f3</span>(), <span class="kw">f4</span>(), <span class="kw">f5</span>(), <span class="kw">f6</span>(), <span class="kw">f7</span>())</a>
 <a class="sourceLine" id="cb14-13" data-line-number="13"><span class="co">#&gt; Unit: microseconds</span></a>
 <a class="sourceLine" id="cb14-14" data-line-number="14"><span class="co">#&gt;  expr      min        lq      mean    median        uq       max neval</span></a>
-<a class="sourceLine" id="cb14-15" data-line-number="15"><span class="co">#&gt;  f1()  511.019  545.8695  597.1294  566.8085  630.1375  1479.055   100</span></a>
-<a class="sourceLine" id="cb14-16" data-line-number="16"><span class="co">#&gt;  f2()  683.382  703.8960  832.6612  723.2970  801.8245  4456.861   100</span></a>
-<a class="sourceLine" id="cb14-17" data-line-number="17"><span class="co">#&gt;  f3() 1141.181 1177.4195 1235.5048 1209.0490 1266.3210  2092.215   100</span></a>
-<a class="sourceLine" id="cb14-18" data-line-number="18"><span class="co">#&gt;  f4() 1178.211 1217.7395 1310.6949 1248.4020 1317.0965  4420.985   100</span></a>
-<a class="sourceLine" id="cb14-19" data-line-number="19"><span class="co">#&gt;  f5() 1308.455 1332.4700 1459.2589 1358.8390 1434.2505  4699.747   100</span></a>
-<a class="sourceLine" id="cb14-20" data-line-number="20"><span class="co">#&gt;  f6() 1310.949 1332.3295 1505.7112 1358.1880 1437.8325  5187.021   100</span></a>
-<a class="sourceLine" id="cb14-21" data-line-number="21"><span class="co">#&gt;  f7() 5532.098 5689.6645 6582.6371 5843.7885 6184.0165 13121.207   100</span></a></code></pre></div>
+<a class="sourceLine" id="cb14-15" data-line-number="15"><span class="co">#&gt;  f1()  495.760  546.3555  578.3927  561.8495  585.5385  1454.579   100</span></a>
+<a class="sourceLine" id="cb14-16" data-line-number="16"><span class="co">#&gt;  f2()  646.954  705.5190  776.8174  721.5735  751.2840  4447.344   100</span></a>
+<a class="sourceLine" id="cb14-17" data-line-number="17"><span class="co">#&gt;  f3() 1131.443 1173.4515 1249.8983 1192.3465 1220.0140  4609.779   100</span></a>
+<a class="sourceLine" id="cb14-18" data-line-number="18"><span class="co">#&gt;  f4() 1177.599 1220.2295 1333.0618 1235.1275 1280.8285  8088.706   100</span></a>
+<a class="sourceLine" id="cb14-19" data-line-number="19"><span class="co">#&gt;  f5() 1251.148 1329.9850 1491.5540 1350.7595 1407.7515  5481.264   100</span></a>
+<a class="sourceLine" id="cb14-20" data-line-number="20"><span class="co">#&gt;  f6() 1245.227 1329.2240 1499.4849 1345.5195 1403.4380  5853.493   100</span></a>
+<a class="sourceLine" id="cb14-21" data-line-number="21"><span class="co">#&gt;  f7() 5594.136 5807.7965 6717.2159 5939.8240 6455.1465 13915.929   100</span></a></code></pre></div>
 <p>Clearly, the NA procedure is the fastest, followed by the RNA method, which needs roughly 30-40% more time, and the PA, AMBA and GMBA approaches that need almost twice as long as the NA algorithm. AMBA, GMBA-A and GMBA-B procedures exhibit almost equal mean execution speed, with the AMBA algorithm being slightly faster. All of the approximation procedures outperform the fastest exact approach, DC-FFT, by far. Even the slowest approximate algorithm is around 4x as fast as DC-FFT.</p>
 </div>
 

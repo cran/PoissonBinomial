@@ -33,16 +33,16 @@ NumericVector ppb_na(IntegerVector obs, NumericVector probs, bool refined = true
 // helper function for normalisation of PMFs (i.e. ensure that sum = 1)
 void norm_dpb(NumericVector &pmf){
   // sums of PMF
-  double new_sum = sum(pmf), old_sum = 0, older_sum = 0, oldest_sum = 0;
+  double new_sum = sum(pmf);//, old_sum = 0, older_sum = 0, oldest_sum = 0;
   //Rcout << ((new_sum < 1)?"l ":((new_sum == 1)?"e ":"g "));
-  while(new_sum != 1){
-    oldest_sum = older_sum;
-    older_sum = old_sum;
-    old_sum = new_sum;
+  if(new_sum != 1){
+    //oldest_sum = older_sum;
+    //older_sum = old_sum;
+    //old_sum = new_sum;
     pmf = pmf / new_sum;
-    new_sum = sum(pmf);
+    //new_sum = sum(pmf);
     //Rcout << ((new_sum < 1)?"l ":((new_sum == 1)?"e ":"g "));
-    if(new_sum > 1 || new_sum == old_sum || new_sum == older_sum || new_sum == oldest_sum) break;
+    //if(new_sum > 1 || new_sum == old_sum || new_sum == older_sum || new_sum == oldest_sum) break;
   }
   //Rcout << "\n";
 }

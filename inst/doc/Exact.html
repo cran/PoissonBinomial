@@ -8,7 +8,7 @@
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
 
@@ -115,9 +115,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -286,7 +283,8 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
@@ -532,11 +530,11 @@ Then the only observable values are <span class="math inline">\(n_1, n_1 + 1, ..
 <a class="sourceLine" id="cb9-8" data-line-number="8"></a>
 <a class="sourceLine" id="cb9-9" data-line-number="9"><span class="kw">microbenchmark</span>(<span class="kw">f1</span>(), <span class="kw">f2</span>(), <span class="kw">f3</span>(), <span class="kw">f4</span>())</a>
 <a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt; Unit: milliseconds</span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;  expr       min        lq      mean    median       uq      max neval</span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;  f1()  5.428414  5.822909  6.443037  6.042447  6.39345 11.96527   100</span></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;  f2() 16.162983 16.668326 17.873455 17.167783 18.33702 51.43924   100</span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt;  f3() 22.190701 22.814842 23.104868 23.024966 23.23615 27.57129   100</span></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt;  f4() 35.312438 35.925759 36.251559 36.113040 36.48713 39.68427   100</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;  expr       min        lq      mean   median        uq      max neval</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;  f1()  5.478379  5.884806  6.714503  6.16171  6.764316 21.78661   100</span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;  f2() 16.509786 17.051717 18.341106 17.46519 18.628877 59.29212   100</span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt;  f3() 22.207496 22.957959 23.424588 23.14626 23.367803 41.59981   100</span></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt;  f4() 34.791255 36.084817 36.425160 36.34899 36.543581 42.72910   100</span></a></code></pre></div>
 <p>Clearly, the DC-FFT procedure is the fastest, followed by the DC and DFT-CF methods, which need roughly 3 times as much time, and the RF approach. DC and DFT-CF procedures exhibit almost equal mean execution speed, with the DC algorithm being slightly faster (and with some advantage in precision, as stated before). The RF approach is the slowest one and its computation takes roughly twice as long as those of the DC procedure.</p>
 </div>
 
