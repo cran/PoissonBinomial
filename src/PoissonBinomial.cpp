@@ -33,16 +33,21 @@ NumericVector ppb_na(IntegerVector obs, NumericVector probs, bool refined = true
 // helper function for normalisation of PMFs (i.e. ensure that sum = 1)
 void norm_dpb(NumericVector &pmf){
   // sums of PMF
-  double new_sum = sum(pmf);//, old_sum = 0, older_sum = 0, oldest_sum = 0;
+  double new_sum = sum(pmf), old_sum = 0, older_sum = 0, oldest_sum = 0;
   //Rcout << ((new_sum < 1)?"l ":((new_sum == 1)?"e ":"g "));
-  if(new_sum != 1){
-    //oldest_sum = older_sum;
-    //older_sum = old_sum;
-    //old_sum = new_sum;
+  while(new_sum != 1){
+    oldest_sum = older_sum;
+    older_sum = old_sum;
+    old_sum = new_sum;
+    NumericVector old_pmf = pmf;
     pmf = pmf / new_sum;
-    //new_sum = sum(pmf);
+    new_sum = sum(pmf);
     //Rcout << ((new_sum < 1)?"l ":((new_sum == 1)?"e ":"g "));
-    //if(new_sum > 1 || new_sum == old_sum || new_sum == older_sum || new_sum == oldest_sum) break;
+    if(new_sum >= 1 || new_sum == old_sum || new_sum == older_sum || new_sum == oldest_sum) break;
+    if(new_sum < 1 && new_sum <= old_sum){
+      pmf = old_pmf;
+      break;
+    }
   }
   //Rcout << "\n";
 }
@@ -281,8 +286,29 @@ NumericVector dpb_dftcf(IntegerVector obs, NumericVector probs){
   std::complex<double> C = exp(std::complex<double>(0.0, 2.0) * boost::math::double_constants::pi / ((double)sizeOut));
   std::complex<double> C_power(1.0, 0.0);
   
-  // compute closed-form expression of Hernandez and Williams
   int mid = sizeIn / 2 + 1;
+  /*double omega = 2 * boost::math::double_constants::pi / ((double)sizeOut);
+  double d, x, c, s;
+  std::complex<double> z;
+  for(int l = 1; l <= mid; l++){
+    d = 0.0;
+    x = 0.0;
+    for(int j = 0; j < sizeIn; j++){
+      z.real(probs[j] * (std::cos(omega * l) - 1) + 1);
+      z.imag(probs[j] * std::sin(omega * l));
+      d += std::log(std::abs(z));
+      x += std::arg(z);
+    }
+    d = std::exp(d);
+    c = d * std::cos(x);
+    s = d * std::sin(x);
+    input_fft[l][REAL] = c;
+    input_fft[l][IMAG] = s;
+    input_fft[sizeOut - l][REAL] = c;
+    input_fft[sizeOut - l][IMAG] = -s;
+  }*/
+  
+  // compute closed-form expression of Hernandez and Williams
   for(int i = 1; i <= mid; i++){
     std::complex<double> product = 1.0;
     double realCpow = C_power.real(), imagCpow = C_power.imag();
@@ -316,7 +342,7 @@ NumericVector dpb_dftcf(IntegerVector obs, NumericVector probs){
   fftw_free(result_fft);
   
   // "correct" numerically false (and thus useless) results
-  results[results < 5.55e-17] = 0;
+  results[results < 2.22e-16] = 0;
   results[results > 1] = 1;
   
   // make sure that probability masses sum up to 1

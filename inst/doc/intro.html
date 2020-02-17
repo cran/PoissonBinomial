@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Efficient Computation of the Poisson-Binomial Distribution</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Efficient Computation of the Poisson-Binomial Distribution</h1>
+
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>The Poisson binomial distribution is becoming increasingly important, especially in the areas of statistics, finance, insurance mathematics and quality management. Still, only a few <code>R</code> packages exist for its calculation, namely <a href="https://cran.r-project.org/package=poibin"><code>poibin</code></a> and <a href="https://cran.r-project.org/package=poisbinom"><code>poisbinom</code></a>. Both are based on <a href="http://dx.doi.org/10.1016/j.csda.2012.10.006">Hong (2013)</a>. The first one implements the exact DFT-CF algorithm along with an exact recursive method and Normal and Poisson approximations. The latter package only provides a more efficient DFT-CF implementation. Unfortunately, it sometimes yields negative probabilities, especially for large distributions. This numerical issue has not been addressed to date. <a href="http://dx.doi.org/10.1016/j.csda.2018.01.007">Biscarri, Zhao &amp; Brunner (2018)</a> developed two more efficient procedures, but at the time of this writing, no package exists that implements them, because the authors published a <a href="https://github.com/biscarri1/convpoibin">reference implementation</a> for <code>R</code>, but refrained from releasing it as a package. In addition to the disadvantages regarding computational speed, especially for very large distributions, <code>poibin</code> and <code>poisbinom</code> do not provide headers to their internal C/C++ functions, so that they cannot be imported directly by C or C++ code of other packages that use for example <code>Rcpp</code>. In our own project, we often have to deal with Poisson binomial distributions that include Bernoulli trials with <span class="math inline">\(p_i \in \{0, 1\}\)</span>. Computation can be further optimized by handling these trials before the actual computations. None of the aforementioned packages do that. That is why we decided to develop <code>PoissonBinomial</code>. We needed a package that</p>
+<ul>
+<li>provides functions for efficient computation of very large distributions (i.e. around 15.000)</li>
+<li>provides headers for the C++ functions so that other packages may include them in their own C++ code</li>
+<li>handles (sometimes large numbers of) 0- and 1-probabilities to speed up performance</li>
+</ul>
+<p>While implementing the procedures of <a href="http://dx.doi.org/10.1016/j.csda.2018.01.007">Biscarri, Zhao &amp; Brunner (2018)</a>, it was decided to also include all methods that are described in <a href="http://dx.doi.org/10.1016/j.csda.2012.10.006">Hong (2013)</a>, together with three additional binomial approximations.</p>
+</div>
+<div id="exact-procedures" class="section level2">
+<h2>Exact Procedures</h2>
+<p>In this package, the following exact algorithms for computing the Poisson Binomial distribution with Bernoulli probabilities <span class="math inline">\(p_1, ..., p_n\)</span> are implemented:</p>
+<ul>
+<li>the <em>Direct Convolution</em> approach of <a href="http://dx.doi.org/10.1016/j.csda.2018.01.007">Biscarri, Zhao &amp; Brunner (2018)</a>,</li>
+<li>the <em>Divide &amp; Conquer FFT Tree Convolution</em> procedure of <a href="http://dx.doi.org/10.1016/j.csda.2018.01.007">Biscarri, Zhao &amp; Brunner (2018)</a>,</li>
+<li>the <em>Discrete Fourier Transformation of the Characteristic Function</em> algorithm of <a href="http://dx.doi.org/10.1016/j.csda.2012.10.006">Hong (2013)</a> and</li>
+<li>the <em>Recursive Formula</em> of <a href="http://dx.doi.org/10.1109/TR.1984.5221843">Barlow &amp; Heidtmann (1984)</a>.</li>
+</ul>
+<p>Examples and performance comparisons of these procedures are provided in a <a href="proc_exact.html">separate vignette</a>.</p>
+</div>
+<div id="approximations" class="section level2">
+<h2>Approximations</h2>
+<p>In addition, the following approximation methods are provided:</p>
+<ul>
+<li>the <em>Poisson Approximation</em> approach,</li>
+<li>the <em>Arithmetic Mean Binomial Approximation</em> procedure,</li>
+<li><em>Geometric Mean Binomial Approximation</em> algorithms and</li>
+<li><em>Normal</em> and <em>Refined Normal Approximation</em>s.</li>
+</ul>
+<p>Again, examples and performance comparisons are for these approaches are presented in a <a href="proc_approx.html">separate vignette</a> as well.</p>
+</div>
+<div id="handling-zeros-and-ones" class="section level2">
+<h2>Handling zeros and ones</h2>
+<p>Unfortunately, some approximations do not work at all for Bernoulli trials with <span class="math inline">\(p_i = 1\)</span>. This is why handling these values <em>before</em> the actual computation of the distribution is not only a performance tweak, but sometimes even a necessity. It is achieved by some simple preliminary considerations:</p>
+<ol style="list-style-type: decimal">
+<li>Are all <span class="math inline">\(p_i\)</span> equal?<br />
+In This case, we have an ordinary binomial distribution. The specified method of computation is then ignored.</li>
+<li>Are all of the <span class="math inline">\(p_i \in \{0, 1\} (i = 1, ..., n)\)</span>?<br />
+If one <span class="math inline">\(p_i\)</span> is 1, it is impossible to measure 0 successes. Following the same logic, if two <span class="math inline">\(p_i\)</span> are 1, we cannot observe 0 and 1 successes and so on. In general, a number of <span class="math inline">\(n_1\)</span> values with <span class="math inline">\(p_i = 1\)</span> makes it impossible to measure <span class="math inline">\(0, ..., n_1 - 1\)</span> successes. Likewise, if there are <span class="math inline">\(n_0\)</span> Bernoulli trials with <span class="math inline">\(p_i = 0\)</span>, we cannot observe <span class="math inline">\(n - n_0 + 1, ..., n\)</span> successes. This leads us to three cases (the specified method of computation is ignored in any of them):
+<ol style="list-style-type: lower-alpha">
+<li>All <span class="math inline">\(p_i = 0\)</span>: The only observable value is <span class="math inline">\(0\)</span>, i.e. <span class="math inline">\(P(X = 0) = 1\)</span> and <span class="math inline">\(P(X \neq 0) = 0\)</span>.</li>
+<li>All <span class="math inline">\(p_i = 1\)</span>: The only observable value is <span class="math inline">\(n\)</span>, i.e. <span class="math inline">\(P(X = n) = 1\)</span> and <span class="math inline">\(P(X \neq n) = 0\)</span>.</li>
+<li>All <span class="math inline">\(p_i \in \{0, 1\}\)</span>: The only observable value is <span class="math inline">\(n_1\)</span>, i.e. <span class="math inline">\(P(X = n_1) = 1\)</span> and <span class="math inline">\(P(X \neq n_1) = 0\)</span>.</li>
+</ol></li>
+<li>Are there <span class="math inline">\(p_i \notin \{0, 1\}\)</span>?<br />
+Using the same logic as before, we can only observe an “inner” distribution in the range of <span class="math inline">\(n_1, n_1 + 1, ..., n - n_0\)</span>, i.e. <span class="math inline">\(P(X \in \{n_1, ..., n - n_0\}) &gt; 0\)</span> and <span class="math inline">\(P(X &lt; n_1) = P(X &gt; n - n_0) = 0\)</span>. As a result, <span class="math inline">\(X\)</span> can be expressed as <span class="math inline">\(X = n_1 + Y\)</span> with <span class="math inline">\(Y \sim PBin(\{p_i|0 &lt; p_i &lt; 1\})\)</span> and <span class="math inline">\(|\{p_i|0 &lt; p_i &lt; 1\}| = n - n_0 - n_1\)</span>. Subsequently, the Poisson binomial distribution must only be computed for <span class="math inline">\(Y\)</span>.</li>
+</ol>
+<p>These cases are illustrated in the following example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(PoissonBinomial)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co"># Case 1</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">rep</span>(<span class="fl">0.3</span>, <span class="dv">7</span>))</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; [1] 0.0823543 0.2470629 0.3176523 0.2268945 0.0972405 0.0250047 0.0035721</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; [8] 0.0002187</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw">dbinom</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">7</span>, <span class="dv">7</span>, <span class="fl">0.3</span>)</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; [1] 0.0823543 0.2470629 0.3176523 0.2268945 0.0972405 0.0250047 0.0035721</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt; [8] 0.0002187</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co"># equal results</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co"># Case 2</span></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>))</a>
+<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co">#&gt; [1] 1 0 0 0 0 0 0 0</span></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co">#&gt; [1] 0 0 0 0 0 0 0 1</span></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co">#&gt; [1] 0 0 0 1 0 0 0 0</span></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19"></a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co"># Case 3</span></a>
+<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.4</span>, <span class="fl">0.2</span>, <span class="fl">0.8</span>, <span class="fl">0.1</span>, <span class="dv">1</span>), <span class="dt">method =</span> <span class="st">&quot;Convolve&quot;</span>)</a>
+<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="co">#&gt; [1] 0.0000 0.0864 0.4344 0.3784 0.0944 0.0064 0.0000 0.0000</span></a></code></pre></div>
+</div>
+<div id="usage-with-rcpp" class="section level2">
+<h2>Usage with Rcpp</h2>
+<p>How to import and use the internal C++ functions in Rcpp based packages is described in a <a href="use_with_rcpp.html">separate vignette</a>.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

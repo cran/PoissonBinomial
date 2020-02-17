@@ -4,21 +4,8 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-## ----ex-----------------------------------------------------------------------
+## ----setup--------------------------------------------------------------------
 library(PoissonBinomial)
-
-# Case 1
-dpbinom(NULL, rep(0.3, 7))
-dbinom(0:7, 7, 0.3)
-# equal results
-
-# Case 2
-dpbinom(NULL, c(0, 0, 0, 0, 0, 0, 0))
-dpbinom(NULL, c(1, 1, 1, 1, 1, 1, 1))
-dpbinom(NULL, c(0, 0, 0, 0, 1, 1, 1))
-
-# Case 3
-dpbinom(NULL, c(0, 0, 0.4, 0.2, 0.8, 0.1, 1), method = "RefinedNormal")
 
 ## ----pa1----------------------------------------------------------------------
 set.seed(1)
@@ -33,15 +20,15 @@ set.seed(1)
 
 # U(0, 1) random probabilities of success
 pp <- runif(20)
-ppbinom(NULL, pp, method = "Poisson")
-ppbinom(NULL, pp)
-summary(ppbinom(NULL, pp, method = "Poisson") - ppbinom(NULL, pp))
+dpbinom(NULL, pp, method = "Poisson")
+dpbinom(NULL, pp)
+summary(dpbinom(NULL, pp, method = "Poisson") - dpbinom(NULL, pp))
 
 # U(0, 0.01) random probabilities of success
 pp <- runif(20, 0, 0.01)
-ppbinom(NULL, pp, method = "Poisson")
-ppbinom(NULL, pp)
-summary(ppbinom(NULL, pp, method = "Poisson") - ppbinom(NULL, pp))
+dpbinom(NULL, pp, method = "Poisson")
+dpbinom(NULL, pp)
+summary(dpbinom(NULL, pp, method = "Poisson") - dpbinom(NULL, pp))
 
 ## ----am1----------------------------------------------------------------------
 set.seed(1)
@@ -57,21 +44,21 @@ set.seed(1)
 
 # U(0, 1) random probabilities of success
 pp <- runif(20)
-ppbinom(NULL, pp, method = "Mean")
-ppbinom(NULL, pp)
-summary(ppbinom(NULL, pp, method = "Mean") - ppbinom(NULL, pp))
+dpbinom(NULL, pp, method = "Mean")
+dpbinom(NULL, pp)
+summary(dpbinom(NULL, pp, method = "Mean") - dpbinom(NULL, pp))
 
-# U(0.4, 0.6) random probabilities of success
+# U(0.3, 0.5) random probabilities of success
 pp <- runif(20, 0.3, 0.5)
-ppbinom(NULL, pp, method = "Mean")
-ppbinom(NULL, pp)
-summary(ppbinom(NULL, pp, method = "Mean") - ppbinom(NULL, pp))
+dpbinom(NULL, pp, method = "Mean")
+dpbinom(NULL, pp)
+summary(dpbinom(NULL, pp, method = "Mean") - dpbinom(NULL, pp))
 
-# U(0.49, 0.51) random probabilities of success
+# U(0.39, 0.41) random probabilities of success
 pp <- runif(20, 0.39, 0.41)
-ppbinom(NULL, pp, method = "Mean")
-ppbinom(NULL, pp)
-summary(ppbinom(NULL, pp, method = "Mean") - ppbinom(NULL, pp))
+dpbinom(NULL, pp, method = "Mean")
+dpbinom(NULL, pp)
+summary(dpbinom(NULL, pp, method = "Mean") - dpbinom(NULL, pp))
 
 ## ----gma1---------------------------------------------------------------------
 set.seed(1)
@@ -87,21 +74,21 @@ set.seed(1)
 
 # U(0, 1) random probabilities of success
 pp <- runif(20)
-ppbinom(NULL, pp, method = "GeoMean")
-ppbinom(NULL, pp)
-summary(ppbinom(NULL, pp, method = "GeoMean") - ppbinom(NULL, pp))
+dpbinom(NULL, pp, method = "GeoMean")
+dpbinom(NULL, pp)
+summary(dpbinom(NULL, pp, method = "GeoMean") - dpbinom(NULL, pp))
 
 # U(0.4, 0.6) random probabilities of success
 pp <- runif(20, 0.4, 0.6)
-ppbinom(NULL, pp, method = "GeoMean")
-ppbinom(NULL, pp)
-summary(ppbinom(NULL, pp, method = "GeoMean") - ppbinom(NULL, pp))
+dpbinom(NULL, pp, method = "GeoMean")
+dpbinom(NULL, pp)
+summary(dpbinom(NULL, pp, method = "GeoMean") - dpbinom(NULL, pp))
 
 # U(0.49, 0.51) random probabilities of success
 pp <- runif(20, 0.49, 0.51)
-ppbinom(NULL, pp, method = "GeoMean")
-ppbinom(NULL, pp)
-summary(ppbinom(NULL, pp, method = "GeoMean") - ppbinom(NULL, pp))
+dpbinom(NULL, pp, method = "GeoMean")
+dpbinom(NULL, pp)
+summary(dpbinom(NULL, pp, method = "GeoMean") - dpbinom(NULL, pp))
 
 ## ----gmb1---------------------------------------------------------------------
 set.seed(1)
@@ -117,21 +104,21 @@ set.seed(1)
 
 # U(0, 1) random probabilities of success
 pp <- runif(20)
-ppbinom(NULL, pp, method = "GeoMeanCounter")
-ppbinom(NULL, pp)
-summary(ppbinom(NULL, pp, method = "GeoMeanCounter") - ppbinom(NULL, pp))
+dpbinom(NULL, pp, method = "GeoMeanCounter")
+dpbinom(NULL, pp)
+summary(dpbinom(NULL, pp, method = "GeoMeanCounter") - dpbinom(NULL, pp))
 
 # U(0.4, 0.6) random probabilities of success
 pp <- runif(20, 0.4, 0.6)
-ppbinom(NULL, pp, method = "GeoMeanCounter")
-ppbinom(NULL, pp)
-summary(ppbinom(NULL, pp, method = "GeoMeanCounter") - ppbinom(NULL, pp))
+dpbinom(NULL, pp, method = "GeoMeanCounter")
+dpbinom(NULL, pp)
+summary(dpbinom(NULL, pp, method = "GeoMeanCounter") - dpbinom(NULL, pp))
 
 # U(0.49, 0.51) random probabilities of success
 pp <- runif(20, 0.49, 0.51)
-ppbinom(NULL, pp, method = "GeoMeanCounter")
-ppbinom(NULL, pp)
-summary(ppbinom(NULL, pp, method = "GeoMeanCounter") - ppbinom(NULL, pp))
+dpbinom(NULL, pp, method = "GeoMeanCounter")
+dpbinom(NULL, pp)
+summary(dpbinom(NULL, pp, method = "GeoMeanCounter") - dpbinom(NULL, pp))
 
 ## ----na1----------------------------------------------------------------------
 set.seed(1)
@@ -145,17 +132,26 @@ ppbinom(NULL, pp, wt, "Normal")
 ## ----na2----------------------------------------------------------------------
 set.seed(1)
 
-# U(0, 1) random probabilities of success
+# 10 random probabilities of success
 pp <- runif(10)
-summary(ppbinom(NULL, pp, method = "Normal") - ppbinom(NULL, pp))
+dpn <- dpbinom(NULL, pp, method = "Normal")
+dpd <- dpbinom(NULL, pp)
+idx <- which(dpn != 0 & dpd != 0)
+summary((dpn - dpd)[idx])
 
-# U(0.4, 0.6) random probabilities of success
+# 1000 random probabilities of success
 pp <- runif(1000)
-summary(ppbinom(NULL, pp, method = "Normal") - ppbinom(NULL, pp))
+dpn <- dpbinom(NULL, pp, method = "Normal")
+dpd <- dpbinom(NULL, pp)
+idx <- which(dpn != 0 & dpd != 0)
+summary((dpn - dpd)[idx])
 
-# U(0.49, 0.51) random probabilities of success
+# 100000 random probabilities of success
 pp <- runif(100000)
-summary(ppbinom(NULL, pp, method = "Normal") - ppbinom(NULL, pp))
+dpn <- dpbinom(NULL, pp, method = "Normal")
+dpd <- dpbinom(NULL, pp)
+idx <- which(dpn != 0 & dpd != 0)
+summary((dpn - dpd)[idx])
 
 ## ----rna1---------------------------------------------------------------------
 set.seed(1)
@@ -169,17 +165,26 @@ ppbinom(NULL, pp, wt, "RefinedNormal")
 ## ----rna2---------------------------------------------------------------------
 set.seed(1)
 
-# U(0, 1) random probabilities of success
+# 10 random probabilities of success
 pp <- runif(10)
-summary(ppbinom(NULL, pp, method = "RefinedNormal") - ppbinom(NULL, pp))
+dpn <- dpbinom(NULL, pp, method = "RefinedNormal")
+dpd <- dpbinom(NULL, pp)
+idx <- which(dpn != 0 & dpd != 0)
+summary((dpn - dpd)[idx])
 
-# U(0.4, 0.6) random probabilities of success
+# 1000 random probabilities of success
 pp <- runif(1000)
-summary(ppbinom(NULL, pp, method = "RefinedNormal") - ppbinom(NULL, pp))
+dpn <- dpbinom(NULL, pp, method = "RefinedNormal")
+dpd <- dpbinom(NULL, pp)
+idx <- which(dpn != 0 & dpd != 0)
+summary((dpn - dpd)[idx])
 
-# U(0.49, 0.51) random probabilities of success
+# 100000 random probabilities of success
 pp <- runif(100000)
-summary(ppbinom(NULL, pp, method = "RefinedNormal") - ppbinom(NULL, pp))
+dpn <- dpbinom(NULL, pp, method = "RefinedNormal")
+dpd <- dpbinom(NULL, pp)
+idx <- which(dpn != 0 & dpd != 0)
+summary((dpn - dpd)[idx])
 
 ## ----benchmark----------------------------------------------------------------
 library(microbenchmark)

@@ -1,0 +1,88 @@
+---
+title: "Efficient Computation of the Poisson-Binomial Distribution"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Efficient Computation of the Poisson-Binomial Distribution}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+The Poisson binomial distribution is becoming increasingly important, especially in the areas of statistics, finance, insurance mathematics and quality management. Still, only a few `R` packages exist for its calculation, namely [`poibin`](https://cran.r-project.org/package=poibin) and [`poisbinom`](https://cran.r-project.org/package=poisbinom). Both are based on [Hong (2013)](http://dx.doi.org/10.1016/j.csda.2012.10.006). The first one implements the exact DFT-CF algorithm along with an exact recursive method and Normal and Poisson approximations. The latter package only provides a more efficient DFT-CF implementation. Unfortunately, it sometimes yields negative probabilities, especially for large distributions. This numerical issue has not been addressed to date. [Biscarri, Zhao & Brunner (2018)](http://dx.doi.org/10.1016/j.csda.2018.01.007) developed two more efficient procedures, but at the time of this writing, no package exists that implements them, because the authors published a [reference implementation](https://github.com/biscarri1/convpoibin) for `R`, but refrained from releasing it as a package. In addition to the disadvantages regarding computational speed, especially for very large distributions, `poibin` and `poisbinom` do not provide headers to their internal C/C++ functions, so that they cannot be imported directly by C or C++ code of other packages that use for example `Rcpp`. In our own project, we often have to deal with Poisson binomial distributions that include Bernoulli trials with $p_i \in \{0, 1\}$. Computation can be further optimized by handling these trials before the actual computations. None of the aforementioned packages do that. That is why we decided to develop `PoissonBinomial`. We needed a package that
+
+* provides functions for efficient computation of very large distributions (i.e. around 15.000)
+* provides headers for the C++ functions so that other packages may include them in their own C++ code
+* handles (sometimes large numbers of) 0- and 1-probabilities to speed up performance
+
+While implementing the procedures of [Biscarri, Zhao & Brunner (2018)](http://dx.doi.org/10.1016/j.csda.2018.01.007), it was decided to also include all methods that are described in [Hong (2013)](http://dx.doi.org/10.1016/j.csda.2012.10.006), together with three additional binomial approximations.
+
+
+## Exact Procedures
+
+In this package, the following exact algorithms for computing the Poisson Binomial distribution with Bernoulli probabilities $p_1, ..., p_n$ are implemented:
+
+* the *Direct Convolution* approach of [Biscarri, Zhao & Brunner (2018)](http://dx.doi.org/10.1016/j.csda.2018.01.007),
+* the *Divide & Conquer FFT Tree Convolution* procedure of [Biscarri, Zhao & Brunner (2018)](http://dx.doi.org/10.1016/j.csda.2018.01.007),
+* the *Discrete Fourier Transformation of the Characteristic Function* algorithm of [Hong (2013)](http://dx.doi.org/10.1016/j.csda.2012.10.006) and
+* the *Recursive Formula* of [Barlow & Heidtmann (1984)](http://dx.doi.org/10.1109/TR.1984.5221843).
+
+Examples and performance comparisons of these procedures are provided in a [separate vignette](proc_exact.html).
+
+
+## Approximations
+
+In addition, the following approximation methods are provided:
+
+* the *Poisson Approximation* approach,
+* the *Arithmetic Mean Binomial Approximation* procedure,
+* *Geometric Mean Binomial Approximation* algorithms and
+* *Normal* and *Refined Normal Approximation*s.
+
+Again, examples and performance comparisons are for these approaches are presented in a [separate vignette](proc_approx.html) as well.
+
+
+## Handling zeros and ones
+
+Unfortunately, some approximations do not work at all for Bernoulli trials with $p_i = 1$. This is why handling these values *before* the actual computation of the distribution is not only a performance tweak, but sometimes even a necessity. It is achieved by some simple preliminary considerations:
+
+1. Are all $p_i$ equal?    
+In This case, we have an ordinary binomial distribution. The specified method of computation is then ignored.
+2. Are all of the $p_i \in \{0, 1\} (i = 1, ..., n)$?    
+If one $p_i$ is 1, it is impossible to measure 0 successes. Following the same logic, if two $p_i$ are 1, we cannot observe 0 and 1 successes and so on. In general, a number of $n_1$ values with $p_i = 1$ makes it impossible to measure $0, ..., n_1 - 1$ successes. Likewise, if there are $n_0$ Bernoulli trials with $p_i = 0$, we cannot observe $n - n_0 + 1, ..., n$ successes. This leads us to three cases (the specified method of computation is ignored in any of them):
+    a) All $p_i = 0$: The only observable value is $0$, i.e. $P(X = 0) = 1$ and $P(X \neq 0) = 0$.
+    b) All $p_i = 1$: The only observable value is $n$, i.e. $P(X = n) = 1$ and $P(X \neq n) = 0$.
+    c) All $p_i \in \{0, 1\}$: The only observable value is $n_1$, i.e. $P(X = n_1) = 1$ and $P(X \neq n_1) = 0$.
+3. Are there $p_i \notin \{0, 1\}$?    
+Using the same logic as before, we can only observe an "inner" distribution in the range of $n_1, n_1 + 1, ..., n - n_0$, i.e. $P(X \in \{n_1, ..., n - n_0\}) > 0$ and $P(X < n_1) = P(X > n - n_0) = 0$. As a result, $X$ can be expressed as $X = n_1 + Y$ with $Y \sim PBin(\{p_i|0 < p_i < 1\})$ and $|\{p_i|0 < p_i < 1\}| = n - n_0 - n_1$. Subsequently, the Poisson binomial distribution must only be computed for $Y$.
+
+These cases are illustrated in the following example:
+
+```{r ex}
+library(PoissonBinomial)
+
+# Case 1
+dpbinom(NULL, rep(0.3, 7))
+dbinom(0:7, 7, 0.3)
+# equal results
+
+# Case 2
+dpbinom(NULL, c(0, 0, 0, 0, 0, 0, 0))
+dpbinom(NULL, c(1, 1, 1, 1, 1, 1, 1))
+dpbinom(NULL, c(0, 0, 0, 0, 1, 1, 1))
+
+# Case 3
+dpbinom(NULL, c(0, 0, 0.4, 0.2, 0.8, 0.1, 1), method = "Convolve")
+```
+
+
+## Usage with Rcpp
+
+How to import and use the internal C++ functions in Rcpp based packages is described in a [separate vignette](use_with_rcpp.html).
