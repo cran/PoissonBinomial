@@ -1,3 +1,7 @@
+# PoissonBinomial 1.0.2-1
+
+* Fixes and improvements of the vignettes; no code changes
+
 # PoissonBinomial 1.0.2
 
 * Improvements of C++ helper function "norm_dpb" to achieve better
@@ -11,7 +15,7 @@
 
 # PoissonBinomial 1.0.1
 
-* Fixed a bug in the C++ helper function "norm_dpb" that could cause infinite.
+* Fixed a bug in the C++ helper function "norm_dpb" that could cause infinite
   loops (the function is invisible to the user, since it is only used in the
   C++ domain).
   

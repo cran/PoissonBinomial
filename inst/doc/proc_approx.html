@@ -808,14 +808,14 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb14-11" data-line-number="11"></a>
 <a class="sourceLine" id="cb14-12" data-line-number="12"><span class="kw">microbenchmark</span>(<span class="kw">f1</span>(), <span class="kw">f2</span>(), <span class="kw">f3</span>(), <span class="kw">f4</span>(), <span class="kw">f5</span>(), <span class="kw">f6</span>(), <span class="kw">f7</span>())</a>
 <a class="sourceLine" id="cb14-13" data-line-number="13"><span class="co">#&gt; Unit: microseconds</span></a>
-<a class="sourceLine" id="cb14-14" data-line-number="14"><span class="co">#&gt;  expr      min       lq      mean   median       uq       max neval</span></a>
-<a class="sourceLine" id="cb14-15" data-line-number="15"><span class="co">#&gt;  f1()  501.321  544.131  615.6475  560.792  589.836  4263.176   100</span></a>
-<a class="sourceLine" id="cb14-16" data-line-number="16"><span class="co">#&gt;  f2()  660.018  704.576  778.0638  722.415  757.035  4177.315   100</span></a>
-<a class="sourceLine" id="cb14-17" data-line-number="17"><span class="co">#&gt;  f3() 1084.023 1178.761 1258.5065 1198.548 1226.244  5672.049   100</span></a>
-<a class="sourceLine" id="cb14-18" data-line-number="18"><span class="co">#&gt;  f4() 1113.859 1219.758 1335.2243 1242.285 1278.593  5159.097   100</span></a>
-<a class="sourceLine" id="cb14-19" data-line-number="19"><span class="co">#&gt;  f5() 1224.307 1340.489 1409.5672 1358.452 1394.110  4459.814   100</span></a>
-<a class="sourceLine" id="cb14-20" data-line-number="20"><span class="co">#&gt;  f6() 1241.068 1332.825 1413.3890 1364.168 1391.680  5361.857   100</span></a>
-<a class="sourceLine" id="cb14-21" data-line-number="21"><span class="co">#&gt;  f7() 5503.081 5755.380 6718.8753 5849.787 6154.533 13511.642   100</span></a></code></pre></div>
+<a class="sourceLine" id="cb14-14" data-line-number="14"><span class="co">#&gt;  expr      min        lq      mean   median        uq       max neval</span></a>
+<a class="sourceLine" id="cb14-15" data-line-number="15"><span class="co">#&gt;  f1()  513.363  544.0810  621.0367  554.415  585.3525  4636.997   100</span></a>
+<a class="sourceLine" id="cb14-16" data-line-number="16"><span class="co">#&gt;  f2()  669.025  706.0895  775.2231  728.090  755.5425  4116.651   100</span></a>
+<a class="sourceLine" id="cb14-17" data-line-number="17"><span class="co">#&gt;  f3() 1135.169 1173.4160 1254.6436 1188.981 1220.1285  5616.675   100</span></a>
+<a class="sourceLine" id="cb14-18" data-line-number="18"><span class="co">#&gt;  f4() 1182.978 1219.7075 1346.1717 1245.541 1271.1640  5226.142   100</span></a>
+<a class="sourceLine" id="cb14-19" data-line-number="19"><span class="co">#&gt;  f5() 1260.504 1333.6520 1407.2786 1352.171 1392.0160  4438.365   100</span></a>
+<a class="sourceLine" id="cb14-20" data-line-number="20"><span class="co">#&gt;  f6() 1282.064 1336.0660 1413.6936 1356.259 1386.6005  5288.800   100</span></a>
+<a class="sourceLine" id="cb14-21" data-line-number="21"><span class="co">#&gt;  f7() 5422.841 5789.1185 6825.5557 5952.048 6492.4720 13835.039   100</span></a></code></pre></div>
 <p>Clearly, the NA procedure is the fastest, followed by the RNA method, which needs roughly 30-40% more time, and the PA, AMBA and GMBA approaches that need almost twice as long as the NA algorithm. AMBA, GMBA-A and GMBA-B procedures exhibit almost equal mean execution speed, with the AMBA algorithm being slightly faster. All of the approximation procedures outperform the fastest exact approach, DC-FFT, by far. Even the slowest approximate algorithm is around 4x as fast as DC-FFT.</p>
 </div>
 

@@ -239,19 +239,19 @@ NumericVector ppb_rf(IntegerVector obs, NumericVector probs);               // C
 
 // Arithmetic Mean Binomial Approximation (AMBA)
 NumericVector dpb_mean(IntegerVector obs, NumericVector probs);             // PMF
-NumericVector dpb_mean(IntegerVector obs, NumericVector probs);             // CDF
+NumericVector ppb_mean(IntegerVector obs, NumericVector probs);             // CDF
 
 // Geometric Mean Binomial Approximations (GMBA)
 NumericVector dpb_gmba(IntegerVector obs, NumericVector probs, bool anti);  // PMF
-NumericVector dpb_gmba(IntegerVector obs, NumericVector probs, bool anti);  // CDF
+NumericVector ppb_gmba(IntegerVector obs, NumericVector probs, bool anti);  // CDF
 
 // Poisson Approximation (PA)
 NumericVector dpb_pa(IntegerVector obs, NumericVector probs);               // PMF
-NumericVector dpb_pa(IntegerVector obs, NumericVector probs);               // CDF
+NumericVector ppb_pa(IntegerVector obs, NumericVector probs);               // CDF
 
 // Normal Approximations (NA, RNA)
 NumericVector dpb_na(IntegerVector obs, NumericVector probs, bool refined); // PMF
-NumericVector dpb_na(IntegerVector obs, NumericVector probs, bool refined); // CDF</code></pre>
+NumericVector ppb_na(IntegerVector obs, NumericVector probs, bool refined); // CDF</code></pre>
 <div id="making-the-functions-usable" class="section level2">
 <h2>Making the functions usable</h2>
 <p>There are only a few simple steps to follow:</p>
