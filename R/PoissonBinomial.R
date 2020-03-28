@@ -1,11 +1,11 @@
-#'@name Poisson-Binomial-package
+#'@name PoissonBinomial-package
 #'
-#'@title Exact and Approximate Implementations for Computing the Poisson Binomial Distribution
+#'@title Efficient Exact and Approximate Implementations for Computing Ordinary and Generalized Poisson Binomial Distributions
 #'
 #'@description
 #'This package implements various algorithms for computing the probability mass
-#'function the cumulative distribution function, quantiles and random numbers
-#'of the Poisson binomial distribution.
+#'function, the cumulative distribution function, quantiles and random numbers
+#'of both ordinary and generalized Poisson binomial distributions.
 #'
 #'@docType package
 #'@import Rcpp
@@ -24,11 +24,30 @@
 #'    216–222. doi: \href{https://doi.org/10.1016/j.csda.2018.01.007}{
 #'    10.1016/j.csda.2018.01.007}
 #'    
+#'Zhang, M., Hong, Y. and Balakrishnan, N. (2018). The generalized 
+#'    Poisson-binomial distribution and the computation of its distribution
+#'    function. \emph{Journal of Statistical Computational and Simulation},
+#'    \strong{88}(8), pp. 1515-1527. doi:
+#'    \href{https://doi.org/10.1080/00949655.2018.1440294}{
+#'    10.1080/00949655.2018.1440294}
+#'    
 #'@examples
+#'# Functions for ordinary Poisson binomial distributions
 #'set.seed(1)
-#'pp <- c(0, 0, runif(995), 1, 1, 1)
+#'pp <- c(1, 0, runif(10), 1, 0, 1)
+#'qq <- seq(0, 1, 0.01)
+#'
 #'dpbinom(NULL, pp)
-#'ppbinom(450:550, pp, method = "DivideFFT")
-#'qpbinom(pp, pp, method = "Convolve")
+#'ppbinom(7:10, pp, method = "DivideFFT")
+#'qpbinom(qq, pp, method = "Convolve")
 #'rpbinom(10, pp, method = "RefinedNormal")
-"_PACKAGE"
+#'
+#'# Functions for generalized Poisson binomial distributions
+#'va <- rep(5, length(pp))
+#'vb <- 1:length(pp)
+#'
+#'dgpbinom(NULL, pp, va, vb, method = "Convolve")
+#'pgpbinom(80:100, pp, va, vb, method = "Convolve")
+#'qgpbinom(qq, pp, va, vb, method = "Convolve")
+#'rgpbinom(100, pp, va, vb, method = "Convolve")
+NULL

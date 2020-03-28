@@ -1,6 +1,15 @@
+# PoissonBinomial 1.1
+
+* Added exact and approximate algorithms for the generalized Poisson binomial
+  distribution described in Zhang, Hong & Balakrishnan (2018). The
+  non-generalized distribution is now referred to as the 'ordinary' Poisson
+  binomial distribution.
+* Restructured vignettes. Added tables of content and fixed smaller issues.
+* Minor bug fixes for `dbinom`, `ppbinom` and `qpbinom` functions.
+
 # PoissonBinomial 1.0.2-1
 
-* Fixes and improvements of the vignettes; no code changes
+* Fixes and improvements of the vignettes; no code changes.
 
 # PoissonBinomial 1.0.2
 

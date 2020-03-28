@@ -234,7 +234,7 @@ namespace PoissonBinomial {
         return Rcpp::as<NumericVector >(rcpp_result_gen);
     }
 
-    inline NumericVector dpb_gmba(IntegerVector obs, NumericVector probs, bool anti) {
+    inline NumericVector dpb_gmba(IntegerVector obs, NumericVector probs, bool anti = false) {
         typedef SEXP(*Ptr_dpb_gmba)(SEXP,SEXP,SEXP);
         static Ptr_dpb_gmba p_dpb_gmba = NULL;
         if (p_dpb_gmba == NULL) {
@@ -255,7 +255,7 @@ namespace PoissonBinomial {
         return Rcpp::as<NumericVector >(rcpp_result_gen);
     }
 
-    inline NumericVector ppb_gmba(IntegerVector obs, NumericVector probs, bool anti) {
+    inline NumericVector ppb_gmba(IntegerVector obs, NumericVector probs, bool anti = false) {
         typedef SEXP(*Ptr_ppb_gmba)(SEXP,SEXP,SEXP);
         static Ptr_ppb_gmba p_ppb_gmba = NULL;
         if (p_ppb_gmba == NULL) {
@@ -318,7 +318,7 @@ namespace PoissonBinomial {
         return Rcpp::as<NumericVector >(rcpp_result_gen);
     }
 
-    inline NumericVector dpb_na(IntegerVector obs, NumericVector probs, bool refined) {
+    inline NumericVector dpb_na(IntegerVector obs, NumericVector probs, bool refined = true) {
         typedef SEXP(*Ptr_dpb_na)(SEXP,SEXP,SEXP);
         static Ptr_dpb_na p_dpb_na = NULL;
         if (p_dpb_na == NULL) {
@@ -339,7 +339,7 @@ namespace PoissonBinomial {
         return Rcpp::as<NumericVector >(rcpp_result_gen);
     }
 
-    inline NumericVector ppb_na(IntegerVector obs, NumericVector probs, bool refined) {
+    inline NumericVector ppb_na(IntegerVector obs, NumericVector probs, bool refined = true) {
         typedef SEXP(*Ptr_ppb_na)(SEXP,SEXP,SEXP);
         static Ptr_ppb_na p_ppb_na = NULL;
         if (p_ppb_na == NULL) {
@@ -350,6 +350,174 @@ namespace PoissonBinomial {
         {
             RNGScope RCPP_rngScope_gen;
             rcpp_result_gen = p_ppb_na(Shield<SEXP>(Rcpp::wrap(obs)), Shield<SEXP>(Rcpp::wrap(probs)), Shield<SEXP>(Rcpp::wrap(refined)));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<NumericVector >(rcpp_result_gen);
+    }
+
+    inline NumericVector dgpb_conv(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q) {
+        typedef SEXP(*Ptr_dgpb_conv)(SEXP,SEXP,SEXP,SEXP);
+        static Ptr_dgpb_conv p_dgpb_conv = NULL;
+        if (p_dgpb_conv == NULL) {
+            validateSignature("NumericVector(*dgpb_conv)(IntegerVector,NumericVector,NumericVector,NumericVector)");
+            p_dgpb_conv = (Ptr_dgpb_conv)R_GetCCallable("PoissonBinomial", "_PoissonBinomial_dgpb_conv");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_dgpb_conv(Shield<SEXP>(Rcpp::wrap(obs)), Shield<SEXP>(Rcpp::wrap(probs)), Shield<SEXP>(Rcpp::wrap(val_p)), Shield<SEXP>(Rcpp::wrap(val_q)));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<NumericVector >(rcpp_result_gen);
+    }
+
+    inline NumericVector pgpb_conv(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q) {
+        typedef SEXP(*Ptr_pgpb_conv)(SEXP,SEXP,SEXP,SEXP);
+        static Ptr_pgpb_conv p_pgpb_conv = NULL;
+        if (p_pgpb_conv == NULL) {
+            validateSignature("NumericVector(*pgpb_conv)(IntegerVector,NumericVector,NumericVector,NumericVector)");
+            p_pgpb_conv = (Ptr_pgpb_conv)R_GetCCallable("PoissonBinomial", "_PoissonBinomial_pgpb_conv");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_pgpb_conv(Shield<SEXP>(Rcpp::wrap(obs)), Shield<SEXP>(Rcpp::wrap(probs)), Shield<SEXP>(Rcpp::wrap(val_p)), Shield<SEXP>(Rcpp::wrap(val_q)));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<NumericVector >(rcpp_result_gen);
+    }
+
+    inline NumericVector dgpb_dc(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q) {
+        typedef SEXP(*Ptr_dgpb_dc)(SEXP,SEXP,SEXP,SEXP);
+        static Ptr_dgpb_dc p_dgpb_dc = NULL;
+        if (p_dgpb_dc == NULL) {
+            validateSignature("NumericVector(*dgpb_dc)(IntegerVector,NumericVector,NumericVector,NumericVector)");
+            p_dgpb_dc = (Ptr_dgpb_dc)R_GetCCallable("PoissonBinomial", "_PoissonBinomial_dgpb_dc");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_dgpb_dc(Shield<SEXP>(Rcpp::wrap(obs)), Shield<SEXP>(Rcpp::wrap(probs)), Shield<SEXP>(Rcpp::wrap(val_p)), Shield<SEXP>(Rcpp::wrap(val_q)));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<NumericVector >(rcpp_result_gen);
+    }
+
+    inline NumericVector pgpb_dc(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q) {
+        typedef SEXP(*Ptr_pgpb_dc)(SEXP,SEXP,SEXP,SEXP);
+        static Ptr_pgpb_dc p_pgpb_dc = NULL;
+        if (p_pgpb_dc == NULL) {
+            validateSignature("NumericVector(*pgpb_dc)(IntegerVector,NumericVector,NumericVector,NumericVector)");
+            p_pgpb_dc = (Ptr_pgpb_dc)R_GetCCallable("PoissonBinomial", "_PoissonBinomial_pgpb_dc");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_pgpb_dc(Shield<SEXP>(Rcpp::wrap(obs)), Shield<SEXP>(Rcpp::wrap(probs)), Shield<SEXP>(Rcpp::wrap(val_p)), Shield<SEXP>(Rcpp::wrap(val_q)));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<NumericVector >(rcpp_result_gen);
+    }
+
+    inline NumericVector dgpb_dftcf(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q) {
+        typedef SEXP(*Ptr_dgpb_dftcf)(SEXP,SEXP,SEXP,SEXP);
+        static Ptr_dgpb_dftcf p_dgpb_dftcf = NULL;
+        if (p_dgpb_dftcf == NULL) {
+            validateSignature("NumericVector(*dgpb_dftcf)(IntegerVector,NumericVector,NumericVector,NumericVector)");
+            p_dgpb_dftcf = (Ptr_dgpb_dftcf)R_GetCCallable("PoissonBinomial", "_PoissonBinomial_dgpb_dftcf");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_dgpb_dftcf(Shield<SEXP>(Rcpp::wrap(obs)), Shield<SEXP>(Rcpp::wrap(probs)), Shield<SEXP>(Rcpp::wrap(val_p)), Shield<SEXP>(Rcpp::wrap(val_q)));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<NumericVector >(rcpp_result_gen);
+    }
+
+    inline NumericVector pgpb_dftcf(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q) {
+        typedef SEXP(*Ptr_pgpb_dftcf)(SEXP,SEXP,SEXP,SEXP);
+        static Ptr_pgpb_dftcf p_pgpb_dftcf = NULL;
+        if (p_pgpb_dftcf == NULL) {
+            validateSignature("NumericVector(*pgpb_dftcf)(IntegerVector,NumericVector,NumericVector,NumericVector)");
+            p_pgpb_dftcf = (Ptr_pgpb_dftcf)R_GetCCallable("PoissonBinomial", "_PoissonBinomial_pgpb_dftcf");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_pgpb_dftcf(Shield<SEXP>(Rcpp::wrap(obs)), Shield<SEXP>(Rcpp::wrap(probs)), Shield<SEXP>(Rcpp::wrap(val_p)), Shield<SEXP>(Rcpp::wrap(val_q)));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<NumericVector >(rcpp_result_gen);
+    }
+
+    inline NumericVector dgpb_na(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q, bool refined = true) {
+        typedef SEXP(*Ptr_dgpb_na)(SEXP,SEXP,SEXP,SEXP,SEXP);
+        static Ptr_dgpb_na p_dgpb_na = NULL;
+        if (p_dgpb_na == NULL) {
+            validateSignature("NumericVector(*dgpb_na)(IntegerVector,NumericVector,NumericVector,NumericVector,bool)");
+            p_dgpb_na = (Ptr_dgpb_na)R_GetCCallable("PoissonBinomial", "_PoissonBinomial_dgpb_na");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_dgpb_na(Shield<SEXP>(Rcpp::wrap(obs)), Shield<SEXP>(Rcpp::wrap(probs)), Shield<SEXP>(Rcpp::wrap(val_p)), Shield<SEXP>(Rcpp::wrap(val_q)), Shield<SEXP>(Rcpp::wrap(refined)));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<NumericVector >(rcpp_result_gen);
+    }
+
+    inline NumericVector pgpb_na(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q, bool refined = true) {
+        typedef SEXP(*Ptr_pgpb_na)(SEXP,SEXP,SEXP,SEXP,SEXP);
+        static Ptr_pgpb_na p_pgpb_na = NULL;
+        if (p_pgpb_na == NULL) {
+            validateSignature("NumericVector(*pgpb_na)(IntegerVector,NumericVector,NumericVector,NumericVector,bool)");
+            p_pgpb_na = (Ptr_pgpb_na)R_GetCCallable("PoissonBinomial", "_PoissonBinomial_pgpb_na");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_pgpb_na(Shield<SEXP>(Rcpp::wrap(obs)), Shield<SEXP>(Rcpp::wrap(probs)), Shield<SEXP>(Rcpp::wrap(val_p)), Shield<SEXP>(Rcpp::wrap(val_q)), Shield<SEXP>(Rcpp::wrap(refined)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();

@@ -1,4 +1,4 @@
-#'@name Poisson-Binomial-Distribution
+#'@name PoissonBinomial-Distribution
 #'
 #'@importFrom stats dbinom pbinom runif
 #'
@@ -33,7 +33,7 @@
 #'@details
 #'See the references for computational details. The \emph{Divide and Conquer}
 #'(\code{"DivideFFT"}) and \emph{Direct Convolution} (\code{"Convolve"})
-#'algorithms are derived and described in Biscarri et al. (2018). The 
+#'algorithms are derived and described in Biscarri, Zhao & Brunner (2018). The
 #'\emph{Discrete Fourier Transformation of the Characteristic Function}
 #'(\code{"Characteristic"}), the \emph{Recursive Formula} (\code{"Recursive"}),
 #'the \emph{Poisson Approximation} (\code{"Poisson"}), the
@@ -50,19 +50,10 @@
 #'respectively.
 #'
 #'In some special cases regarding the values of \code{probs}, the \code{method}
-#'parameter is ignored.
-#'\describe{
-#'  \item{All values are 0 or 1:}{The Distribution is not random can can only
-#'        attain one value, which is the number of ones, \eqn{n_1}.}
-#'  \item{Only one value is different from 0 or 1:}{The Distribution
-#'        essentially is a Bernoulli Distribution and can only attain \eqn{n_1}
-#'        or \eqn{n_1 + 1}.}
-#'  \item{All values are equal:}{The Distribution is an ordinary Binomial
-#'        Distribution.}
-#'}
+#'parameter is ignored (see Introduction vignette).
 #'
 #'@return
-#'\code{dpbinom} gives the density, \code{ppbinom} gives the distribution
+#'\code{dpbinom} gives the density, \code{ppbinom} computes the distribution
 #'function, \code{qpbinom} gives the quantile function and \code{rpbinom}
 #'generates random deviates.
 #'
@@ -136,9 +127,7 @@
 #'ppbinom(450:550, pp, method = "RefinedNormal")
 #'qpbinom(qq, pp, method = "RefinedNormal")
 #'rpbinom(100, pp, method = "RefinedNormal")
-NULL
-
-#'@rdname Poisson-Binomial-Distribution
+#'
 #'@export
 dpbinom <- function(x, probs, wts = NULL, method = "DivideFFT", log = FALSE){
   ## preliminary checks
@@ -210,7 +199,7 @@ dpbinom <- function(x, probs, wts = NULL, method = "DivideFFT", log = FALSE){
   }else{
     if(all(probs == probs[1])){
       # all values of 'probs' are equal, i.e. a standard binomial distribution
-      if(length(idx.y)) d[idx.x][idx.y] <- dbinom(z, np, probs)
+      if(length(idx.y)) d[idx.x][idx.y] <- dbinom(z, np, probs[1])
     }else{
       # otherwise, compute distribution according to 'method'
       if(length(idx.y)) d[idx.x][idx.y] <- switch(method, DivideFFT = dpb_dc(z, probs),
@@ -226,11 +215,14 @@ dpbinom <- function(x, probs, wts = NULL, method = "DivideFFT", log = FALSE){
     }
   }
   
+  # logarithm, if required
+  if(log) d <- log(d)
+  
   # return results
   return(d)
 }
 
-#'@rdname Poisson-Binomial-Distribution
+#'@rdname PoissonBinomial-Distribution
 #'@export
 ppbinom <- function(x, probs, wts = NULL, method = "DivideFFT", lower.tail = TRUE, log.p = FALSE){
   ## preliminary checks
@@ -334,7 +326,7 @@ ppbinom <- function(x, probs, wts = NULL, method = "DivideFFT", lower.tail = TRU
   return(d)
 }
 
-#'@rdname Poisson-Binomial-Distribution
+#'@rdname PoissonBinomial-Distribution
 #'@export
 qpbinom <- function(p, probs, wts = NULL, method = "DivideFFT", lower.tail = TRUE, log.p = FALSE){
   ## preliminary checks
@@ -353,13 +345,13 @@ qpbinom <- function(p, probs, wts = NULL, method = "DivideFFT", lower.tail = TRU
   ## compute probabilities (does checking for the other variables)
   cdf <- ppbinom(NULL, probs, wts, method, lower.tail)
   # limit to first appearance of 1
-  idx1 <- which(cdf == 1)
-  idx0 <- which(cdf == 0)
-  if(lower.tail && length(idx1)){
-    cdf <- cdf[1:min(idx1)]
-  }else if(!lower.tail && length(idx0)){
-    cdf <- cdf[1:min(idx0)]
-  }
+  #idx1 <- which(cdf == 1)
+  #idx0 <- which(cdf == 0)
+  #if(lower.tail && length(idx1)){
+  #  cdf <- cdf[1:min(idx1)]
+  #}else if(!lower.tail && length(idx0)){
+  #  cdf <- cdf[1:min(idx0)]
+  #}
   
   # size of distribution
   size <- length(probs)
@@ -382,41 +374,35 @@ qpbinom <- function(p, probs, wts = NULL, method = "DivideFFT", lower.tail = TRU
       # identify positions of the current probability
       idx <- which(p == pr)
       # find the cdf value greater than current 'pr' value
-      while(cdf[pos] <= pr && pos < len) pos <- pos + 1L
+      while(pos < len && cdf[pos] <= pr) pos <- pos + 1L
       # save respective observation (-1 because position k is for observation k - 1)
       res[idx] <- pos - 1L
     }
     idx <- which(p == 0)
-    if(length(idx)) res[idx] <- length(which(probs == 1))
+    if(length(idx)) res[idx] <- sum(probs == 1)
     idx <- which(p == 1)
-    if(length(idx)){
-      res[idx] <- size - length(which(probs == 0))
-      if(method %in% c("Poisson", "Normal", "RefinedNormal")) res[idx] <- min(size, res[idx] + 1)
-    }
+    if(length(idx)) res[idx] <- size - length(which(probs == 0))
   }else{
     # considering only the unique values in 'p' and sorting them saves time
     for(pr in sort(unique(p[p > 0 & p < 1]), decreasing = TRUE)){
       # identify positions of the current probability
       idx <- which(p == pr)
       # find the cdf value smaller than or equal to current 'pr' value
-      while(cdf[pos] >= pr && pos < len) pos <- pos + 1L
+      while(pos < len && cdf[pos] >= pr) pos <- pos + 1L
       # save respective observation (-1 because position k is for observation k - 1)
       res[idx] <- pos - 1L
     }
     idx <- which(p == 1)
-    if(length(idx)) res[idx] <- length(which(probs == 1))
+    if(length(idx)) res[idx] <- sum(probs == 1)
     idx <- which(p == 0)
-    if(length(idx)){
-      res[idx] <- size - length(which(probs == 0))
-      if(method %in% c("Poisson", "Normal", "RefinedNormal")) res[idx] <- min(size, res[idx] + 1)
-    }
+    if(length(idx)) res[idx] <- size - length(which(probs == 0))
   }
   
   # return results
   return(res)
 }
 
-#'@rdname Poisson-Binomial-Distribution
+#'@rdname PoissonBinomial-Distribution
 #'@export
 rpbinom <- function(n, probs, wts = NULL, method = "DivideFFT"){
   len <- length(n)

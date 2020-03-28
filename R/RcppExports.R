@@ -44,11 +44,11 @@ ppb_mean <- function(obs, probs) {
     .Call(`_PoissonBinomial_ppb_mean`, obs, probs)
 }
 
-dpb_gmba <- function(obs, probs, anti) {
+dpb_gmba <- function(obs, probs, anti = FALSE) {
     .Call(`_PoissonBinomial_dpb_gmba`, obs, probs, anti)
 }
 
-ppb_gmba <- function(obs, probs, anti) {
+ppb_gmba <- function(obs, probs, anti = FALSE) {
     .Call(`_PoissonBinomial_ppb_gmba`, obs, probs, anti)
 }
 
@@ -60,12 +60,44 @@ ppb_pa <- function(obs, probs) {
     .Call(`_PoissonBinomial_ppb_pa`, obs, probs)
 }
 
-dpb_na <- function(obs, probs, refined) {
+dpb_na <- function(obs, probs, refined = TRUE) {
     .Call(`_PoissonBinomial_dpb_na`, obs, probs, refined)
 }
 
-ppb_na <- function(obs, probs, refined) {
+ppb_na <- function(obs, probs, refined = TRUE) {
     .Call(`_PoissonBinomial_ppb_na`, obs, probs, refined)
+}
+
+dgpb_conv <- function(obs, probs, val_p, val_q) {
+    .Call(`_PoissonBinomial_dgpb_conv`, obs, probs, val_p, val_q)
+}
+
+pgpb_conv <- function(obs, probs, val_p, val_q) {
+    .Call(`_PoissonBinomial_pgpb_conv`, obs, probs, val_p, val_q)
+}
+
+dgpb_dc <- function(obs, probs, val_p, val_q) {
+    .Call(`_PoissonBinomial_dgpb_dc`, obs, probs, val_p, val_q)
+}
+
+pgpb_dc <- function(obs, probs, val_p, val_q) {
+    .Call(`_PoissonBinomial_pgpb_dc`, obs, probs, val_p, val_q)
+}
+
+dgpb_dftcf <- function(obs, probs, val_p, val_q) {
+    .Call(`_PoissonBinomial_dgpb_dftcf`, obs, probs, val_p, val_q)
+}
+
+pgpb_dftcf <- function(obs, probs, val_p, val_q) {
+    .Call(`_PoissonBinomial_pgpb_dftcf`, obs, probs, val_p, val_q)
+}
+
+dgpb_na <- function(obs, probs, val_p, val_q, refined = TRUE) {
+    .Call(`_PoissonBinomial_dgpb_na`, obs, probs, val_p, val_q, refined)
+}
+
+pgpb_na <- function(obs, probs, val_p, val_q, refined = TRUE) {
+    .Call(`_PoissonBinomial_pgpb_na`, obs, probs, val_p, val_q, refined)
 }
 
 # Register entry points for exported C++ functions

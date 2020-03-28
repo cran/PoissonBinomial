@@ -1,6 +1,8 @@
 ---
 title: "Approximate Procedures"
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_vignette:
+    toc: yes
 vignette: >
   %\VignetteIndexEntry{Approximate Procedures}
   %\VignetteEngine{knitr::rmarkdown}
@@ -14,11 +16,13 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, echo = FALSE}
 library(PoissonBinomial)
 ```
 
-## Poisson Approximation
+## Ordinary Poisson Binomial Distribution
+
+### Poisson Approximation
 
 The *Poisson Approximation* (DC) approach is requested with `method = "Poisson"`. It is based on a Poisson distribution, whose parameter is the sum of the probabilities of success.
 
@@ -49,8 +53,7 @@ dpbinom(NULL, pp)
 summary(dpbinom(NULL, pp, method = "Poisson") - dpbinom(NULL, pp))
 ```
 
-
-## Arithmetic Mean Binomial Approximation
+### Arithmetic Mean Binomial Approximation
 
 The *Arithmetic Mean Binomial Approximation* (AMBA) approach is requested with `method = "Mean"`. It is based on a Binomial distribution, whose parameter is the arithmetic mean of the probabilities of success.
 
@@ -88,8 +91,7 @@ dpbinom(NULL, pp)
 summary(dpbinom(NULL, pp, method = "Mean") - dpbinom(NULL, pp))
 ```
 
-
-## Geometric Mean Binomial Approximation - Variant A
+### Geometric Mean Binomial Approximation - Variant A
 
 The *Geometric Mean Binomial Approximation (Variant A)* (GMBA-A) approach is requested with `method = "GeoMean"`. It is based on a Binomial distribution, whose parameter is the geometric mean of the probabilities of success:
 $$\hat{p} = \sqrt[n]{p_1 \cdot ... \cdot p_n}$$
@@ -128,8 +130,7 @@ dpbinom(NULL, pp)
 summary(dpbinom(NULL, pp, method = "GeoMean") - dpbinom(NULL, pp))
 ```
 
-
-## Geometric Mean Binomial Approximation - Variant B
+### Geometric Mean Binomial Approximation - Variant B
 
 The *Geometric Mean Binomial Approximation (Variant B)* (GMBA-B) approach is requested with `method = "GeoMeanCounter"`. It is based on a Binomial distribution, whose parameter is 1 minus the geometric mean of the probabilities of **failure**:
 $$\hat{p} = 1 - \sqrt[n]{(1 - p_1) \cdot ... \cdot (1 - p_n)}$$
@@ -168,16 +169,14 @@ dpbinom(NULL, pp)
 summary(dpbinom(NULL, pp, method = "GeoMeanCounter") - dpbinom(NULL, pp))
 ```
 
-
-## Normal Approximation
+### Normal Approximation
 
 The *Normal Approximation* (NA) approach is requested with `method = "Normal"`. It is based on a Normal distribution, whose parameters are derived from the theoretical mean and variance of the input probabilities of success.
 
-```{r na1}
+```{r na1-ord}
 set.seed(1)
 pp <- runif(10)
 wt <- sample(1:10, 10, TRUE)
-mean(rep(pp, wt))
 
 dpbinom(NULL, pp, wt, "Normal")
 ppbinom(NULL, pp, wt, "Normal")
@@ -185,7 +184,7 @@ ppbinom(NULL, pp, wt, "Normal")
 
 A comparison with exact computation shows that the approximation quality of the NA procedure increases with larger numbers of probabilities of success:
 
-```{r na2}
+```{r na2-ord}
 set.seed(1)
 
 # 10 random probabilities of success
@@ -210,16 +209,14 @@ idx <- which(dpn != 0 & dpd != 0)
 summary((dpn - dpd)[idx])
 ```
 
-
-## Refined Normal Approximation
+### Refined Normal Approximation
 
 The *Refined Normal Approximation* (RNA) approach is requested with `method = "RefinedNormal"`. It is based on a Normal distribution, whose parameters are derived from the theoretical mean, variance and skewness of the input probabilities of success.
 
-```{r rna1}
+```{r rna1-ord}
 set.seed(1)
 pp <- runif(10)
 wt <- sample(1:10, 10, TRUE)
-mean(rep(pp, wt))
 
 dpbinom(NULL, pp, wt, "RefinedNormal")
 ppbinom(NULL, pp, wt, "RefinedNormal")
@@ -227,7 +224,7 @@ ppbinom(NULL, pp, wt, "RefinedNormal")
 
 A comparison with exact computation shows that the approximation quality of the RNA procedure increases with larger numbers of probabilities of success:
 
-```{r rna2}
+```{r rna2-ord}
 set.seed(1)
 
 # 10 random probabilities of success
@@ -252,12 +249,11 @@ idx <- which(dpn != 0 & dpd != 0)
 summary((dpn - dpd)[idx])
 ```
 
+### Processing Speed Comparisons
 
-## Performance Comparisons
+To assess the performance of the approximation procedures, we use the `microbenchmark` package. Each algorithm has to calculate the PMF repeatedly based on random probability vectors. The run times are then summarized in a table that presents, among other statistics, their minima, maxima and means. The following results were recorded on an AMD Ryzen 7 1800X with 32 GiB of RAM and Ubuntu 18.04.4 (running inside a VirtualBox VM; the host system is Windows 10 Education).
 
-To assess the performance of the approximation procedures, we use the `microbenchmark` package. Each algorithm has to calculate the PMF repeatedly based on random probability vectors. The run times are then summarized in a table that presents, among other statistics, their minima, maxima and means. The following results were recorded on an AMD Ryzen 7 1800X with 32 GiB of RAM and Ubuntu 18.04.3 (running inside a VirtualBox VM; the host system is Windows 10 Education).
-
-```{r benchmark}
+```{r benchmark-ord}
 library(microbenchmark)
 set.seed(1)
 
@@ -273,3 +269,121 @@ microbenchmark(f1(), f2(), f3(), f4(), f5(), f6(), f7())
 ```
 
 Clearly, the NA procedure is the fastest, followed by the RNA method, which needs roughly 30-40% more time, and the PA, AMBA and GMBA approaches that need almost twice as long as the NA algorithm. AMBA, GMBA-A and GMBA-B procedures exhibit almost equal mean execution speed, with the AMBA algorithm being slightly faster. All of the approximation procedures outperform the fastest exact approach, DC-FFT, by far. Even the slowest approximate algorithm is around 4x as fast as DC-FFT.
+
+
+## Generalized Poisson Binomial Distribution
+
+### Generalized Normal Approximation
+
+The *Generalized Normal Approximation* (G-NA) approach is requested with `method = "Normal"`. It is based on a Normal distribution, whose parameters are derived from the theoretical mean and variance of the input probabilities of success (see [Introduction](intro.html).
+
+```{r na1-gen}
+set.seed(2)
+pp <- runif(10)
+wt <- sample(1:10, 10, TRUE)
+va <- sample(0:10, 10, TRUE)
+vb <- sample(0:10, 10, TRUE)
+
+dgpbinom(NULL, pp, va, vb, wt, "Normal")
+pgpbinom(NULL, pp, va, vb, wt, "Normal")
+```
+
+A comparison with exact computation shows that the approximation quality of the NA procedure increases with larger numbers of probabilities of success:
+
+```{r na2-gen}
+set.seed(2)
+
+# 10 random probabilities of success
+pp <- runif(10)
+va <- sample(0:10, 10, TRUE)
+vb <- sample(0:10, 10, TRUE)
+dpn <- dgpbinom(NULL, pp, va, vb, method = "Normal")
+dpd <- dgpbinom(NULL, pp, va, vb)
+idx <- which(dpn != 0 & dpd != 0)
+summary((dpn - dpd)[idx])
+
+# 100 random probabilities of success
+pp <- runif(100)
+va <- sample(0:100, 100, TRUE)
+vb <- sample(0:100, 100, TRUE)
+dpn <- dgpbinom(NULL, pp, va, vb, method = "Normal")
+dpd <- dgpbinom(NULL, pp, va, vb)
+idx <- which(dpn != 0 & dpd != 0)
+summary((dpn - dpd)[idx])
+
+# 1000 random probabilities of success
+pp <- runif(1000)
+va <- sample(0:1000, 1000, TRUE)
+vb <- sample(0:1000, 1000, TRUE)
+dpn <- dgpbinom(NULL, pp, va, vb, method = "Normal")
+dpd <- dgpbinom(NULL, pp, va, vb)
+idx <- which(dpn != 0 & dpd != 0)
+summary((dpn - dpd)[idx])
+```
+
+### Generalized Refined Normal Approximation
+
+The *Generalized Refined Normal Approximation* (G-RNA) approach is requested with `method = "RefinedNormal"`. It is based on a Normal distribution, whose parameters are derived from the theoretical mean, variance and skewness of the input probabilities of success.
+
+```{r rna1-gen}
+set.seed(2)
+pp <- runif(10)
+wt <- sample(1:10, 10, TRUE)
+va <- sample(0:10, 10, TRUE)
+vb <- sample(0:10, 10, TRUE)
+dgpbinom(NULL, pp, va, vb, wt, "RefinedNormal")
+pgpbinom(NULL, pp, va, vb, wt, "RefinedNormal")
+```
+
+A comparison with exact computation shows that the approximation quality of the RNA procedure increases with larger numbers of probabilities of success:
+
+```{r rna2-gen}
+set.seed(2)
+
+# 10 random probabilities of success
+pp <- runif(10)
+va <- sample(0:10, 10, TRUE)
+vb <- sample(0:10, 10, TRUE)
+dpn <- dgpbinom(NULL, pp, va, vb, method = "RefinedNormal")
+dpd <- dgpbinom(NULL, pp, va, vb)
+idx <- which(dpn != 0 & dpd != 0)
+summary((dpn - dpd)[idx])
+
+# 100 random probabilities of success
+pp <- runif(100)
+va <- sample(0:100, 100, TRUE)
+vb <- sample(0:100, 100, TRUE)
+dpn <- dgpbinom(NULL, pp, va, vb, method = "RefinedNormal")
+dpd <- dgpbinom(NULL, pp, va, vb)
+idx <- which(dpn != 0 & dpd != 0)
+summary((dpn - dpd)[idx])
+
+# 1000 random probabilities of success
+pp <- runif(1000)
+va <- sample(0:1000, 1000, TRUE)
+vb <- sample(0:1000, 1000, TRUE)
+dpn <- dgpbinom(NULL, pp, va, vb, method = "RefinedNormal")
+dpd <- dgpbinom(NULL, pp, va, vb)
+idx <- which(dpn != 0 & dpd != 0)
+summary((dpn - dpd)[idx])
+```
+
+### Processing Speed Comparisons
+
+To assess the performance of the approximation procedures, we use the `microbenchmark` package. Each algorithm has to calculate the PMF repeatedly based on random probability vectors. The run times are then summarized in a table that presents, among other statistics, their minima, maxima and means. The following results were recorded on an AMD Ryzen 7 1800X with 32 GiB of RAM and Ubuntu 18.04.4 (running inside a VirtualBox VM; the host system is Windows 10 Education).
+
+```{r benchmark-gen}
+library(microbenchmark)
+n <- 200
+set.seed(2)
+va <- sample(1:n, n, FALSE)
+vb <- sample(1:n, n, FALSE)
+
+f1 <- function() dgpbinom(NULL, runif(n), va, vb, method = "Normal")
+f2 <- function() dgpbinom(NULL, runif(n), va, vb, method = "RefinedNormal")
+f3 <- function() dgpbinom(NULL, runif(n), va, vb, method = "DivideFFT")
+
+microbenchmark(f1(), f2(), f3())
+```
+
+Clearly, the G-NA procedure is the fastest, followed by the G-RNA method, which needs roughly 20-30% more time. But even the slowest approximate algorithm is around ten times as fast as G-DC-FFT.

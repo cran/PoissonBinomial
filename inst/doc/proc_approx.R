@@ -4,7 +4,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-## ----setup--------------------------------------------------------------------
+## ----setup, echo = FALSE------------------------------------------------------
 library(PoissonBinomial)
 
 ## ----pa1----------------------------------------------------------------------
@@ -120,16 +120,15 @@ dpbinom(NULL, pp, method = "GeoMeanCounter")
 dpbinom(NULL, pp)
 summary(dpbinom(NULL, pp, method = "GeoMeanCounter") - dpbinom(NULL, pp))
 
-## ----na1----------------------------------------------------------------------
+## ----na1-ord------------------------------------------------------------------
 set.seed(1)
 pp <- runif(10)
 wt <- sample(1:10, 10, TRUE)
-mean(rep(pp, wt))
 
 dpbinom(NULL, pp, wt, "Normal")
 ppbinom(NULL, pp, wt, "Normal")
 
-## ----na2----------------------------------------------------------------------
+## ----na2-ord------------------------------------------------------------------
 set.seed(1)
 
 # 10 random probabilities of success
@@ -153,16 +152,15 @@ dpd <- dpbinom(NULL, pp)
 idx <- which(dpn != 0 & dpd != 0)
 summary((dpn - dpd)[idx])
 
-## ----rna1---------------------------------------------------------------------
+## ----rna1-ord-----------------------------------------------------------------
 set.seed(1)
 pp <- runif(10)
 wt <- sample(1:10, 10, TRUE)
-mean(rep(pp, wt))
 
 dpbinom(NULL, pp, wt, "RefinedNormal")
 ppbinom(NULL, pp, wt, "RefinedNormal")
 
-## ----rna2---------------------------------------------------------------------
+## ----rna2-ord-----------------------------------------------------------------
 set.seed(1)
 
 # 10 random probabilities of success
@@ -186,7 +184,7 @@ dpd <- dpbinom(NULL, pp)
 idx <- which(dpn != 0 & dpd != 0)
 summary((dpn - dpd)[idx])
 
-## ----benchmark----------------------------------------------------------------
+## ----benchmark-ord------------------------------------------------------------
 library(microbenchmark)
 set.seed(1)
 
@@ -199,4 +197,96 @@ f6 <- function() dpbinom(NULL, runif(4000), method = "GeoMeanCounter")
 f7 <- function() dpbinom(NULL, runif(4000), method = "DivideFFT")
 
 microbenchmark(f1(), f2(), f3(), f4(), f5(), f6(), f7())
+
+## ----na1-gen------------------------------------------------------------------
+set.seed(2)
+pp <- runif(10)
+wt <- sample(1:10, 10, TRUE)
+va <- sample(0:10, 10, TRUE)
+vb <- sample(0:10, 10, TRUE)
+
+dgpbinom(NULL, pp, va, vb, wt, "Normal")
+pgpbinom(NULL, pp, va, vb, wt, "Normal")
+
+## ----na2-gen------------------------------------------------------------------
+set.seed(2)
+
+# 10 random probabilities of success
+pp <- runif(10)
+va <- sample(0:10, 10, TRUE)
+vb <- sample(0:10, 10, TRUE)
+dpn <- dgpbinom(NULL, pp, va, vb, method = "Normal")
+dpd <- dgpbinom(NULL, pp, va, vb)
+idx <- which(dpn != 0 & dpd != 0)
+summary((dpn - dpd)[idx])
+
+# 100 random probabilities of success
+pp <- runif(100)
+va <- sample(0:100, 100, TRUE)
+vb <- sample(0:100, 100, TRUE)
+dpn <- dgpbinom(NULL, pp, va, vb, method = "Normal")
+dpd <- dgpbinom(NULL, pp, va, vb)
+idx <- which(dpn != 0 & dpd != 0)
+summary((dpn - dpd)[idx])
+
+# 1000 random probabilities of success
+pp <- runif(1000)
+va <- sample(0:1000, 1000, TRUE)
+vb <- sample(0:1000, 1000, TRUE)
+dpn <- dgpbinom(NULL, pp, va, vb, method = "Normal")
+dpd <- dgpbinom(NULL, pp, va, vb)
+idx <- which(dpn != 0 & dpd != 0)
+summary((dpn - dpd)[idx])
+
+## ----rna1-gen-----------------------------------------------------------------
+set.seed(2)
+pp <- runif(10)
+wt <- sample(1:10, 10, TRUE)
+va <- sample(0:10, 10, TRUE)
+vb <- sample(0:10, 10, TRUE)
+dgpbinom(NULL, pp, va, vb, wt, "RefinedNormal")
+pgpbinom(NULL, pp, va, vb, wt, "RefinedNormal")
+
+## ----rna2-gen-----------------------------------------------------------------
+set.seed(2)
+
+# 10 random probabilities of success
+pp <- runif(10)
+va <- sample(0:10, 10, TRUE)
+vb <- sample(0:10, 10, TRUE)
+dpn <- dgpbinom(NULL, pp, va, vb, method = "RefinedNormal")
+dpd <- dgpbinom(NULL, pp, va, vb)
+idx <- which(dpn != 0 & dpd != 0)
+summary((dpn - dpd)[idx])
+
+# 100 random probabilities of success
+pp <- runif(100)
+va <- sample(0:100, 100, TRUE)
+vb <- sample(0:100, 100, TRUE)
+dpn <- dgpbinom(NULL, pp, va, vb, method = "RefinedNormal")
+dpd <- dgpbinom(NULL, pp, va, vb)
+idx <- which(dpn != 0 & dpd != 0)
+summary((dpn - dpd)[idx])
+
+# 1000 random probabilities of success
+pp <- runif(1000)
+va <- sample(0:1000, 1000, TRUE)
+vb <- sample(0:1000, 1000, TRUE)
+dpn <- dgpbinom(NULL, pp, va, vb, method = "RefinedNormal")
+dpd <- dgpbinom(NULL, pp, va, vb)
+idx <- which(dpn != 0 & dpd != 0)
+summary((dpn - dpd)[idx])
+
+## ----benchmark-gen------------------------------------------------------------
+library(microbenchmark)
+n <- 200
+set.seed(2)
+va <- sample(1:n, n, FALSE)
+vb <- sample(1:n, n, FALSE)
+
+f1 <- function() dgpbinom(NULL, runif(n), va, vb, method = "Normal")
+f2 <- function() dgpbinom(NULL, runif(n), va, vb, method = "RefinedNormal")
+f3 <- function() dgpbinom(NULL, runif(n), va, vb, method = "DivideFFT")
+
+microbenchmark(f1(), f2(), f3())
 
