@@ -121,10 +121,6 @@ dgpbinom <- function(x, probs, val_p, val_q, wts = NULL, method = "DivideFFT", l
   
   ## transform input to relevant range
   transf <- transform.GPB(x, probs, val_p, val_q, wts)
-  probs <- transf$probs
-  val_p <- transf$val_p
-  val_q <- transf$val_q
-  n <- transf$n
   
   # if x = NULL, return all possible probabilities
   if(is.null(x)) x <- transf$compl.range
@@ -132,40 +128,53 @@ dgpbinom <- function(x, probs, val_p, val_q, wts = NULL, method = "DivideFFT", l
   # identify valid 'x' values (invalid ones will have 0-probability)
   idx.x <- which(x %in% transf$compl.range)
   
-  # select valid observations in relevant range
-  y <- x[idx.x]
-  idx.y <- which(y %in% transf$inner.range)
-  
   ## compute probabilities
   # vector for storing the probabilities
   d <- double(length(x))
   
-  # if no input value is in relevant range, they are impossible (i.e. return 0-probabilities)
-  if(!length(idx.y)) return(d)
-  
-  z <- y[idx.y] - transf$guaranteed
-  
-  if(n == 0){
-    # 'probs' contains only zeros and ones, i.e. only one possible observation
-    if(length(idx.y)) d[idx.x][idx.y] <- 1
-  }else if(n == 1){
-    # 'probs' contains only one value that is not 0 or 1, i.e. a Bernoulli distribution
-    idx.z <- which(z %in% c(val_q, val_p))
-    if(length(idx.y)) d[idx.x][idx.y][idx.z] <- c(1 - probs, probs)[match(z[idx.z], c(val_q, val_p))]
-  }else{
-    if(all(val_p == val_p[1]) && all(val_q == val_q[1])){
-      # all values of 'probs' are equal, i.e. a standard binomial distribution
-      u <- 0:n * val_p[1] + n:0 * val_q[1]
-      idx.z <- which(z %in% u)
-      idx.u <- which(u %in% z)
-      if(length(idx.y) && length(idx.u) && length(idx.z)) d[idx.x][idx.y][idx.z] <- dpbinom(idx.u - 1, probs, method = method)
-    }else{
-      # compute distribution according to 'method'
-      if(length(idx.y)) d[idx.x][idx.y] <- switch(method, DivideFFT = dgpb_dc(z, probs, val_p, val_q),
-                                                  Convolve = dgpb_conv(z, probs, val_p, val_q),
-                                                  Characteristic = dgpb_dftcf(z, probs, val_p, val_q),
-                                                  Normal = dgpb_na(z, probs, val_p, val_q, FALSE),
-                                                  RefinedNormal = dgpb_na(z, probs, val_p, val_q, TRUE))
+  # no computation needed, if there are no valid observations in 'x'
+  if(length(idx.x)){
+    # select valid observations in relevant range
+    y <- x[idx.x]
+    
+    # relevant observations
+    idx.y <- which(y %in% transf$inner.range)
+    
+    # if no input value is in relevant range, they are impossible (i.e. return 0-probabilities)
+    if(length(idx.y)){
+      # transformed input parameters
+      probs <- transf$probs
+      val_p <- transf$val_p
+      val_q <- transf$val_q
+      n <- transf$n
+      
+      # select and rescale relevant observations
+      z <- y[idx.y] - transf$guaranteed
+    
+      if(n == 0){
+        # 'probs' contains only zeros and ones, i.e. only one possible observation
+        d[idx.x][idx.y] <- 1
+      }else if(n == 1){
+        # 'probs' contains only one value that is not 0 or 1, i.e. a Bernoulli distribution
+        idx.z <- which(z %in% c(val_q, val_p))
+        if(length(idx.z)) d[idx.x][idx.y][idx.z] <- c(1 - probs, probs)[match(z[idx.z], c(val_q, val_p))]
+      }else{
+        if(all(val_p == val_p[1]) && all(val_q == val_q[1])){
+          # all values of 'probs' are equal, i.e. a standard binomial distribution
+          u <- 0:n * val_p[1] + n:0 * val_q[1]
+          idx.u <- which(u %in% z)
+          idx.z <- which(z %in% u)
+          if(length(idx.u) && length(idx.z)) d[idx.x][idx.y][idx.z] <- dpbinom(idx.u - 1, probs, method = method)
+        }else{
+          # compute distribution according to 'method'
+          d[idx.x][idx.y] <- switch(method,
+                                    DivideFFT = dgpb_dc(z, probs, val_p, val_q),
+                                    Convolve = dgpb_conv(z, probs, val_p, val_q),
+                                    Characteristic = dgpb_dftcf(z, probs, val_p, val_q),
+                                    Normal = dgpb_na(z, probs, val_p, val_q, FALSE),
+                                    RefinedNormal = dgpb_na(z, probs, val_p, val_q, TRUE))
+        }
+      }
     }
   }
   
@@ -182,19 +191,15 @@ pgpbinom <- function(x, probs, val_p, val_q, wts = NULL, method = "DivideFFT", l
   ## preliminary checks
   method <- check.args.GPB(x, probs, val_p, val_q, wts, method)
   
-  if(all(val_p == 1) && all(val_q == 0)) return(ppbinom(x, probs, wts, method, log))
-  if(all(val_p == 0) && all(val_q == 1)) return(ppbinom(x, 1 - probs, wts, method, log))
+  if(all(val_p == 1) && all(val_q == 0)) return(ppbinom(x, probs, wts, method, lower.tail, log.p))
+  if(all(val_p == 0) && all(val_q == 1)) return(ppbinom(x, 1 - probs, wts, method, lower.tail, log.p))
   if(all(val_p == 0 | val_p == 1) && all(val_q == 1 - val_p)){
     probs[val_p == 0] <- 1 - probs[val_p == 0]
-    return(ppbinom(x, probs, wts, method, log))
+    return(ppbinom(x, probs, wts, method, lower.tail, log.p))
   }
   
   ## transform input to relevant range
   transf <- transform.GPB(x, probs, val_p, val_q, wts)
-  probs <- transf$probs
-  val_p <- transf$val_p
-  val_q <- transf$val_q
-  n <- transf$n
   
   # if x = NULL, return all possible probabilities
   if(is.null(x)) x <- transf$compl.range
@@ -202,51 +207,73 @@ pgpbinom <- function(x, probs, val_p, val_q, wts = NULL, method = "DivideFFT", l
   # identify valid 'x' values (invalid ones will have 0-probability)
   idx.x <- which(x %in% transf$compl.range)
   
-  # select valid observations in relevant range
-  y <- x[idx.x]
-  idx.y <- which(y %in% transf$inner.range)
-  
   ## compute probabilities
   # vector for storing the probabilities
-  d <- double(length(x))
+  d <- rep(as.numeric(!lower.tail), length(x))
   
-  # if no input value is in relevant range, they are impossible (i.e. return 0-probabilities)
-  if(!length(idx.y)) return(d)
-  
-  z <- y[idx.y] - transf$guaranteed
-  idx.z <- if(length(idx.y)) which(y > max(transf$inner.range)) else integer(0)
-  
-  if(n == 0){
-    # 'probs' contains only zeros and ones, i.e. only one possible observation
-    if(length(idx.y)) d[idx.x][idx.y] <- 1
-  }else if(n == 1){
-    # 'probs' contains only one value that is not 0 or 1, i.e. a Bernoulli distribution
-    idx.z <- which(z %in% c(val_q, val_p))
-    if(length(idx.y)) d[idx.x][idx.y][idx.z] <- c(1 - probs, 1)[match(z[idx.z], c(val_q, val_p))]
-  }else{
-    if(all(val_p == val_p[1]) && all(val_q == val_q[1])){
-      # all values of 'probs' are equal, i.e. a standard binomial distribution
-      u <- 0:n * val_p[1] + n:0 * val_q[1]
-      idx.z <- which(z %in% u)
-      idx.u <- which(u %in% z)
-      if(length(idx.y) && length(idx.u) && length(idx.z)) d[idx.x][idx.y][idx.z] <-ppbinom(idx.u - 1, probs, method = method)
-    }else{
-      # compute distribution according to 'method'
-      if(length(idx.y)) d[idx.x][idx.y] <- switch(method, DivideFFT = pgpb_dc(z, probs, val_p, val_q),
-                                                  Convolve = pgpb_conv(z, probs, val_p, val_q),
-                                                  Characteristic = pgpb_dftcf(z, probs, val_p, val_q),
-                                                  Normal = pgpb_na(z, probs, val_p, val_q, FALSE),
-                                                  RefinedNormal = pgpb_na(z, probs, val_p, val_q, TRUE))
+  # no computation needed, if there are no valid observations in 'x'
+  if(length(idx.x)){
+    # select valid observations in relevant range
+    y <- x[idx.x]
+    
+    # relevant observations
+    idx.y <- which(y %in% transf$inner.range)
+    
+    # which valid observations are outside relevant range
+    idx.z <- which(y > max(transf$inner.range))
+    
+    if(length(idx.y)){
+      # transformed input parameters
+      probs <- transf$probs
+      val_p <- transf$val_p
+      val_q <- transf$val_q
+      n <- transf$n
+      
+      # select and rescale relevant observations
+      z <- y[idx.y] - transf$guaranteed
+      
+      if(n == 0){
+        # 'probs' contains only zeros and ones, i.e. only one possible observation
+        d[idx.x][idx.y] <- 1
+      }else if(n == 1){
+        # 'probs' contains only one value that is not 0 or 1, i.e. a Bernoulli distribution
+        v <- min(val_q, val_p):max(val_q, val_p)
+        idx.v <- which(z %in% v)
+        if(length(idx.v)){
+          pr <- numeric(length(v))
+          if(lower.tail){
+            pr[1] <- 1 - probs
+            pr[2:length(v)] <- 1
+          }else pr[1] <- probs
+          d[idx.x][idx.y][idx.v] <- pr[match(z[idx.v], v)]
+        }
+      }else{
+        if(all(val_p == val_p[1]) && all(val_q == val_q[1])){
+          # all values of 'probs' are equal, i.e. a standard binomial distribution
+          u <- 0:n * val_p[1] + n:0 * val_q[1]
+          idx.v <- which(z %in% u)
+          idx.u <- which(u %in% z)
+          if(length(idx.u) && length(idx.v)) d[idx.x][idx.y][idx.v] <- ppbinom(idx.u - 1, probs, method = method, lower.tail = lower.tail)
+        }else{
+          # compute distribution according to 'method'
+          d[idx.x][idx.y] <- switch(method,
+                                    DivideFFT = pgpb_dc(z, probs, val_p, val_q),
+                                    Convolve = pgpb_conv(z, probs, val_p, val_q),
+                                    Characteristic = pgpb_dftcf(z, probs, val_p, val_q),
+                                    Normal = pgpb_na(z, probs, val_p, val_q, FALSE),
+                                    RefinedNormal = pgpb_na(z, probs, val_p, val_q, TRUE))
+          
+          # compute counter-probabilities, if necessary
+          if(!lower.tail) d[idx.x][idx.y] <- 1 - d[idx.x][idx.y]
+        }
+      }
     }
+    # fill cumulative probabilities of values above the relevant range
+    if(length(idx.z)) d[idx.x][idx.z] <- as.double(lower.tail)
   }
-  # values above the relevant region must have a cumulative probability of 1
-  if(length(idx.z)) d[idx.x][idx.z] <- 1
   
-  # values above n must have a cumulative probability of 1
-  d[x > max(transf$compl.range)] <- 1
-  
-  # compute lower-tail counterparts, if necessary
-  if(!lower.tail) d <- 1 - d
+  # fill cumulative probabilities of values above n
+  d[x > max(transf$compl.range)] <- as.double(lower.tail)
   
   # logarithm, if required
   if(log.p) d <- log(d)

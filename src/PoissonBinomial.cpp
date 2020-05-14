@@ -56,7 +56,6 @@ NumericVector dpb_generic(IntegerVector obs, NumericVector probs, NumericVector 
 NumericVector ppb_generic(IntegerVector obs, NumericVector probs, NumericVector pmf){
   // maximum observed value
   int max_q = max(obs);
-  
   // results vector
   NumericVector results = NumericVector(max_q + 1);
   
@@ -64,10 +63,6 @@ NumericVector ppb_generic(IntegerVector obs, NumericVector probs, NumericVector 
   results[0] = pmf[0];
   for(int i = 1; i <= max_q; i++)
     results[i] = pmf[i] + results[i - 1];
-  
-  // ensure that sum = 1, if last value = n (the highest oberservable value)
-  if(max_q == probs.length())
-    results[max_q] = 1;
   
   // "correct" numerically too large results
   results[results > 1] = 1;
@@ -139,11 +134,21 @@ NumericVector dpb_conv(IntegerVector obs, NumericVector probs){
 
 // [[Rcpp::export]]
 NumericVector ppb_conv(IntegerVector obs, NumericVector probs){
+  // maximum observed value
+  int max_q = max(obs);
+  
   // probability masses
-  NumericVector pmf = dpb_conv(IntegerVector(Range(0, max(obs))), probs);
+  NumericVector pmf = dpb_conv(IntegerVector(Range(0, max_q)), probs);
+  
+  // compute CDF
+  NumericVector results = ppb_generic(obs, probs, pmf);
+  
+  // ensure that sum = 1, if last value = n (the highest oberservable value)
+  if(max_q == probs.length())
+    results[max_q] = 1;
   
   // return final results
-  return ppb_generic(obs, probs, pmf);
+  return results;
 }
 
 // Divide & Conquer FFT (DC-FFT)
@@ -283,11 +288,21 @@ NumericVector dpb_dc(IntegerVector obs, NumericVector probs){
 
 // [[Rcpp::export]]
 NumericVector ppb_dc(IntegerVector obs, NumericVector probs){
+  // maximum observed value
+  int max_q = max(obs);
+  
   // probability masses
-  NumericVector pmf = dpb_dc(IntegerVector(Range(0, max(obs))), probs);
+  NumericVector pmf = dpb_dc(IntegerVector(Range(0, max_q)), probs);
+  
+  // compute CDF
+  NumericVector results = ppb_generic(obs, probs, pmf);
+  
+  // ensure that sum = 1, if last value = n (the highest oberservable value)
+  if(max_q == probs.length())
+    results[max_q] = 1;
   
   // return final results
-  return ppb_generic(obs, probs, pmf);
+  return results;
 }
 
 // Discrete Fourier Transformation of Characteristic Function (DFT-CF)
@@ -379,11 +394,21 @@ NumericVector dpb_dftcf(IntegerVector obs, NumericVector probs){
 
 // [[Rcpp::export]]
 NumericVector ppb_dftcf(IntegerVector obs, NumericVector probs){
+  // maximum observed value
+  int max_q = max(obs);
+  
   // probability masses
-  NumericVector pmf = dpb_dftcf(IntegerVector(Range(0, max(obs))), probs);
+  NumericVector pmf = dpb_dftcf(IntegerVector(Range(0, max_q)), probs);
+  
+  // compute CDF
+  NumericVector results = ppb_generic(obs, probs, pmf);
+  
+  // ensure that sum = 1, if last value = n (the highest oberservable value)
+  if(max_q == probs.length())
+    results[max_q] = 1;
   
   // return final results
-  return ppb_generic(obs, probs, pmf);
+  return results;
 }
 
 // Recursive Formula
@@ -765,11 +790,21 @@ NumericVector dgpb_dc(IntegerVector obs, NumericVector probs, NumericVector val_
 
 // [[Rcpp::export]]
 NumericVector pgpb_dc(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q){
+  // maximum observed value
+  int max_q = max(obs);
+  
   // probability masses
-  NumericVector pmf = dgpb_dc(IntegerVector(Range(sum(pmin(val_p, val_q)), max(obs))), probs, val_p, val_q);
+  NumericVector pmf = dgpb_dc(IntegerVector(Range(sum(pmin(val_p, val_q)), max_q)), probs, val_p, val_q);
+  
+  // compute CDF
+  NumericVector results = ppb_generic(obs - sum(pmin(val_p, val_q)), probs, pmf);
+  
+  // ensure that sum = 1, if last value equals the highest oberservable value
+  if(max_q == sum(pmax(val_p, val_q)))
+    results[obs == max_q] = 1;
   
   // return final results
-  return ppb_generic(obs - sum(pmin(val_p, val_q)), probs, pmf);
+  return results;
 }
 
 // Generalized Discrete Fourier Transformation of Characteristic Function (G-DFT-CF)
@@ -862,11 +897,21 @@ NumericVector dgpb_dftcf(IntegerVector obs, NumericVector probs, NumericVector v
 
 // [[Rcpp::export]]
 NumericVector pgpb_dftcf(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q){
+  // maximum observed value
+  int max_q = max(obs);
+  
   // probability masses
-  NumericVector pmf = dgpb_dftcf(IntegerVector(Range(sum(pmin(val_p, val_q)), max(obs))), probs, val_p, val_q);
+  NumericVector pmf = dgpb_dftcf(IntegerVector(Range(sum(pmin(val_p, val_q)), max_q)), probs, val_p, val_q);
+  
+  // compute CDF
+  NumericVector results = ppb_generic(obs - sum(pmin(val_p, val_q)), probs, pmf);
+  
+  // ensure that sum = 1, if last value equals the highest oberservable value
+  if(max_q == sum(pmax(val_p, val_q)))
+    results[obs == max_q] = 1;
   
   // return final results
-  return ppb_generic(obs - sum(pmin(val_p, val_q)), probs, pmf);
+  return results;
 }
 
 // Generalized Normal Approximations (G-NA, G-RNA)

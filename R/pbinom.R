@@ -176,42 +176,48 @@ dpbinom <- function(x, probs, wts = NULL, method = "DivideFFT", log = FALSE){
   # vector for storing the probabilities
   d <- double(length(x))
   
-  # which probabilities are 0 or 1
-  idx0 <- which(probs == 0)
-  idx1 <- which(probs == 1)
-  probs <- probs[probs > 0 & probs < 1]
-  
-  # number of zeros and ones
-  n0 <- length(idx0)
-  n1 <- length(idx1)
-  np <- n - n0 - n1
-  
-  # relevant observations
-  idx.y <- which(y %in% n1:(n - n0))
-  z <- y[idx.y] - n1
-  
-  if(np == 0){
-    # 'probs' contains only zeros and ones, i.e. only one possible observation
-    if(length(idx.y)) d[idx.x][idx.y] <- 1
-  }else if(np == 1){
-    # 'probs' contains only one value that is not 0 or 1, i.e. a Bernoulli distribution
-    if(length(idx.y)) d[idx.x][idx.y] <- c(1 - probs, probs)[z + 1]
-  }else{
-    if(all(probs == probs[1])){
-      # all values of 'probs' are equal, i.e. a standard binomial distribution
-      if(length(idx.y)) d[idx.x][idx.y] <- dbinom(z, np, probs[1])
-    }else{
-      # otherwise, compute distribution according to 'method'
-      if(length(idx.y)) d[idx.x][idx.y] <- switch(method, DivideFFT = dpb_dc(z, probs),
-                                                  Convolve = dpb_conv(z, probs),
-                                                  Characteristic = dpb_dftcf(z, probs),
-                                                  Recursive = dpb_rf(z, probs),
-                                                  Mean = dpb_mean(z, probs),
-                                                  GeoMean = dpb_gmba(z, probs, FALSE),
-                                                  GeoMeanCounter = dpb_gmba(z, probs, TRUE),
-                                                  Poisson = dpb_pa(z, probs),
-                                                  Normal = dpb_na(z, probs, FALSE),
-                                                  RefinedNormal = dpb_na(z, probs, TRUE))
+  # no computation needed, if there are no valid observations in 'x'
+  if(length(idx.x)){
+    # which probabilities are 0 or 1
+    idx0 <- which(probs == 0)
+    idx1 <- which(probs == 1)
+    probs <- probs[probs > 0 & probs < 1]
+    
+    # number of zeros and ones
+    n0 <- length(idx0)
+    n1 <- length(idx1)
+    np <- n - n0 - n1
+    
+    # relevant observations
+    idx.y <- which(y %in% n1:(n - n0))
+    
+    if(length(idx.y)){
+      z <- y[idx.y] - n1
+    
+      if(np == 0){
+        # 'probs' contains only zeros and ones, i.e. only one possible observation
+        d[idx.x][idx.y] <- 1
+      }else if(np == 1){
+        # 'probs' contains only one value that is not 0 or 1, i.e. a Bernoulli distribution
+        d[idx.x][idx.y] <- c(1 - probs, probs)[z + 1]
+      }else{
+        if(all(probs == probs[1])){
+          # all values of 'probs' are equal, i.e. a standard binomial distribution
+          d[idx.x][idx.y] <- dbinom(z, np, probs[1])
+        }else{
+          # otherwise, compute distribution according to 'method'
+          d[idx.x][idx.y] <- switch(method, DivideFFT = dpb_dc(z, probs),
+                                                      Convolve = dpb_conv(z, probs),
+                                                      Characteristic = dpb_dftcf(z, probs),
+                                                      Recursive = dpb_rf(z, probs),
+                                                      Mean = dpb_mean(z, probs),
+                                                      GeoMean = dpb_gmba(z, probs, FALSE),
+                                                      GeoMeanCounter = dpb_gmba(z, probs, TRUE),
+                                                      Poisson = dpb_pa(z, probs),
+                                                      Normal = dpb_na(z, probs, FALSE),
+                                                      RefinedNormal = dpb_na(z, probs, TRUE))
+        }
+      }
     }
   }
   
@@ -269,55 +275,61 @@ ppbinom <- function(x, probs, wts = NULL, method = "DivideFFT", lower.tail = TRU
   
   ## compute probabilities
   # vector for storing the probabilities
-  d <- double(length(x))
+  d <- rep(as.numeric(!lower.tail), length(x))
   
-  # which probabilities are 0 or 1
-  idx0 <- which(probs == 0)
-  idx1 <- which(probs == 1)
-  probs <- probs[probs > 0 & probs < 1]
-  
-  # number of zeros and ones
-  n0 <- length(idx0)
-  n1 <- length(idx1)
-  np <- n - n0 - n1
-  
-  # relevant observations
-  idx.y <- which(y %in% n1:(n - n0))
-  z <- y[idx.y] - n1
-  idx.z <- if(length(idx.y)) which(y > n - n0) else integer(0)
-  
-  if(np == 0){
-    # 'probs' contains only zeros and ones, i.e. only one possible observation
-    if(length(idx.y)) d[idx.x][idx.y] <- 1
-  }else if(np == 1){
-    # 'probs' contains only one value that is not 0 or 1, i.e. a Bernoulli distribution
-    if(length(idx.y)) d[idx.x][idx.y] <- c(1 - probs, 1)[z + 1]
-  }else{
-    if(all(probs == probs[1])){
-      # all values of 'probs' are equal, i.e. a standard binomial distribution
-      if(length(idx.y)) d[idx.x][idx.y] <- pbinom(z, np, probs[1])
-    }else{
-      # otherwise, compute distribution according tho 'method'
-      if(length(idx.y)) d[idx.x][idx.y] <- switch(method, DivideFFT = ppb_dc(z, probs),
-                                                  Convolve = ppb_conv(z, probs),
-                                                  Characteristic = ppb_dftcf(z, probs),
-                                                  Recursive = ppb_rf(z, probs),
-                                                  Mean = ppb_mean(z, probs),
-                                                  GeoMean = ppb_gmba(z, probs, FALSE),
-                                                  GeoMeanCounter = ppb_gmba(z, probs, TRUE),
-                                                  Poisson = ppb_pa(z, probs),
-                                                  Normal = ppb_na(z, probs, FALSE),
-                                                  RefinedNormal = ppb_na(z, probs, TRUE))
+  # no computation needed, if there are no valid observations in 'x'
+  if(length(idx.x)){
+    # which probabilities are 0 or 1
+    idx0 <- which(probs == 0)
+    idx1 <- which(probs == 1)
+    probs <- probs[probs > 0 & probs < 1]
+    
+    # number of zeros and ones
+    n0 <- length(idx0)
+    n1 <- length(idx1)
+    np <- n - n0 - n1
+    
+    # relevant observations
+    idx.y <- which(y %in% n1:(n - n0))
+    idx.z <- which(y > n - n0)
+    
+    if(length(idx.y)){
+      z <- y[idx.y] - n1
+      
+      if(np == 0){
+        # 'probs' contains only zeros and ones, i.e. there is only one possible observation
+        d[idx.x][idx.y] <- if(lower.tail) 1 else 0
+      }else if(np == 1){
+        # 'probs' contains only one value that is not 0 or 1, i.e. a Bernoulli distribution
+        d[idx.x][idx.y] <- if(lower.tail) c(1 - probs, 1)[z + 1] else c(probs, 0)[z + 1]
+      }else{
+        if(all(probs == probs[1])){
+          # all values of 'probs' are equal, i.e. a standard binomial distribution
+          d[idx.x][idx.y] <- pbinom(q = z, size = np, prob = probs[1], lower.tail = lower.tail)
+        }else{
+          # otherwise, compute distribution according to 'method'
+          d[idx.x][idx.y] <- switch(method,
+                                    DivideFFT = ppb_dc(z, probs),
+                                    Convolve = ppb_conv(z, probs),
+                                    Characteristic = ppb_dftcf(z, probs),
+                                    Recursive = ppb_rf(z, probs),
+                                    Mean = ppb_mean(z, probs),
+                                    GeoMean = ppb_gmba(z, probs, FALSE),
+                                    GeoMeanCounter = ppb_gmba(z, probs, TRUE),
+                                    Poisson = ppb_pa(z, probs),
+                                    Normal = ppb_na(z, probs, FALSE),
+                                    RefinedNormal = ppb_na(z, probs, TRUE))
+          
+          # compute counter-probabilities, if necessary
+          if(!lower.tail) d[idx.x][idx.y] <- 1 - d[idx.x][idx.y]
+        }
+      }
     }
+    # fill cumulative probabilities of values above the relevant range
+    if(length(idx.z)) d[idx.x][idx.z] <- as.double(lower.tail)
   }
-  # values above the relevant region must have a cumulative probability of 1
-  if(length(idx.z)) d[idx.x][idx.z] <- 1
-  
-  # values above n must have a cumulative probability of 1
-  d[x > n] <- 1
-  
-  # compute lower-tail counterparts, if necessary
-  if(!lower.tail) d <- 1 - d
+  # fill cumulative probabilities of values above n
+  d[x > n] <- as.double(lower.tail)
   
   # logarithm, if required
   if(log.p) d <- log(d)

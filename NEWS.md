@@ -1,3 +1,8 @@
+# PoissonBinomial 1.1.1
+
+* Fixed bugs in `ppbinom` and `pgpbinom` that caused incorrect calculation of
+  logarithms and cumulative upper-tail probabilities.
+
 # PoissonBinomial 1.1
 
 * Added exact and approximate algorithms for the generalized Poisson binomial
