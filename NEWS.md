@@ -1,6 +1,15 @@
+# PoissonBinomial 1.1.2
+
+* Bug fixes and performance improvements for `qpbinom` and `qgpbinom` that also
+  affect `rpbinom` and `rgpbinom`. Quantiles were off be one; all code that use
+  the quantile functions should be reviewed!
+* When requesting cumulative probabilities, the respective C++ implementations
+  are now capable of computing these values for `lower.tail = FALSE` on their
+  own, which improves accuracy.
+
 # PoissonBinomial 1.1.1
 
-* Fixed bugs in `ppbinom` and `pgpbinom` that caused incorrect calculation of
+* Bug fixes in `ppbinom` and `pgpbinom` that caused incorrect calculation of
   logarithms and cumulative upper-tail probabilities.
 
 # PoissonBinomial 1.1

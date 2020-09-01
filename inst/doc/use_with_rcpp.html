@@ -14,6 +14,22 @@
 
 <title>Usage with Rcpp</title>
 
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
 
 
 
@@ -222,39 +238,61 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 /***   Exact Procedures   ***/
 
 // Direct Convolution (DC)
-NumericVector dpb_conv(IntegerVector obs, NumericVector probs);                     // PMF
-NumericVector ppb_conv(IntegerVector obs, NumericVector probs);                     // CDF
+// PMF
+NumericVector dpb_conv(IntegerVector obs, NumericVector probs);
+// CDF
+NumericVector ppb_conv(IntegerVector obs, NumericVector probs, bool lower_tail);
 
 // Divide &amp; Conquer FFT Tree Convolution (DC-FFT)
-NumericVector dpb_dc(IntegerVector obs, NumericVector probs);                       // PMF
-NumericVector ppb_dc(IntegerVector obs, NumericVector probs);                       // CDF
+// PMF
+NumericVector dpb_dc(IntegerVector obs, NumericVector probs);
+// CDF
+NumericVector ppb_dc(IntegerVector obs, NumericVector probs, bool lower_tail);
 
 // Discrete Fourier Transformation of the Characteristic Function (DFT-CF)
-NumericVector dpb_dftcf(IntegerVector obs, NumericVector probs);                    // PMF
-NumericVector ppb_dftcf(IntegerVector obs, NumericVector probs);                    // CDF
+// PMF
+NumericVector dpb_dftcf(IntegerVector obs, NumericVector probs);
+// CDF
+NumericVector ppb_dftcf(IntegerVector obs, NumericVector probs, bool lower_tail);
 
 // Recursive Formula (RF)
-NumericVector dpb_rf(IntegerVector obs, NumericVector probs);                       // PMF
-NumericVector ppb_rf(IntegerVector obs, NumericVector probs);                       // CDF
+// PMF
+NumericVector dpb_rf(IntegerVector obs, NumericVector probs);
+// CDF
+NumericVector ppb_rf(IntegerVector obs, NumericVector probs, bool lower_tail);
 
 
 /***   Approximations   ***/
 
 // Arithmetic Mean Binomial Approximation (AMBA)
-NumericVector dpb_mean(IntegerVector obs, NumericVector probs);                     // PMF
-NumericVector ppb_mean(IntegerVector obs, NumericVector probs);                     // CDF
+// PMF
+NumericVector dpb_mean(IntegerVector obs, NumericVector probs);
+// CDF
+NumericVector ppb_mean(IntegerVector obs, NumericVector probs,
+                       bool lower_tail);
 
 // Geometric Mean Binomial Approximations (GMBA)
-NumericVector dpb_gmba(IntegerVector obs, NumericVector probs, bool anti);          // PMF
-NumericVector ppb_gmba(IntegerVector obs, NumericVector probs, bool anti);          // CDF
+// PMF
+NumericVector dpb_gmba(IntegerVector obs, NumericVector probs,
+                       bool anti);
+// CDF
+NumericVector ppb_gmba(IntegerVector obs, NumericVector probs,
+                       bool anti, bool lower_tail);
 
 // Poisson Approximation (PA)
-NumericVector dpb_pa(IntegerVector obs, NumericVector probs);                       // PMF
-NumericVector ppb_pa(IntegerVector obs, NumericVector probs);                       // CDF
+// PMF
+NumericVector dpb_pa(IntegerVector obs, NumericVector probs);
+// CDF
+NumericVector ppb_pa(IntegerVector obs, NumericVector probs,
+                     bool lower_tail);
 
 // Normal Approximations (NA, RNA)
-NumericVector dpb_na(IntegerVector obs, NumericVector probs, bool refined);         // PMF
-NumericVector ppb_na(IntegerVector obs, NumericVector probs, bool refined);         // CDF
+// PMF
+NumericVector dpb_na(IntegerVector obs, NumericVector probs,
+                     bool refined);
+// CDF
+NumericVector ppb_na(IntegerVector obs, NumericVector probs,
+                     bool refined,bool lower_tail);
 
 
 
@@ -264,25 +302,35 @@ NumericVector ppb_na(IntegerVector obs, NumericVector probs, bool refined);     
 /***   Exact Procedures   ***/
 
 // Generalized Direct Convolution (G-DC)
+// PMF
 NumericVector dgpb_conv(IntegerVector obs,   NumericVector probs,
-                        NumericVector val_p, NumericVector val_q);                  // PMF
+                        NumericVector val_p, NumericVector val_q);
+// CDF
 NumericVector pgpb_conv(IntegerVector obs,   NumericVector probs,
-                        NumericVector val_p, NumericVector val_q);                  // CDF
+                        NumericVector val_p, NumericVector val_q,
+                        bool lower_tail);
 
 // Generalized Discrete Fourier Transformation of the Characteristic Function (G-DFT-CF)
+// PMF
 NumericVector dgpb_dftcf(IntegerVector obs,  NumericVector probs,
-                         NumericVector val_p, NumericVector val_q);                 // PMF
+                         NumericVector val_p, NumericVector val_q);
+// CDF
 NumericVector pgpb_dftcf(IntegerVector obs,  NumericVector probs,
-                         NumericVector val_p, NumericVector val_q);                 // CDF
+                         NumericVector val_p, NumericVector val_q,
+                         bool lower_tail);
                        
                        
 /***   Approximations   ***/
 
 // Generalized Normal Approximations (G-NA, G-RNA)
+// PMF
 NumericVector dgpb_na(IntegerVector obs,  NumericVector probs,
-                      NumericVector val_p, NumericVector val_q, bool refined);      // PMF
+                      NumericVector val_p, NumericVector val_q, bool refined,
+                      bool lower_tail);
+// CDF
 NumericVector pgpb_na(IntegerVector obs,  NumericVector probs,
-                      NumericVector val_p, NumericVector val_q, bool refined);      // CDF</code></pre>
+                      NumericVector val_p, NumericVector val_q, bool refined,
+                      bool lower_tail);</code></pre>
 <div id="making-the-functions-usable" class="section level2">
 <h2>Making the functions usable</h2>
 <p>There are only a few simple steps to follow:</p>
@@ -296,11 +344,11 @@ NumericVector pgpb_na(IntegerVector obs,  NumericVector probs,
 <h2>Important Remarks</h2>
 <p>For better performance, the PMFs and CDFs do not check any of their parameters for plausibility! This must be done by the user by means of <em>R</em> or <em>C/C++</em> functions. It must be made sure that</p>
 <ul>
-<li>the observations in the <code>obs</code> vectors are valid, i.e. in appropriate ranges,</li>
+<li>the observations in the <code>obs</code> vectors are valid,</li>
 <li>the probabilities in the <code>probs</code> vector are in <span class="math inline">\((0, 1)\)</span> and</li>
 <li>for <code>dpb_gmba</code>, <code>ppb_gmba</code>, <code>dpb_na</code>, <code>ppb_na</code>, <code>dgpb_na</code> and <code>pgpb_na</code>: the probabilities in the <code>probs</code> vector <strong>must not</strong> contain zeros or ones.</li>
 </ul>
-<p>Furthermore, the CDFs only compute lower-tail cumulative probabilities, i.e. <span class="math inline">\(P(X \leq k)\)</span>. If upper-tail probabilities <span class="math inline">\(P(X &gt; k)\)</span> are needed, they must be computed “manually”. The same applies for logarithmic probabilities, which can be calculated using <code>Rcpp::log</code> for instance.</p>
+<p>Furthermore, the CDFs only compute non-logarithmic probabilities. If logarithms are needed, they must be computed “manually”.</p>
 </div>
 
 

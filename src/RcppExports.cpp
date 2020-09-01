@@ -44,21 +44,22 @@ RcppExport SEXP _PoissonBinomial_dpb_conv(SEXP obsSEXP, SEXP probsSEXP) {
     return rcpp_result_gen;
 }
 // ppb_conv
-NumericVector ppb_conv(IntegerVector obs, NumericVector probs);
-static SEXP _PoissonBinomial_ppb_conv_try(SEXP obsSEXP, SEXP probsSEXP) {
+NumericVector ppb_conv(IntegerVector obs, NumericVector probs, bool lower_tail);
+static SEXP _PoissonBinomial_ppb_conv_try(SEXP obsSEXP, SEXP probsSEXP, SEXP lower_tailSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< IntegerVector >::type obs(obsSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type probs(probsSEXP);
-    rcpp_result_gen = Rcpp::wrap(ppb_conv(obs, probs));
+    Rcpp::traits::input_parameter< bool >::type lower_tail(lower_tailSEXP);
+    rcpp_result_gen = Rcpp::wrap(ppb_conv(obs, probs, lower_tail));
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _PoissonBinomial_ppb_conv(SEXP obsSEXP, SEXP probsSEXP) {
+RcppExport SEXP _PoissonBinomial_ppb_conv(SEXP obsSEXP, SEXP probsSEXP, SEXP lower_tailSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_PoissonBinomial_ppb_conv_try(obsSEXP, probsSEXP));
+        rcpp_result_gen = PROTECT(_PoissonBinomial_ppb_conv_try(obsSEXP, probsSEXP, lower_tailSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -114,21 +115,22 @@ RcppExport SEXP _PoissonBinomial_dpb_dc(SEXP obsSEXP, SEXP probsSEXP) {
     return rcpp_result_gen;
 }
 // ppb_dc
-NumericVector ppb_dc(IntegerVector obs, NumericVector probs);
-static SEXP _PoissonBinomial_ppb_dc_try(SEXP obsSEXP, SEXP probsSEXP) {
+NumericVector ppb_dc(IntegerVector obs, NumericVector probs, bool lower_tail);
+static SEXP _PoissonBinomial_ppb_dc_try(SEXP obsSEXP, SEXP probsSEXP, SEXP lower_tailSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< IntegerVector >::type obs(obsSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type probs(probsSEXP);
-    rcpp_result_gen = Rcpp::wrap(ppb_dc(obs, probs));
+    Rcpp::traits::input_parameter< bool >::type lower_tail(lower_tailSEXP);
+    rcpp_result_gen = Rcpp::wrap(ppb_dc(obs, probs, lower_tail));
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _PoissonBinomial_ppb_dc(SEXP obsSEXP, SEXP probsSEXP) {
+RcppExport SEXP _PoissonBinomial_ppb_dc(SEXP obsSEXP, SEXP probsSEXP, SEXP lower_tailSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_PoissonBinomial_ppb_dc_try(obsSEXP, probsSEXP));
+        rcpp_result_gen = PROTECT(_PoissonBinomial_ppb_dc_try(obsSEXP, probsSEXP, lower_tailSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -184,21 +186,22 @@ RcppExport SEXP _PoissonBinomial_dpb_dftcf(SEXP obsSEXP, SEXP probsSEXP) {
     return rcpp_result_gen;
 }
 // ppb_dftcf
-NumericVector ppb_dftcf(IntegerVector obs, NumericVector probs);
-static SEXP _PoissonBinomial_ppb_dftcf_try(SEXP obsSEXP, SEXP probsSEXP) {
+NumericVector ppb_dftcf(IntegerVector obs, NumericVector probs, bool lower_tail);
+static SEXP _PoissonBinomial_ppb_dftcf_try(SEXP obsSEXP, SEXP probsSEXP, SEXP lower_tailSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< IntegerVector >::type obs(obsSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type probs(probsSEXP);
-    rcpp_result_gen = Rcpp::wrap(ppb_dftcf(obs, probs));
+    Rcpp::traits::input_parameter< bool >::type lower_tail(lower_tailSEXP);
+    rcpp_result_gen = Rcpp::wrap(ppb_dftcf(obs, probs, lower_tail));
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _PoissonBinomial_ppb_dftcf(SEXP obsSEXP, SEXP probsSEXP) {
+RcppExport SEXP _PoissonBinomial_ppb_dftcf(SEXP obsSEXP, SEXP probsSEXP, SEXP lower_tailSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_PoissonBinomial_ppb_dftcf_try(obsSEXP, probsSEXP));
+        rcpp_result_gen = PROTECT(_PoissonBinomial_ppb_dftcf_try(obsSEXP, probsSEXP, lower_tailSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -254,21 +257,22 @@ RcppExport SEXP _PoissonBinomial_dpb_rf(SEXP obsSEXP, SEXP probsSEXP) {
     return rcpp_result_gen;
 }
 // ppb_rf
-NumericVector ppb_rf(IntegerVector obs, NumericVector probs);
-static SEXP _PoissonBinomial_ppb_rf_try(SEXP obsSEXP, SEXP probsSEXP) {
+NumericVector ppb_rf(IntegerVector obs, NumericVector probs, bool lower_tail);
+static SEXP _PoissonBinomial_ppb_rf_try(SEXP obsSEXP, SEXP probsSEXP, SEXP lower_tailSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< IntegerVector >::type obs(obsSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type probs(probsSEXP);
-    rcpp_result_gen = Rcpp::wrap(ppb_rf(obs, probs));
+    Rcpp::traits::input_parameter< bool >::type lower_tail(lower_tailSEXP);
+    rcpp_result_gen = Rcpp::wrap(ppb_rf(obs, probs, lower_tail));
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _PoissonBinomial_ppb_rf(SEXP obsSEXP, SEXP probsSEXP) {
+RcppExport SEXP _PoissonBinomial_ppb_rf(SEXP obsSEXP, SEXP probsSEXP, SEXP lower_tailSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_PoissonBinomial_ppb_rf_try(obsSEXP, probsSEXP));
+        rcpp_result_gen = PROTECT(_PoissonBinomial_ppb_rf_try(obsSEXP, probsSEXP, lower_tailSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -324,21 +328,22 @@ RcppExport SEXP _PoissonBinomial_dpb_mean(SEXP obsSEXP, SEXP probsSEXP) {
     return rcpp_result_gen;
 }
 // ppb_mean
-NumericVector ppb_mean(IntegerVector obs, NumericVector probs);
-static SEXP _PoissonBinomial_ppb_mean_try(SEXP obsSEXP, SEXP probsSEXP) {
+NumericVector ppb_mean(IntegerVector obs, NumericVector probs, bool lower_tail);
+static SEXP _PoissonBinomial_ppb_mean_try(SEXP obsSEXP, SEXP probsSEXP, SEXP lower_tailSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< IntegerVector >::type obs(obsSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type probs(probsSEXP);
-    rcpp_result_gen = Rcpp::wrap(ppb_mean(obs, probs));
+    Rcpp::traits::input_parameter< bool >::type lower_tail(lower_tailSEXP);
+    rcpp_result_gen = Rcpp::wrap(ppb_mean(obs, probs, lower_tail));
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _PoissonBinomial_ppb_mean(SEXP obsSEXP, SEXP probsSEXP) {
+RcppExport SEXP _PoissonBinomial_ppb_mean(SEXP obsSEXP, SEXP probsSEXP, SEXP lower_tailSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_PoissonBinomial_ppb_mean_try(obsSEXP, probsSEXP));
+        rcpp_result_gen = PROTECT(_PoissonBinomial_ppb_mean_try(obsSEXP, probsSEXP, lower_tailSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -395,22 +400,23 @@ RcppExport SEXP _PoissonBinomial_dpb_gmba(SEXP obsSEXP, SEXP probsSEXP, SEXP ant
     return rcpp_result_gen;
 }
 // ppb_gmba
-NumericVector ppb_gmba(IntegerVector obs, NumericVector probs, bool anti);
-static SEXP _PoissonBinomial_ppb_gmba_try(SEXP obsSEXP, SEXP probsSEXP, SEXP antiSEXP) {
+NumericVector ppb_gmba(IntegerVector obs, NumericVector probs, bool anti, bool lower_tail);
+static SEXP _PoissonBinomial_ppb_gmba_try(SEXP obsSEXP, SEXP probsSEXP, SEXP antiSEXP, SEXP lower_tailSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< IntegerVector >::type obs(obsSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type probs(probsSEXP);
     Rcpp::traits::input_parameter< bool >::type anti(antiSEXP);
-    rcpp_result_gen = Rcpp::wrap(ppb_gmba(obs, probs, anti));
+    Rcpp::traits::input_parameter< bool >::type lower_tail(lower_tailSEXP);
+    rcpp_result_gen = Rcpp::wrap(ppb_gmba(obs, probs, anti, lower_tail));
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _PoissonBinomial_ppb_gmba(SEXP obsSEXP, SEXP probsSEXP, SEXP antiSEXP) {
+RcppExport SEXP _PoissonBinomial_ppb_gmba(SEXP obsSEXP, SEXP probsSEXP, SEXP antiSEXP, SEXP lower_tailSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_PoissonBinomial_ppb_gmba_try(obsSEXP, probsSEXP, antiSEXP));
+        rcpp_result_gen = PROTECT(_PoissonBinomial_ppb_gmba_try(obsSEXP, probsSEXP, antiSEXP, lower_tailSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -466,21 +472,22 @@ RcppExport SEXP _PoissonBinomial_dpb_pa(SEXP obsSEXP, SEXP probsSEXP) {
     return rcpp_result_gen;
 }
 // ppb_pa
-NumericVector ppb_pa(IntegerVector obs, NumericVector probs);
-static SEXP _PoissonBinomial_ppb_pa_try(SEXP obsSEXP, SEXP probsSEXP) {
+NumericVector ppb_pa(IntegerVector obs, NumericVector probs, bool lower_tail);
+static SEXP _PoissonBinomial_ppb_pa_try(SEXP obsSEXP, SEXP probsSEXP, SEXP lower_tailSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< IntegerVector >::type obs(obsSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type probs(probsSEXP);
-    rcpp_result_gen = Rcpp::wrap(ppb_pa(obs, probs));
+    Rcpp::traits::input_parameter< bool >::type lower_tail(lower_tailSEXP);
+    rcpp_result_gen = Rcpp::wrap(ppb_pa(obs, probs, lower_tail));
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _PoissonBinomial_ppb_pa(SEXP obsSEXP, SEXP probsSEXP) {
+RcppExport SEXP _PoissonBinomial_ppb_pa(SEXP obsSEXP, SEXP probsSEXP, SEXP lower_tailSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_PoissonBinomial_ppb_pa_try(obsSEXP, probsSEXP));
+        rcpp_result_gen = PROTECT(_PoissonBinomial_ppb_pa_try(obsSEXP, probsSEXP, lower_tailSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -537,22 +544,23 @@ RcppExport SEXP _PoissonBinomial_dpb_na(SEXP obsSEXP, SEXP probsSEXP, SEXP refin
     return rcpp_result_gen;
 }
 // ppb_na
-NumericVector ppb_na(IntegerVector obs, NumericVector probs, bool refined);
-static SEXP _PoissonBinomial_ppb_na_try(SEXP obsSEXP, SEXP probsSEXP, SEXP refinedSEXP) {
+NumericVector ppb_na(IntegerVector obs, NumericVector probs, bool refined, bool lower_tail);
+static SEXP _PoissonBinomial_ppb_na_try(SEXP obsSEXP, SEXP probsSEXP, SEXP refinedSEXP, SEXP lower_tailSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< IntegerVector >::type obs(obsSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type probs(probsSEXP);
     Rcpp::traits::input_parameter< bool >::type refined(refinedSEXP);
-    rcpp_result_gen = Rcpp::wrap(ppb_na(obs, probs, refined));
+    Rcpp::traits::input_parameter< bool >::type lower_tail(lower_tailSEXP);
+    rcpp_result_gen = Rcpp::wrap(ppb_na(obs, probs, refined, lower_tail));
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _PoissonBinomial_ppb_na(SEXP obsSEXP, SEXP probsSEXP, SEXP refinedSEXP) {
+RcppExport SEXP _PoissonBinomial_ppb_na(SEXP obsSEXP, SEXP probsSEXP, SEXP refinedSEXP, SEXP lower_tailSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_PoissonBinomial_ppb_na_try(obsSEXP, probsSEXP, refinedSEXP));
+        rcpp_result_gen = PROTECT(_PoissonBinomial_ppb_na_try(obsSEXP, probsSEXP, refinedSEXP, lower_tailSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -610,23 +618,24 @@ RcppExport SEXP _PoissonBinomial_dgpb_conv(SEXP obsSEXP, SEXP probsSEXP, SEXP va
     return rcpp_result_gen;
 }
 // pgpb_conv
-NumericVector pgpb_conv(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q);
-static SEXP _PoissonBinomial_pgpb_conv_try(SEXP obsSEXP, SEXP probsSEXP, SEXP val_pSEXP, SEXP val_qSEXP) {
+NumericVector pgpb_conv(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q, bool lower_tail);
+static SEXP _PoissonBinomial_pgpb_conv_try(SEXP obsSEXP, SEXP probsSEXP, SEXP val_pSEXP, SEXP val_qSEXP, SEXP lower_tailSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< IntegerVector >::type obs(obsSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type probs(probsSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type val_p(val_pSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type val_q(val_qSEXP);
-    rcpp_result_gen = Rcpp::wrap(pgpb_conv(obs, probs, val_p, val_q));
+    Rcpp::traits::input_parameter< bool >::type lower_tail(lower_tailSEXP);
+    rcpp_result_gen = Rcpp::wrap(pgpb_conv(obs, probs, val_p, val_q, lower_tail));
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _PoissonBinomial_pgpb_conv(SEXP obsSEXP, SEXP probsSEXP, SEXP val_pSEXP, SEXP val_qSEXP) {
+RcppExport SEXP _PoissonBinomial_pgpb_conv(SEXP obsSEXP, SEXP probsSEXP, SEXP val_pSEXP, SEXP val_qSEXP, SEXP lower_tailSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_PoissonBinomial_pgpb_conv_try(obsSEXP, probsSEXP, val_pSEXP, val_qSEXP));
+        rcpp_result_gen = PROTECT(_PoissonBinomial_pgpb_conv_try(obsSEXP, probsSEXP, val_pSEXP, val_qSEXP, lower_tailSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -684,23 +693,24 @@ RcppExport SEXP _PoissonBinomial_dgpb_dc(SEXP obsSEXP, SEXP probsSEXP, SEXP val_
     return rcpp_result_gen;
 }
 // pgpb_dc
-NumericVector pgpb_dc(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q);
-static SEXP _PoissonBinomial_pgpb_dc_try(SEXP obsSEXP, SEXP probsSEXP, SEXP val_pSEXP, SEXP val_qSEXP) {
+NumericVector pgpb_dc(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q, bool lower_tail);
+static SEXP _PoissonBinomial_pgpb_dc_try(SEXP obsSEXP, SEXP probsSEXP, SEXP val_pSEXP, SEXP val_qSEXP, SEXP lower_tailSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< IntegerVector >::type obs(obsSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type probs(probsSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type val_p(val_pSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type val_q(val_qSEXP);
-    rcpp_result_gen = Rcpp::wrap(pgpb_dc(obs, probs, val_p, val_q));
+    Rcpp::traits::input_parameter< bool >::type lower_tail(lower_tailSEXP);
+    rcpp_result_gen = Rcpp::wrap(pgpb_dc(obs, probs, val_p, val_q, lower_tail));
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _PoissonBinomial_pgpb_dc(SEXP obsSEXP, SEXP probsSEXP, SEXP val_pSEXP, SEXP val_qSEXP) {
+RcppExport SEXP _PoissonBinomial_pgpb_dc(SEXP obsSEXP, SEXP probsSEXP, SEXP val_pSEXP, SEXP val_qSEXP, SEXP lower_tailSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_PoissonBinomial_pgpb_dc_try(obsSEXP, probsSEXP, val_pSEXP, val_qSEXP));
+        rcpp_result_gen = PROTECT(_PoissonBinomial_pgpb_dc_try(obsSEXP, probsSEXP, val_pSEXP, val_qSEXP, lower_tailSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -758,23 +768,24 @@ RcppExport SEXP _PoissonBinomial_dgpb_dftcf(SEXP obsSEXP, SEXP probsSEXP, SEXP v
     return rcpp_result_gen;
 }
 // pgpb_dftcf
-NumericVector pgpb_dftcf(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q);
-static SEXP _PoissonBinomial_pgpb_dftcf_try(SEXP obsSEXP, SEXP probsSEXP, SEXP val_pSEXP, SEXP val_qSEXP) {
+NumericVector pgpb_dftcf(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q, bool lower_tail);
+static SEXP _PoissonBinomial_pgpb_dftcf_try(SEXP obsSEXP, SEXP probsSEXP, SEXP val_pSEXP, SEXP val_qSEXP, SEXP lower_tailSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< IntegerVector >::type obs(obsSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type probs(probsSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type val_p(val_pSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type val_q(val_qSEXP);
-    rcpp_result_gen = Rcpp::wrap(pgpb_dftcf(obs, probs, val_p, val_q));
+    Rcpp::traits::input_parameter< bool >::type lower_tail(lower_tailSEXP);
+    rcpp_result_gen = Rcpp::wrap(pgpb_dftcf(obs, probs, val_p, val_q, lower_tail));
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _PoissonBinomial_pgpb_dftcf(SEXP obsSEXP, SEXP probsSEXP, SEXP val_pSEXP, SEXP val_qSEXP) {
+RcppExport SEXP _PoissonBinomial_pgpb_dftcf(SEXP obsSEXP, SEXP probsSEXP, SEXP val_pSEXP, SEXP val_qSEXP, SEXP lower_tailSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_PoissonBinomial_pgpb_dftcf_try(obsSEXP, probsSEXP, val_pSEXP, val_qSEXP));
+        rcpp_result_gen = PROTECT(_PoissonBinomial_pgpb_dftcf_try(obsSEXP, probsSEXP, val_pSEXP, val_qSEXP, lower_tailSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -833,8 +844,8 @@ RcppExport SEXP _PoissonBinomial_dgpb_na(SEXP obsSEXP, SEXP probsSEXP, SEXP val_
     return rcpp_result_gen;
 }
 // pgpb_na
-NumericVector pgpb_na(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q, bool refined);
-static SEXP _PoissonBinomial_pgpb_na_try(SEXP obsSEXP, SEXP probsSEXP, SEXP val_pSEXP, SEXP val_qSEXP, SEXP refinedSEXP) {
+NumericVector pgpb_na(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q, bool refined, bool lower_tail);
+static SEXP _PoissonBinomial_pgpb_na_try(SEXP obsSEXP, SEXP probsSEXP, SEXP val_pSEXP, SEXP val_qSEXP, SEXP refinedSEXP, SEXP lower_tailSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< IntegerVector >::type obs(obsSEXP);
@@ -842,15 +853,16 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericVector >::type val_p(val_pSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type val_q(val_qSEXP);
     Rcpp::traits::input_parameter< bool >::type refined(refinedSEXP);
-    rcpp_result_gen = Rcpp::wrap(pgpb_na(obs, probs, val_p, val_q, refined));
+    Rcpp::traits::input_parameter< bool >::type lower_tail(lower_tailSEXP);
+    rcpp_result_gen = Rcpp::wrap(pgpb_na(obs, probs, val_p, val_q, refined, lower_tail));
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _PoissonBinomial_pgpb_na(SEXP obsSEXP, SEXP probsSEXP, SEXP val_pSEXP, SEXP val_qSEXP, SEXP refinedSEXP) {
+RcppExport SEXP _PoissonBinomial_pgpb_na(SEXP obsSEXP, SEXP probsSEXP, SEXP val_pSEXP, SEXP val_qSEXP, SEXP refinedSEXP, SEXP lower_tailSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_PoissonBinomial_pgpb_na_try(obsSEXP, probsSEXP, val_pSEXP, val_qSEXP, refinedSEXP));
+        rcpp_result_gen = PROTECT(_PoissonBinomial_pgpb_na_try(obsSEXP, probsSEXP, val_pSEXP, val_qSEXP, refinedSEXP, lower_tailSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -876,29 +888,29 @@ static int _PoissonBinomial_RcppExport_validate(const char* sig) {
     static std::set<std::string> signatures;
     if (signatures.empty()) {
         signatures.insert("NumericVector(*dpb_conv)(IntegerVector,NumericVector)");
-        signatures.insert("NumericVector(*ppb_conv)(IntegerVector,NumericVector)");
+        signatures.insert("NumericVector(*ppb_conv)(IntegerVector,NumericVector,bool)");
         signatures.insert("NumericVector(*dpb_dc)(IntegerVector,NumericVector)");
-        signatures.insert("NumericVector(*ppb_dc)(IntegerVector,NumericVector)");
+        signatures.insert("NumericVector(*ppb_dc)(IntegerVector,NumericVector,bool)");
         signatures.insert("NumericVector(*dpb_dftcf)(IntegerVector,NumericVector)");
-        signatures.insert("NumericVector(*ppb_dftcf)(IntegerVector,NumericVector)");
+        signatures.insert("NumericVector(*ppb_dftcf)(IntegerVector,NumericVector,bool)");
         signatures.insert("NumericVector(*dpb_rf)(IntegerVector,NumericVector)");
-        signatures.insert("NumericVector(*ppb_rf)(IntegerVector,NumericVector)");
+        signatures.insert("NumericVector(*ppb_rf)(IntegerVector,NumericVector,bool)");
         signatures.insert("NumericVector(*dpb_mean)(IntegerVector,NumericVector)");
-        signatures.insert("NumericVector(*ppb_mean)(IntegerVector,NumericVector)");
+        signatures.insert("NumericVector(*ppb_mean)(IntegerVector,NumericVector,bool)");
         signatures.insert("NumericVector(*dpb_gmba)(IntegerVector,NumericVector,bool)");
-        signatures.insert("NumericVector(*ppb_gmba)(IntegerVector,NumericVector,bool)");
+        signatures.insert("NumericVector(*ppb_gmba)(IntegerVector,NumericVector,bool,bool)");
         signatures.insert("NumericVector(*dpb_pa)(IntegerVector,NumericVector)");
-        signatures.insert("NumericVector(*ppb_pa)(IntegerVector,NumericVector)");
+        signatures.insert("NumericVector(*ppb_pa)(IntegerVector,NumericVector,bool)");
         signatures.insert("NumericVector(*dpb_na)(IntegerVector,NumericVector,bool)");
-        signatures.insert("NumericVector(*ppb_na)(IntegerVector,NumericVector,bool)");
+        signatures.insert("NumericVector(*ppb_na)(IntegerVector,NumericVector,bool,bool)");
         signatures.insert("NumericVector(*dgpb_conv)(IntegerVector,NumericVector,NumericVector,NumericVector)");
-        signatures.insert("NumericVector(*pgpb_conv)(IntegerVector,NumericVector,NumericVector,NumericVector)");
+        signatures.insert("NumericVector(*pgpb_conv)(IntegerVector,NumericVector,NumericVector,NumericVector,bool)");
         signatures.insert("NumericVector(*dgpb_dc)(IntegerVector,NumericVector,NumericVector,NumericVector)");
-        signatures.insert("NumericVector(*pgpb_dc)(IntegerVector,NumericVector,NumericVector,NumericVector)");
+        signatures.insert("NumericVector(*pgpb_dc)(IntegerVector,NumericVector,NumericVector,NumericVector,bool)");
         signatures.insert("NumericVector(*dgpb_dftcf)(IntegerVector,NumericVector,NumericVector,NumericVector)");
-        signatures.insert("NumericVector(*pgpb_dftcf)(IntegerVector,NumericVector,NumericVector,NumericVector)");
+        signatures.insert("NumericVector(*pgpb_dftcf)(IntegerVector,NumericVector,NumericVector,NumericVector,bool)");
         signatures.insert("NumericVector(*dgpb_na)(IntegerVector,NumericVector,NumericVector,NumericVector,bool)");
-        signatures.insert("NumericVector(*pgpb_na)(IntegerVector,NumericVector,NumericVector,NumericVector,bool)");
+        signatures.insert("NumericVector(*pgpb_na)(IntegerVector,NumericVector,NumericVector,NumericVector,bool,bool)");
     }
     return signatures.find(sig) != signatures.end();
 }
@@ -935,29 +947,29 @@ RcppExport SEXP _PoissonBinomial_RcppExport_registerCCallable() {
 
 static const R_CallMethodDef CallEntries[] = {
     {"_PoissonBinomial_dpb_conv", (DL_FUNC) &_PoissonBinomial_dpb_conv, 2},
-    {"_PoissonBinomial_ppb_conv", (DL_FUNC) &_PoissonBinomial_ppb_conv, 2},
+    {"_PoissonBinomial_ppb_conv", (DL_FUNC) &_PoissonBinomial_ppb_conv, 3},
     {"_PoissonBinomial_dpb_dc", (DL_FUNC) &_PoissonBinomial_dpb_dc, 2},
-    {"_PoissonBinomial_ppb_dc", (DL_FUNC) &_PoissonBinomial_ppb_dc, 2},
+    {"_PoissonBinomial_ppb_dc", (DL_FUNC) &_PoissonBinomial_ppb_dc, 3},
     {"_PoissonBinomial_dpb_dftcf", (DL_FUNC) &_PoissonBinomial_dpb_dftcf, 2},
-    {"_PoissonBinomial_ppb_dftcf", (DL_FUNC) &_PoissonBinomial_ppb_dftcf, 2},
+    {"_PoissonBinomial_ppb_dftcf", (DL_FUNC) &_PoissonBinomial_ppb_dftcf, 3},
     {"_PoissonBinomial_dpb_rf", (DL_FUNC) &_PoissonBinomial_dpb_rf, 2},
-    {"_PoissonBinomial_ppb_rf", (DL_FUNC) &_PoissonBinomial_ppb_rf, 2},
+    {"_PoissonBinomial_ppb_rf", (DL_FUNC) &_PoissonBinomial_ppb_rf, 3},
     {"_PoissonBinomial_dpb_mean", (DL_FUNC) &_PoissonBinomial_dpb_mean, 2},
-    {"_PoissonBinomial_ppb_mean", (DL_FUNC) &_PoissonBinomial_ppb_mean, 2},
+    {"_PoissonBinomial_ppb_mean", (DL_FUNC) &_PoissonBinomial_ppb_mean, 3},
     {"_PoissonBinomial_dpb_gmba", (DL_FUNC) &_PoissonBinomial_dpb_gmba, 3},
-    {"_PoissonBinomial_ppb_gmba", (DL_FUNC) &_PoissonBinomial_ppb_gmba, 3},
+    {"_PoissonBinomial_ppb_gmba", (DL_FUNC) &_PoissonBinomial_ppb_gmba, 4},
     {"_PoissonBinomial_dpb_pa", (DL_FUNC) &_PoissonBinomial_dpb_pa, 2},
-    {"_PoissonBinomial_ppb_pa", (DL_FUNC) &_PoissonBinomial_ppb_pa, 2},
+    {"_PoissonBinomial_ppb_pa", (DL_FUNC) &_PoissonBinomial_ppb_pa, 3},
     {"_PoissonBinomial_dpb_na", (DL_FUNC) &_PoissonBinomial_dpb_na, 3},
-    {"_PoissonBinomial_ppb_na", (DL_FUNC) &_PoissonBinomial_ppb_na, 3},
+    {"_PoissonBinomial_ppb_na", (DL_FUNC) &_PoissonBinomial_ppb_na, 4},
     {"_PoissonBinomial_dgpb_conv", (DL_FUNC) &_PoissonBinomial_dgpb_conv, 4},
-    {"_PoissonBinomial_pgpb_conv", (DL_FUNC) &_PoissonBinomial_pgpb_conv, 4},
+    {"_PoissonBinomial_pgpb_conv", (DL_FUNC) &_PoissonBinomial_pgpb_conv, 5},
     {"_PoissonBinomial_dgpb_dc", (DL_FUNC) &_PoissonBinomial_dgpb_dc, 4},
-    {"_PoissonBinomial_pgpb_dc", (DL_FUNC) &_PoissonBinomial_pgpb_dc, 4},
+    {"_PoissonBinomial_pgpb_dc", (DL_FUNC) &_PoissonBinomial_pgpb_dc, 5},
     {"_PoissonBinomial_dgpb_dftcf", (DL_FUNC) &_PoissonBinomial_dgpb_dftcf, 4},
-    {"_PoissonBinomial_pgpb_dftcf", (DL_FUNC) &_PoissonBinomial_pgpb_dftcf, 4},
+    {"_PoissonBinomial_pgpb_dftcf", (DL_FUNC) &_PoissonBinomial_pgpb_dftcf, 5},
     {"_PoissonBinomial_dgpb_na", (DL_FUNC) &_PoissonBinomial_dgpb_na, 5},
-    {"_PoissonBinomial_pgpb_na", (DL_FUNC) &_PoissonBinomial_pgpb_na, 5},
+    {"_PoissonBinomial_pgpb_na", (DL_FUNC) &_PoissonBinomial_pgpb_na, 6},
     {"_PoissonBinomial_RcppExport_registerCCallable", (DL_FUNC) &_PoissonBinomial_RcppExport_registerCCallable, 0},
     {NULL, NULL, 0}
 };

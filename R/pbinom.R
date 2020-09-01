@@ -207,15 +207,15 @@ dpbinom <- function(x, probs, wts = NULL, method = "DivideFFT", log = FALSE){
         }else{
           # otherwise, compute distribution according to 'method'
           d[idx.x][idx.y] <- switch(method, DivideFFT = dpb_dc(z, probs),
-                                                      Convolve = dpb_conv(z, probs),
-                                                      Characteristic = dpb_dftcf(z, probs),
-                                                      Recursive = dpb_rf(z, probs),
-                                                      Mean = dpb_mean(z, probs),
-                                                      GeoMean = dpb_gmba(z, probs, FALSE),
-                                                      GeoMeanCounter = dpb_gmba(z, probs, TRUE),
-                                                      Poisson = dpb_pa(z, probs),
-                                                      Normal = dpb_na(z, probs, FALSE),
-                                                      RefinedNormal = dpb_na(z, probs, TRUE))
+                                            Convolve = dpb_conv(z, probs),
+                                            Characteristic = dpb_dftcf(z, probs),
+                                            Recursive = dpb_rf(z, probs),
+                                            Mean = dpb_mean(z, probs),
+                                            GeoMean = dpb_gmba(z, probs, FALSE),
+                                            GeoMeanCounter = dpb_gmba(z, probs, TRUE),
+                                            Poisson = dpb_pa(z, probs),
+                                            Normal = dpb_na(z, probs, FALSE),
+                                            RefinedNormal = dpb_na(z, probs, TRUE))
         }
       }
     }
@@ -309,19 +309,19 @@ ppbinom <- function(x, probs, wts = NULL, method = "DivideFFT", lower.tail = TRU
         }else{
           # otherwise, compute distribution according to 'method'
           d[idx.x][idx.y] <- switch(method,
-                                    DivideFFT = ppb_dc(z, probs),
-                                    Convolve = ppb_conv(z, probs),
-                                    Characteristic = ppb_dftcf(z, probs),
-                                    Recursive = ppb_rf(z, probs),
-                                    Mean = ppb_mean(z, probs),
-                                    GeoMean = ppb_gmba(z, probs, FALSE),
-                                    GeoMeanCounter = ppb_gmba(z, probs, TRUE),
-                                    Poisson = ppb_pa(z, probs),
-                                    Normal = ppb_na(z, probs, FALSE),
-                                    RefinedNormal = ppb_na(z, probs, TRUE))
+                                    DivideFFT = ppb_dc(z, probs, lower.tail),
+                                    Convolve = ppb_conv(z, probs, lower.tail),
+                                    Characteristic = ppb_dftcf(z, probs, lower.tail),
+                                    Recursive = ppb_rf(z, probs, lower.tail),
+                                    Mean = ppb_mean(z, probs, lower.tail),
+                                    GeoMean = ppb_gmba(z, probs, FALSE, lower.tail),
+                                    GeoMeanCounter = ppb_gmba(z, probs, TRUE, lower.tail),
+                                    Poisson = ppb_pa(z, probs, lower.tail),
+                                    Normal = ppb_na(z, probs, FALSE, lower.tail),
+                                    RefinedNormal = ppb_na(z, probs, TRUE, lower.tail))
           
           # compute counter-probabilities, if necessary
-          if(!lower.tail) d[idx.x][idx.y] <- 1 - d[idx.x][idx.y]
+          #if(!lower.tail) d[idx.x][idx.y] <- 1 - d[idx.x][idx.y]
         }
       }
     }
@@ -356,14 +356,6 @@ qpbinom <- function(p, probs, wts = NULL, method = "DivideFFT", lower.tail = TRU
   
   ## compute probabilities (does checking for the other variables)
   cdf <- ppbinom(NULL, probs, wts, method, lower.tail)
-  # limit to first appearance of 1
-  #idx1 <- which(cdf == 1)
-  #idx0 <- which(cdf == 0)
-  #if(lower.tail && length(idx1)){
-  #  cdf <- cdf[1:min(idx1)]
-  #}else if(!lower.tail && length(idx0)){
-  #  cdf <- cdf[1:min(idx0)]
-  #}
   
   # size of distribution
   size <- length(probs)
@@ -380,55 +372,51 @@ qpbinom <- function(p, probs, wts = NULL, method = "DivideFFT", lower.tail = TRU
   # reserve vector to store results
   res <- integer(length(p))
   
-  if(lower.tail){
-    # considering only the unique values in 'p' and sorting them saves time
-    for(pr in sort(unique(p[p > 0 & p < 1]))){
-      # identify positions of the current probability
-      idx <- which(p == pr)
-      # find the cdf value greater than current 'pr' value
-      while(pos < len && cdf[pos] <= pr) pos <- pos + 1L
-      # save respective observation (-1 because position k is for observation k - 1)
-      res[idx] <- pos - 1L
+  # order 'p' depending on if they are lower tail probabilities; save order
+  ord <- order(p, decreasing = !lower.tail)
+  p.s <- p[ord]
+  # convert 'lower.tail' to a numeric variable
+  lower.tail <- as.numeric(lower.tail)
+  # negative sign, if lower.tail = TRUE
+  sign <- (-1)^(1 - lower.tail)
+  cdf <- sign*cdf
+  # compute quantiles
+  for(i in 1:length(p.s)){
+    # handle 0's and 1's
+    if(p.s[i] == 1 - lower.tail){
+      res[i] <- (1 - lower.tail) * max(0, sum(probs == 1) - 1)
+      next
     }
-    idx <- which(p == 0)
-    if(length(idx)) res[idx] <- sum(probs == 1)
-    idx <- which(p == 1)
-    if(length(idx)) res[idx] <- size - length(which(probs == 0))
-  }else{
-    # considering only the unique values in 'p' and sorting them saves time
-    for(pr in sort(unique(p[p > 0 & p < 1]), decreasing = TRUE)){
-      # identify positions of the current probability
-      idx <- which(p == pr)
-      # find the cdf value smaller than or equal to current 'pr' value
-      while(pos < len && cdf[pos] >= pr) pos <- pos + 1L
-      # save respective observation (-1 because position k is for observation k - 1)
-      res[idx] <- pos - 1L
+    if(p.s[i] == lower.tail){
+      res[i] <- size - lower.tail * length(which(probs == 0))
+      next
     }
-    idx <- which(p == 1)
-    if(length(idx)) res[idx] <- sum(probs == 1)
-    idx <- which(p == 0)
-    if(length(idx)) res[idx] <- size - length(which(probs == 0))
+    # find the cdf value smaller than or equal to current 'p.s' value
+    while(pos < len && cdf[pos] < sign*p.s[i]) pos <- pos + 1L
+    # save respective observation (-1 because position k is for observation k - 1)
+    res[i] <- pos - 1L
   }
+  # arrange results in original order of 'p'
+  res <- res[order(ord)]
   
   # return results
   return(res)
 }
 
 #'@rdname PoissonBinomial-Distribution
+#'@importFrom stats runif
 #'@export
 rpbinom <- function(n, probs, wts = NULL, method = "DivideFFT"){
   len <- length(n)
   if(len > 1) n <- len
   
-  ## preliminary checks
   # check if 'n' is NULL
   if(is.null(n)) stop("'n' must not be NULL!")
   
-  ## compute random numbers
   # generate random probabilities
   p <- runif(n)
   
-  ## compute quantiles (does checking for the other variables)
+  # compute quantiles (does checking for the other variables)
   res <- qpbinom(p, probs, wts, method)
   
   # return results

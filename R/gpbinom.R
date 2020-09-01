@@ -257,14 +257,14 @@ pgpbinom <- function(x, probs, val_p, val_q, wts = NULL, method = "DivideFFT", l
         }else{
           # compute distribution according to 'method'
           d[idx.x][idx.y] <- switch(method,
-                                    DivideFFT = pgpb_dc(z, probs, val_p, val_q),
-                                    Convolve = pgpb_conv(z, probs, val_p, val_q),
-                                    Characteristic = pgpb_dftcf(z, probs, val_p, val_q),
-                                    Normal = pgpb_na(z, probs, val_p, val_q, FALSE),
-                                    RefinedNormal = pgpb_na(z, probs, val_p, val_q, TRUE))
+                                    DivideFFT = pgpb_dc(z, probs, val_p, val_q, lower.tail),
+                                    Convolve = pgpb_conv(z, probs, val_p, val_q, lower.tail),
+                                    Characteristic = pgpb_dftcf(z, probs, val_p, val_q, lower.tail),
+                                    Normal = pgpb_na(z, probs, val_p, val_q, FALSE, lower.tail),
+                                    RefinedNormal = pgpb_na(z, probs, val_p, val_q, TRUE, lower.tail))
           
           # compute counter-probabilities, if necessary
-          if(!lower.tail) d[idx.x][idx.y] <- 1 - d[idx.x][idx.y]
+          #if(!lower.tail && method < "Normal") d[idx.x][idx.y] <- 1 - d[idx.x][idx.y]
         }
       }
     }
@@ -322,38 +322,33 @@ qgpbinom <- function(p, probs, val_p, val_q, wts = NULL, method = "DivideFFT", l
   # reserve vector to store results
   res <- integer(length(p))
   
-  if(lower.tail){
-    # considering only the unique values in 'p' and sorting them saves time
-    for(pr in sort(unique(p[p > 0 & p < 1]))){
-      # identify positions of the current probability
-      idx <- which(p == pr)
-      # find the cdf value greater than current 'pr' value
-      while(pos < len && cdf[pos] <= pr) pos <- pos + 1L
-      # save respective observation (-1 because position k is for observation k - 1)
-      res[idx] <- pos
+  # order 'p' depending on if they are lower tail probabilities; save order
+  ord <- order(p, decreasing = !lower.tail)
+  p.s <- p[ord]
+  # negative sign, if lower.tail = TRUE
+  sign <- (-1)^as.numeric(!lower.tail)
+  cdf <- sign*cdf
+  # compute quantiles
+  for(i in 1:length(p.s)){
+    # handle 0's and 1's
+    if(p.s[i] == as.numeric(!lower.tail)){
+      res[i] <- ifelse(lower.tail, 0, first)#(1 - lower.tail) * max(0, (transf$complete.range[1] == transf$inner.range[1])) - first
+      next
     }
-    idx <- which(p == 0)
-    if(length(idx)) res[idx] <- as.numeric(transf$compl.range[1] == transf$inner.range[1])
-    idx <- which(p == 1)
-    if(length(idx)) res[idx] <- len
-  }else{
-    # considering only the unique values in 'p' and sorting them saves time
-    for(pr in sort(unique(p[p > 0 & p < 1]), decreasing = TRUE)){
-      # identify positions of the current probability
-      idx <- which(p == pr)
-      # find the cdf value smaller than or equal to current 'pr' value
-      while(pos < len && cdf[pos] >= pr) pos <- pos + 1L
-      # save respective observation (-1 because position k is for observation k - 1)
-      res[idx] <- pos
+    if(p.s[i] == as.numeric(lower.tail)){
+      res[i] <- ifelse(lower.tail, last, max(transf$compl.range))#len - 1L
+      next
     }
-    idx <- which(p == 1)
-    if(length(idx)) res[idx] <- as.numeric(transf$compl.range[1] == transf$inner.range[1])
-    idx <- which(p == 0)
-    if(length(idx)) res[idx] <- len
+    # find the cdf value smaller than or equal to current 'p.s' value
+    while(pos < len && cdf[pos] < sign*p.s[i]) pos <- pos + 1L
+    # save respective observation (-1 because position k is for observation k - 1)
+    res[i] <- pos - 1L + first
   }
+  # arrange results in original order of 'p'
+  res <- res[order(ord)]
   
   # return results
-  return(res + first - 1)
+  return(res)
 }
 
 #'@rdname GenPoissonBinomial-Distribution
@@ -363,15 +358,13 @@ rgpbinom <- function(n, probs, val_p, val_q, wts = NULL, method = "DivideFFT"){
   len <- length(n)
   if(len > 1) n <- len
   
-  ## preliminary checks
   # check if 'n' is NULL
   if(is.null(n)) stop("'n' must not be NULL!")
   
-  ## compute random numbers
   # generate random probabilities
   p <- runif(n)
   
-  ## compute quantiles (does checking for the other variables)
+  # compute quantiles (does checking for the other variables)
   res <- qgpbinom(p, probs, val_p, val_q, wts, method)
   
   # return results
