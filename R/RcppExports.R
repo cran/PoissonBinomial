@@ -8,7 +8,7 @@ dpb_conv <- function(obs, probs) {
     .Call(`_PoissonBinomial_dpb_conv`, obs, probs)
 }
 
-ppb_conv <- function(obs, probs, lower_tail) {
+ppb_conv <- function(obs, probs, lower_tail = TRUE) {
     .Call(`_PoissonBinomial_ppb_conv`, obs, probs, lower_tail)
 }
 
@@ -16,7 +16,7 @@ dpb_dc <- function(obs, probs) {
     .Call(`_PoissonBinomial_dpb_dc`, obs, probs)
 }
 
-ppb_dc <- function(obs, probs, lower_tail) {
+ppb_dc <- function(obs, probs, lower_tail = TRUE) {
     .Call(`_PoissonBinomial_ppb_dc`, obs, probs, lower_tail)
 }
 
@@ -24,7 +24,7 @@ dpb_dftcf <- function(obs, probs) {
     .Call(`_PoissonBinomial_dpb_dftcf`, obs, probs)
 }
 
-ppb_dftcf <- function(obs, probs, lower_tail) {
+ppb_dftcf <- function(obs, probs, lower_tail = TRUE) {
     .Call(`_PoissonBinomial_ppb_dftcf`, obs, probs, lower_tail)
 }
 
@@ -32,7 +32,7 @@ dpb_rf <- function(obs, probs) {
     .Call(`_PoissonBinomial_dpb_rf`, obs, probs)
 }
 
-ppb_rf <- function(obs, probs, lower_tail) {
+ppb_rf <- function(obs, probs, lower_tail = TRUE) {
     .Call(`_PoissonBinomial_ppb_rf`, obs, probs, lower_tail)
 }
 
@@ -40,15 +40,15 @@ dpb_mean <- function(obs, probs) {
     .Call(`_PoissonBinomial_dpb_mean`, obs, probs)
 }
 
-ppb_mean <- function(obs, probs, lower_tail) {
+ppb_mean <- function(obs, probs, lower_tail = TRUE) {
     .Call(`_PoissonBinomial_ppb_mean`, obs, probs, lower_tail)
 }
 
-dpb_gmba <- function(obs, probs, anti) {
+dpb_gmba <- function(obs, probs, anti = FALSE) {
     .Call(`_PoissonBinomial_dpb_gmba`, obs, probs, anti)
 }
 
-ppb_gmba <- function(obs, probs, anti, lower_tail) {
+ppb_gmba <- function(obs, probs, anti = FALSE, lower_tail = TRUE) {
     .Call(`_PoissonBinomial_ppb_gmba`, obs, probs, anti, lower_tail)
 }
 
@@ -56,23 +56,23 @@ dpb_pa <- function(obs, probs) {
     .Call(`_PoissonBinomial_dpb_pa`, obs, probs)
 }
 
-ppb_pa <- function(obs, probs, lower_tail) {
+ppb_pa <- function(obs, probs, lower_tail = TRUE) {
     .Call(`_PoissonBinomial_ppb_pa`, obs, probs, lower_tail)
 }
 
-dpb_na <- function(obs, probs, refined) {
-    .Call(`_PoissonBinomial_dpb_na`, obs, probs, refined)
+ppb_na <- function(obs, probs, refined = TRUE, lower_tail = TRUE) {
+    .Call(`_PoissonBinomial_ppb_na`, obs, probs, refined, lower_tail)
 }
 
-ppb_na <- function(obs, probs, refined, lower_tail) {
-    .Call(`_PoissonBinomial_ppb_na`, obs, probs, refined, lower_tail)
+dpb_na <- function(obs, probs, refined = TRUE) {
+    .Call(`_PoissonBinomial_dpb_na`, obs, probs, refined)
 }
 
 dgpb_conv <- function(obs, probs, val_p, val_q) {
     .Call(`_PoissonBinomial_dgpb_conv`, obs, probs, val_p, val_q)
 }
 
-pgpb_conv <- function(obs, probs, val_p, val_q, lower_tail) {
+pgpb_conv <- function(obs, probs, val_p, val_q, lower_tail = TRUE) {
     .Call(`_PoissonBinomial_pgpb_conv`, obs, probs, val_p, val_q, lower_tail)
 }
 
@@ -80,7 +80,7 @@ dgpb_dc <- function(obs, probs, val_p, val_q) {
     .Call(`_PoissonBinomial_dgpb_dc`, obs, probs, val_p, val_q)
 }
 
-pgpb_dc <- function(obs, probs, val_p, val_q, lower_tail) {
+pgpb_dc <- function(obs, probs, val_p, val_q, lower_tail = TRUE) {
     .Call(`_PoissonBinomial_pgpb_dc`, obs, probs, val_p, val_q, lower_tail)
 }
 
@@ -88,16 +88,16 @@ dgpb_dftcf <- function(obs, probs, val_p, val_q) {
     .Call(`_PoissonBinomial_dgpb_dftcf`, obs, probs, val_p, val_q)
 }
 
-pgpb_dftcf <- function(obs, probs, val_p, val_q, lower_tail) {
+pgpb_dftcf <- function(obs, probs, val_p, val_q, lower_tail = TRUE) {
     .Call(`_PoissonBinomial_pgpb_dftcf`, obs, probs, val_p, val_q, lower_tail)
 }
 
-dgpb_na <- function(obs, probs, val_p, val_q, refined) {
-    .Call(`_PoissonBinomial_dgpb_na`, obs, probs, val_p, val_q, refined)
+pgpb_na <- function(obs, probs, val_p, val_q, refined = TRUE, lower_tail = TRUE) {
+    .Call(`_PoissonBinomial_pgpb_na`, obs, probs, val_p, val_q, refined, lower_tail)
 }
 
-pgpb_na <- function(obs, probs, val_p, val_q, refined, lower_tail) {
-    .Call(`_PoissonBinomial_pgpb_na`, obs, probs, val_p, val_q, refined, lower_tail)
+dgpb_na <- function(obs, probs, val_p, val_q, refined = TRUE) {
+    .Call(`_PoissonBinomial_dgpb_na`, obs, probs, val_p, val_q, refined)
 }
 
 # Register entry points for exported C++ functions

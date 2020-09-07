@@ -1,3 +1,8 @@
+# PoissonBinomial 1.1.3
+
+* Improved numerical accuracy of normal approximations of `dpbinom` and 
+  `dgpbinom`.
+
 # PoissonBinomial 1.1.2
 
 * Bug fixes and performance improvements for `qpbinom` and `qgpbinom` that also

@@ -268,7 +268,7 @@ f7 <- function() dpbinom(NULL, runif(4000), method = "DivideFFT")
 microbenchmark(f1(), f2(), f3(), f4(), f5(), f6(), f7())
 ```
 
-Clearly, the NA procedure is the fastest, followed by the RNA and PA methods, which need roughly 35% (RNA) and 70% (PA) more time, and the AMBA and GMBA approaches that need 2-3 times as long as the NA algorithm. AMBA, GMBA-A and GMBA-B procedures exhibit almost equal mean execution speed, with the AMBA algorithm being slightly faster. All of the approximation procedures outperform the fastest exact approach, DC-FFT, by far. Even the slowest approximate algorithm is nearly five times as fast as DC-FFT.
+Clearly, the NA procedure is the fastest, followed by the RNA and PA methods, which need roughly 25% (RNA) and 40% (PA) more time, and the AMBA and GMBA approaches that need 2-3 times as long as the NA algorithm. AMBA, GMBA-A and GMBA-B procedures exhibit almost equal mean execution speed, with the AMBA algorithm being slightly faster. All of the approximation procedures outperform the fastest exact approach, DC-FFT, by far. Even the slowest approximate algorithm is nearly five times as fast as DC-FFT.
 
 
 ## Generalized Poisson Binomial Distribution
@@ -386,4 +386,4 @@ f3 <- function() dgpbinom(NULL, runif(n), va, vb, method = "DivideFFT")
 microbenchmark(f1(), f2(), f3())
 ```
 
-Clearly, the G-NA procedure is the fastest, followed by the G-RNA method, which needs roughly 50% more time. But even the slowest approximate algorithm is more than two times as fast as G-DC-FFT.
+Clearly, the G-NA procedure is the fastest, followed by the G-RNA method, which needs roughly 40% more time. But even the slowest approximate algorithm is more than two times as fast as G-DC-FFT.

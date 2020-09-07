@@ -96,7 +96,7 @@ IntegerVector order(IntegerVector x){
 /******************************************************************/
 
 // PMFs
-NumericVector dpb_conv(IntegerVector obs, NumericVector probs);
+/*NumericVector dpb_conv(IntegerVector obs, NumericVector probs);
 NumericVector dpb_dc(IntegerVector obs, NumericVector probs);
 NumericVector dpb_dftcf(IntegerVector obs, NumericVector probs);
 NumericVector dpb_rf(IntegerVector obs, NumericVector probs);
@@ -113,7 +113,7 @@ NumericVector ppb_rf(IntegerVector obs, NumericVector probs, bool lower_tail = t
 NumericVector ppb_mean(IntegerVector obs, NumericVector probs, bool lower_tail = true);
 NumericVector ppb_gmba(IntegerVector obs, NumericVector probs, bool anti = false, bool lower_tail = true);
 NumericVector ppb_pa(IntegerVector obs, NumericVector probs, bool lower_tail = true);
-NumericVector ppb_na(IntegerVector obs, NumericVector probs, bool refined = true, bool lower_tail = true);
+NumericVector ppb_na(IntegerVector obs, NumericVector probs, bool refined = true, bool lower_tail = true);*/
 
 // Direct Convolution
 // [[Rcpp::export]]
@@ -141,7 +141,7 @@ NumericVector dpb_conv(IntegerVector obs, NumericVector probs){
 }
 
 // [[Rcpp::export]]
-NumericVector ppb_conv(IntegerVector obs, NumericVector probs, bool lower_tail){
+NumericVector ppb_conv(IntegerVector obs, NumericVector probs, bool lower_tail = true){
   // number of input probabilities
   int size = probs.length();
   
@@ -298,7 +298,7 @@ NumericVector dpb_dc(IntegerVector obs, NumericVector probs){
 }
 
 // [[Rcpp::export]]
-NumericVector ppb_dc(IntegerVector obs, NumericVector probs, bool lower_tail){
+NumericVector ppb_dc(IntegerVector obs, NumericVector probs, bool lower_tail = true){
   // number of input probabilities
   int size = probs.length();
   
@@ -407,7 +407,7 @@ NumericVector dpb_dftcf(IntegerVector obs, NumericVector probs){
 }
 
 // [[Rcpp::export]]
-NumericVector ppb_dftcf(IntegerVector obs, NumericVector probs, bool lower_tail){
+NumericVector ppb_dftcf(IntegerVector obs, NumericVector probs, bool lower_tail = true){
   // number of input probabilities
   int size = probs.length();
   
@@ -467,7 +467,7 @@ NumericVector dpb_rf(IntegerVector obs, NumericVector probs){
 }
 
 // [[Rcpp::export]]
-NumericVector ppb_rf(IntegerVector obs, NumericVector probs, bool lower_tail){
+NumericVector ppb_rf(IntegerVector obs, NumericVector probs, bool lower_tail = true){
   // number of input probabilities
   int size = probs.length();
   
@@ -502,7 +502,7 @@ NumericVector dpb_mean(IntegerVector obs, NumericVector probs){
 }
 
 // [[Rcpp::export]]
-NumericVector ppb_mean(IntegerVector obs, NumericVector probs, bool lower_tail){
+NumericVector ppb_mean(IntegerVector obs, NumericVector probs, bool lower_tail = true){
   // mean of probabilities is the approximate binomial probability
   double bin_prob = mean(probs);
   
@@ -518,7 +518,7 @@ NumericVector ppb_mean(IntegerVector obs, NumericVector probs, bool lower_tail){
 
 // Geometric Mean Binomial Approximations
 // [[Rcpp::export]]
-NumericVector dpb_gmba(IntegerVector obs, NumericVector probs, bool anti){
+NumericVector dpb_gmba(IntegerVector obs, NumericVector probs, bool anti = false){
   // number of probabilities of success
   int size = probs.length();
   
@@ -543,7 +543,7 @@ NumericVector dpb_gmba(IntegerVector obs, NumericVector probs, bool anti){
 }
 
 // [[Rcpp::export]]
-NumericVector ppb_gmba(IntegerVector obs, NumericVector probs, bool anti, bool lower_tail){
+NumericVector ppb_gmba(IntegerVector obs, NumericVector probs, bool anti = false, bool lower_tail = true){
   // number of probabilities of success
   int size = probs.length();
   
@@ -584,7 +584,7 @@ NumericVector dpb_pa(IntegerVector obs, NumericVector probs){
 }
 
 // [[Rcpp::export]]
-NumericVector ppb_pa(IntegerVector obs, NumericVector probs, bool lower_tail){
+NumericVector ppb_pa(IntegerVector obs, NumericVector probs, bool lower_tail = true){
   // sum of probability is the expectation of the Poisson approximation
   double lambda = sum(probs);
   
@@ -601,18 +601,8 @@ NumericVector ppb_pa(IntegerVector obs, NumericVector probs, bool lower_tail){
   return results;
 }
 
-// Normal Approximations (NA, RNA)
 // [[Rcpp::export]]
-NumericVector dpb_na(IntegerVector obs, NumericVector probs, bool refined){
-  // cumulative probabilities
-  NumericVector cdf = ppb_na(IntegerVector(Range(0, max(obs))), probs, refined);
-  
-  // compute and return results
-  return dpb_generic(obs, probs, cdf);
-}
-
-// [[Rcpp::export]]
-NumericVector ppb_na(IntegerVector obs, NumericVector probs, bool refined, bool lower_tail){
+NumericVector ppb_na(IntegerVector obs, NumericVector probs, bool refined = true, bool lower_tail = true){
   // highest observed value
   int max_q = max(obs);
   // mu
@@ -638,12 +628,37 @@ NumericVector ppb_na(IntegerVector obs, NumericVector probs, bool refined, bool 
   results[results < 0] = 0;
   results[results > 1] = 1;
   
-  // make sure largest possible value has cumulative probability of 1
-  if(max_q == probs.length() && lower_tail)
-    results[obs == max_q] = 1;
+  // make sure largest possible value has cumulative probability of 1 (lower tail) or 0 (upper tail)
+  if(max_q == probs.length())
+    results[obs == max_q] = (double)lower_tail;
   
   // return final results
   return results;
+}
+
+// Normal Approximations (NA, RNA)
+// [[Rcpp::export]]
+NumericVector dpb_na(IntegerVector obs, NumericVector probs, bool refined = true){
+  // highest observed value
+  const int max_q = max(obs);
+  // rounded down expectation + 0.5 (continuity correction)
+  const int mid = (int)floor(sum(probs) + 0.5);
+  
+  // cumulative probabilities
+  NumericVector cdf_lower = ppb_na(IntegerVector(Range(0, std::min<int>(mid, max_q))), probs, refined, true);
+  NumericVector cdf_upper = ppb_na(IntegerVector(Range(std::min<int>(mid, max_q), max_q)), probs, refined, false);
+  
+  // vector to store results
+  NumericVector results(max_q + 1);
+  
+  // compute probability masses
+  results[0] = cdf_lower[0];
+  for(int i = 1; i <= max_q; i++){
+    if(i <= mid) results[i] = cdf_lower[i] - cdf_lower[i - 1]; else results[i] = cdf_upper[i - 1 - mid] - cdf_upper[i - mid];
+  }
+  
+  // compute and return results
+  return results[obs];//dpb_generic(obs, probs, cdf.lower);
 }
 
 
@@ -652,16 +667,16 @@ NumericVector ppb_na(IntegerVector obs, NumericVector probs, bool refined, bool 
 /******************************************************************/
 
 // PMFs
-NumericVector dgpb_conv(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q);
+/*NumericVector dgpb_conv(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q);
 NumericVector dgpb_dc(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q);
 NumericVector dgpb_dftcf(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q);
 NumericVector dgpb_na(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q, bool refined = true);
 
 // CDFs
-NumericVector pgpb_conv(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q, bool lower_tail = true);
+/*NumericVector pgpb_conv(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q, bool lower_tail = true);
 NumericVector pgpb_dc(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q, bool lower_tail = true);
 NumericVector pgpb_dftcf(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q, bool lower_tail = true);
-NumericVector pgpb_na(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q, bool refined = true, bool lower_tail = true);
+NumericVector pgpb_na(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q, bool refined = true, bool lower_tail = true);*/
 
 
 // Generalized Direct Convolution (G-DC)
@@ -714,7 +729,7 @@ NumericVector dgpb_conv(IntegerVector obs, NumericVector probs, NumericVector va
 }
 
 // [[Rcpp::export]]
-NumericVector pgpb_conv(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q, bool lower_tail){
+NumericVector pgpb_conv(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q, bool lower_tail = true){
   // probability masses
   NumericVector pmf = dgpb_conv(IntegerVector(Range(sum(pmin(val_p, val_q)), sum(pmax(val_p, val_q)))), probs, val_p, val_q);
   
@@ -842,7 +857,7 @@ NumericVector dgpb_dc(IntegerVector obs, NumericVector probs, NumericVector val_
 }
 
 // [[Rcpp::export]]
-NumericVector pgpb_dc(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q, bool lower_tail){
+NumericVector pgpb_dc(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q, bool lower_tail = true){
   // maximum observed value
   int max_q = max(obs);
   
@@ -949,7 +964,7 @@ NumericVector dgpb_dftcf(IntegerVector obs, NumericVector probs, NumericVector v
 }
 
 // [[Rcpp::export]]
-NumericVector pgpb_dftcf(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q, bool lower_tail){
+NumericVector pgpb_dftcf(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q, bool lower_tail = true){
   // maximum observed value
   int max_q = max(obs);
   
@@ -967,18 +982,8 @@ NumericVector pgpb_dftcf(IntegerVector obs, NumericVector probs, NumericVector v
   return results;
 }
 
-// Generalized Normal Approximations (G-NA, G-RNA)
 // [[Rcpp::export]]
-NumericVector dgpb_na(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q, bool refined){
-  // cumulative probabilities
-  NumericVector cdf = pgpb_na(IntegerVector(Range(sum(pmin(val_p, val_q)), max(obs))), probs, val_p, val_q, refined);
-  
-  // compute and return results
-  return dpb_generic(obs - sum(pmin(val_p, val_q)), probs, cdf);
-}
-
-// [[Rcpp::export]]
-NumericVector pgpb_na(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q, bool refined, bool lower_tail){
+NumericVector pgpb_na(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q, bool refined = true, bool lower_tail = true){
   // maximum observed value
   int max_q = max(obs);
   // mu
@@ -1006,9 +1011,36 @@ NumericVector pgpb_na(IntegerVector obs, NumericVector probs, NumericVector val_
   results[results > 1] = 1;
   
   // make sure largest possible value has cumulative probability of 1
-  if(max_q == sum(pmax(val_p, val_q)) && lower_tail)
-    results[obs == max_q] = 1;
+  if(max_q == sum(pmax(val_p, val_q)))
+    results[obs == max_q] = (double)lower_tail;
   
   // return final results
   return results;
+}
+
+// Generalized Normal Approximations (G-NA, G-RNA)
+// [[Rcpp::export]]
+NumericVector dgpb_na(IntegerVector obs, NumericVector probs, NumericVector val_p, NumericVector val_q, bool refined = true){
+  // smallest possible value
+  const int mini = sum(pmin(val_p, val_q));
+  // highest observed value
+  const int max_q = max(obs);
+  // rounded down expectation + 0.5 (continuity correction)
+  const int mid = (int)floor(sum(probs * val_p + (1 - probs) * val_q) + 0.5);
+  
+  // cumulative probabilities
+  NumericVector cdf_lower = pgpb_na(IntegerVector(Range(mini, std::min<int>(mid, max_q))), probs, val_p, val_q, refined, true);
+  NumericVector cdf_upper = pgpb_na(IntegerVector(Range(std::min<int>(mid, max_q), max_q)), probs, val_p, val_q, refined, false);
+  
+  // vector to store results
+  NumericVector results(max_q - mini + 1);
+  
+  // compute probability masses
+  results[0] = cdf_lower[0];
+  for(int i = 1; i <= max_q - mini; i++){
+    if(i + mini <= mid) results[i] = cdf_lower[i] - cdf_lower[i - 1]; else results[i] = cdf_upper[i - 1 - mid + mini] - cdf_upper[i - mid + mini];
+  }
+  
+  // compute and return results
+  return results[obs - mini];
 }

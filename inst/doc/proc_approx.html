@@ -714,8 +714,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb9-14"><a href="#cb9-14"></a><span class="co">#&gt; [41] 5.567468e-02 3.419491e-02 1.883477e-02 9.303614e-03 4.121280e-03</span></span>
 <span id="cb9-15"><a href="#cb9-15"></a><span class="co">#&gt; [46] 1.637186e-03 5.832371e-04 1.863241e-04 5.337829e-05 1.371282e-05</span></span>
 <span id="cb9-16"><a href="#cb9-16"></a><span class="co">#&gt; [51] 3.159002e-06 6.525712e-07 1.208800e-07 2.007813e-08 2.990389e-09</span></span>
-<span id="cb9-17"><a href="#cb9-17"></a><span class="co">#&gt; [56] 3.993563e-10 4.782064e-11 5.134337e-12 4.942713e-13 4.263256e-14</span></span>
-<span id="cb9-18"><a href="#cb9-18"></a><span class="co">#&gt; [61] 3.330669e-15 2.220446e-16</span></span>
+<span id="cb9-17"><a href="#cb9-17"></a><span class="co">#&gt; [56] 3.993563e-10 4.782059e-11 5.134327e-12 4.942641e-13 4.266130e-14</span></span>
+<span id="cb9-18"><a href="#cb9-18"></a><span class="co">#&gt; [61] 3.301422e-15 2.441468e-16</span></span>
 <span id="cb9-19"><a href="#cb9-19"></a><span class="kw">ppbinom</span>(<span class="ot">NULL</span>, pp, wt, <span class="st">&quot;Normal&quot;</span>)</span>
 <span id="cb9-20"><a href="#cb9-20"></a><span class="co">#&gt;  [1] 2.552770e-32 1.233362e-30 5.342987e-29 2.075452e-27 7.229330e-26</span></span>
 <span id="cb9-21"><a href="#cb9-21"></a><span class="co">#&gt;  [6] 2.258210e-24 6.326123e-23 1.589449e-21 3.581977e-20 7.241039e-19</span></span>
@@ -758,7 +758,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb10-25"><a href="#cb10-25"></a>idx &lt;-<span class="st"> </span><span class="kw">which</span>(dpn <span class="op">!=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>dpd <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>)</span>
 <span id="cb10-26"><a href="#cb10-26"></a><span class="kw">summary</span>((dpn <span class="op">-</span><span class="st"> </span>dpd)[idx])</span>
 <span id="cb10-27"><a href="#cb10-27"></a><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></span>
-<span id="cb10-28"><a href="#cb10-28"></a><span class="co">#&gt; -4.484e-09  0.000e+00  8.990e-13  0.000e+00  4.919e-10  2.734e-09</span></span></code></pre></div>
+<span id="cb10-28"><a href="#cb10-28"></a><span class="co">#&gt; -4.484e-09  0.000e+00  8.700e-13  0.000e+00  4.911e-10  2.734e-09</span></span></code></pre></div>
 </div>
 <div id="refined-normal-approximation" class="section level3">
 <h3>Refined Normal Approximation</h3>
@@ -823,7 +823,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb12-25"><a href="#cb12-25"></a>idx &lt;-<span class="st"> </span><span class="kw">which</span>(dpn <span class="op">!=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>dpd <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>)</span>
 <span id="cb12-26"><a href="#cb12-26"></a><span class="kw">summary</span>((dpn <span class="op">-</span><span class="st"> </span>dpd)[idx])</span>
 <span id="cb12-27"><a href="#cb12-27"></a><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></span>
-<span id="cb12-28"><a href="#cb12-28"></a><span class="co">#&gt; -3.126e-09  0.000e+00  6.337e-13  0.000e+00  4.632e-10  2.293e-09</span></span></code></pre></div>
+<span id="cb12-28"><a href="#cb12-28"></a><span class="co">#&gt; -3.126e-09  0.000e+00  6.157e-13  0.000e+00  4.608e-10  2.293e-09</span></span></code></pre></div>
 </div>
 <div id="processing-speed-comparisons" class="section level3">
 <h3>Processing Speed Comparisons</h3>
@@ -841,15 +841,15 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb13-11"><a href="#cb13-11"></a></span>
 <span id="cb13-12"><a href="#cb13-12"></a><span class="kw">microbenchmark</span>(<span class="kw">f1</span>(), <span class="kw">f2</span>(), <span class="kw">f3</span>(), <span class="kw">f4</span>(), <span class="kw">f5</span>(), <span class="kw">f6</span>(), <span class="kw">f7</span>())</span>
 <span id="cb13-13"><a href="#cb13-13"></a><span class="co">#&gt; Unit: microseconds</span></span>
-<span id="cb13-14"><a href="#cb13-14"></a><span class="co">#&gt;  expr    min      lq     mean  median      uq     max neval  cld</span></span>
-<span id="cb13-15"><a href="#cb13-15"></a><span class="co">#&gt;  f1()  548.3  565.80  637.377  593.85  611.10  3855.5   100 a   </span></span>
-<span id="cb13-16"><a href="#cb13-16"></a><span class="co">#&gt;  f2()  702.6  739.00  835.456  754.70  779.15  4338.0   100 ab  </span></span>
-<span id="cb13-17"><a href="#cb13-17"></a><span class="co">#&gt;  f3()  916.2  943.50 1062.446  992.90 1021.85  4555.0   100  b  </span></span>
-<span id="cb13-18"><a href="#cb13-18"></a><span class="co">#&gt;  f4() 1338.0 1393.90 1438.494 1433.95 1462.95  2536.7   100   c </span></span>
-<span id="cb13-19"><a href="#cb13-19"></a><span class="co">#&gt;  f5() 1489.3 1546.10 1599.437 1602.00 1621.00  2890.8   100   c </span></span>
-<span id="cb13-20"><a href="#cb13-20"></a><span class="co">#&gt;  f6() 1477.5 1547.65 1663.047 1592.65 1623.30  5222.0   100   c </span></span>
-<span id="cb13-21"><a href="#cb13-21"></a><span class="co">#&gt;  f7() 6615.1 6885.35 7774.269 7037.25 7303.45 14951.6   100    d</span></span></code></pre></div>
-<p>Clearly, the NA procedure is the fastest, followed by the RNA and PA methods, which need roughly 35% (RNA) and 70% (PA) more time, and the AMBA and GMBA approaches that need 2-3 times as long as the NA algorithm. AMBA, GMBA-A and GMBA-B procedures exhibit almost equal mean execution speed, with the AMBA algorithm being slightly faster. All of the approximation procedures outperform the fastest exact approach, DC-FFT, by far. Even the slowest approximate algorithm is nearly five times as fast as DC-FFT.</p>
+<span id="cb13-14"><a href="#cb13-14"></a><span class="co">#&gt;  expr    min      lq     mean  median      uq     max neval cld</span></span>
+<span id="cb13-15"><a href="#cb13-15"></a><span class="co">#&gt;  f1()  591.8  635.60  719.911  644.00  674.30  3667.4   100 a  </span></span>
+<span id="cb13-16"><a href="#cb13-16"></a><span class="co">#&gt;  f2()  750.2  799.75  898.596  811.65  832.25  4660.5   100 a  </span></span>
+<span id="cb13-17"><a href="#cb13-17"></a><span class="co">#&gt;  f3()  921.6  976.25 1001.239  990.05 1004.25  1988.9   100 a  </span></span>
+<span id="cb13-18"><a href="#cb13-18"></a><span class="co">#&gt;  f4() 1354.5 1422.85 1492.410 1446.00 1477.10  4868.6   100  b </span></span>
+<span id="cb13-19"><a href="#cb13-19"></a><span class="co">#&gt;  f5() 1499.2 1592.95 1694.790 1613.20 1643.10  8878.2   100  b </span></span>
+<span id="cb13-20"><a href="#cb13-20"></a><span class="co">#&gt;  f6() 1477.8 1586.15 1679.647 1605.90 1626.05  5192.8   100  b </span></span>
+<span id="cb13-21"><a href="#cb13-21"></a><span class="co">#&gt;  f7() 6711.2 6959.10 7764.820 7081.80 7352.00 14006.3   100   c</span></span></code></pre></div>
+<p>Clearly, the NA procedure is the fastest, followed by the RNA and PA methods, which need roughly 25% (RNA) and 40% (PA) more time, and the AMBA and GMBA approaches that need 2-3 times as long as the NA algorithm. AMBA, GMBA-A and GMBA-B procedures exhibit almost equal mean execution speed, with the AMBA algorithm being slightly faster. All of the approximation procedures outperform the fastest exact approach, DC-FFT, by far. Even the slowest approximate algorithm is nearly five times as fast as DC-FFT.</p>
 </div>
 </div>
 <div id="generalized-poisson-binomial-distribution" class="section level2">
@@ -972,7 +972,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb15-20"><a href="#cb15-20"></a>idx &lt;-<span class="st"> </span><span class="kw">which</span>(dpn <span class="op">!=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>dpd <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>)</span>
 <span id="cb15-21"><a href="#cb15-21"></a><span class="kw">summary</span>((dpn <span class="op">-</span><span class="st"> </span>dpd)[idx])</span>
 <span id="cb15-22"><a href="#cb15-22"></a><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></span>
-<span id="cb15-23"><a href="#cb15-23"></a><span class="co">#&gt; -3.006e-05 -1.862e-07  0.000e+00  0.000e+00  1.759e-07  2.967e-05</span></span>
+<span id="cb15-23"><a href="#cb15-23"></a><span class="co">#&gt; -3.006e-05 -1.126e-09  0.000e+00  0.000e+00  1.854e-09  2.967e-05</span></span>
 <span id="cb15-24"><a href="#cb15-24"></a></span>
 <span id="cb15-25"><a href="#cb15-25"></a><span class="co"># 1000 random probabilities of success</span></span>
 <span id="cb15-26"><a href="#cb15-26"></a>pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">1000</span>)</span>
@@ -983,7 +983,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb15-31"><a href="#cb15-31"></a>idx &lt;-<span class="st"> </span><span class="kw">which</span>(dpn <span class="op">!=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>dpd <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>)</span>
 <span id="cb15-32"><a href="#cb15-32"></a><span class="kw">summary</span>((dpn <span class="op">-</span><span class="st"> </span>dpd)[idx])</span>
 <span id="cb15-33"><a href="#cb15-33"></a><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></span>
-<span id="cb15-34"><a href="#cb15-34"></a><span class="co">#&gt; -3.152e-08  0.000e+00  3.090e-12  0.000e+00  9.001e-10  3.707e-08</span></span></code></pre></div>
+<span id="cb15-34"><a href="#cb15-34"></a><span class="co">#&gt; -3.152e-08  0.000e+00  3.060e-12  0.000e+00  8.991e-10  3.707e-08</span></span></code></pre></div>
 </div>
 <div id="generalized-refined-normal-approximation" class="section level3">
 <h3>Generalized Refined Normal Approximation</h3>
@@ -1102,7 +1102,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb17-20"><a href="#cb17-20"></a>idx &lt;-<span class="st"> </span><span class="kw">which</span>(dpn <span class="op">!=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>dpd <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>)</span>
 <span id="cb17-21"><a href="#cb17-21"></a><span class="kw">summary</span>((dpn <span class="op">-</span><span class="st"> </span>dpd)[idx])</span>
 <span id="cb17-22"><a href="#cb17-22"></a><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></span>
-<span id="cb17-23"><a href="#cb17-23"></a><span class="co">#&gt; -8.831e-06  0.000e+00  6.375e-09  1.200e-11  8.662e-07  1.333e-05</span></span>
+<span id="cb17-23"><a href="#cb17-23"></a><span class="co">#&gt; -8.831e-06  0.000e+00  1.000e-12  9.000e-12  3.642e-07  1.333e-05</span></span>
 <span id="cb17-24"><a href="#cb17-24"></a></span>
 <span id="cb17-25"><a href="#cb17-25"></a><span class="co"># 1000 random probabilities of success</span></span>
 <span id="cb17-26"><a href="#cb17-26"></a>pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">1000</span>)</span>
@@ -1113,7 +1113,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb17-31"><a href="#cb17-31"></a>idx &lt;-<span class="st"> </span><span class="kw">which</span>(dpn <span class="op">!=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>dpd <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>)</span>
 <span id="cb17-32"><a href="#cb17-32"></a><span class="kw">summary</span>((dpn <span class="op">-</span><span class="st"> </span>dpd)[idx])</span>
 <span id="cb17-33"><a href="#cb17-33"></a><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></span>
-<span id="cb17-34"><a href="#cb17-34"></a><span class="co">#&gt; -1.980e-08  0.000e+00  5.010e-12  0.000e+00  1.564e-09  3.197e-08</span></span></code></pre></div>
+<span id="cb17-34"><a href="#cb17-34"></a><span class="co">#&gt; -1.980e-08  0.000e+00  4.960e-12  0.000e+00  1.561e-09  3.197e-08</span></span></code></pre></div>
 </div>
 <div id="processing-speed-comparisons-1" class="section level3">
 <h3>Processing Speed Comparisons</h3>
@@ -1131,10 +1131,10 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb18-11"><a href="#cb18-11"></a><span class="kw">microbenchmark</span>(<span class="kw">f1</span>(), <span class="kw">f2</span>(), <span class="kw">f3</span>())</span>
 <span id="cb18-12"><a href="#cb18-12"></a><span class="co">#&gt; Unit: milliseconds</span></span>
 <span id="cb18-13"><a href="#cb18-13"></a><span class="co">#&gt;  expr    min      lq     mean  median      uq     max neval cld</span></span>
-<span id="cb18-14"><a href="#cb18-14"></a><span class="co">#&gt;  f1() 2.0510 2.15805 2.334147 2.21725 2.27610  4.9959   100 a  </span></span>
-<span id="cb18-15"><a href="#cb18-15"></a><span class="co">#&gt;  f2() 2.7882 2.92005 3.144919 2.98155 3.09890  5.8400   100  b </span></span>
-<span id="cb18-16"><a href="#cb18-16"></a><span class="co">#&gt;  f3() 4.9222 5.27050 7.360063 7.53015 8.00875 13.8853   100   c</span></span></code></pre></div>
-<p>Clearly, the G-NA procedure is the fastest, followed by the G-RNA method, which needs roughly 50% more time. But even the slowest approximate algorithm is more than two times as fast as G-DC-FFT.</p>
+<span id="cb18-14"><a href="#cb18-14"></a><span class="co">#&gt;  f1() 2.1993 2.33245 2.509784 2.37270 2.44740  5.1839   100 a  </span></span>
+<span id="cb18-15"><a href="#cb18-15"></a><span class="co">#&gt;  f2() 2.9052 3.09900 3.315057 3.14650 3.25095  6.1022   100  b </span></span>
+<span id="cb18-16"><a href="#cb18-16"></a><span class="co">#&gt;  f3() 4.9926 5.33495 7.198516 7.19075 8.02795 13.4710   100   c</span></span></code></pre></div>
+<p>Clearly, the G-NA procedure is the fastest, followed by the G-RNA method, which needs roughly 40% more time. But even the slowest approximate algorithm is more than two times as fast as G-DC-FFT.</p>
 </div>
 </div>
 
