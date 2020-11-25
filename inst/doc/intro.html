@@ -30,6 +30,54 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
+<style type="text/css">
+a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
+a.anchor-section::before {content: '#';}
+.hasAnchor:hover a.anchor-section {visibility: visible;}
+</style>
+<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
+document.addEventListener('DOMContentLoaded', function() {
+  // Do nothing if AnchorJS is used
+  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
+    return;
+  }
+
+  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+  // Do nothing if sections are already anchored
+  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
+    return null;
+  }
+
+  // Use section id when pandoc runs with --section-divs
+  const section_id = function(x) {
+    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
+            ? x.id : '');
+  };
+
+  // Add anchors
+  h.forEach(function(x) {
+    const id = x.id || section_id(x.parentElement);
+    if (id === '') {
+      return null;
+    }
+    let anchor = document.createElement('a');
+    anchor.href = '#' + id;
+    anchor.classList = ['anchor-section'];
+    x.classList.add('hasAnchor');
+    x.appendChild(anchor);
+  });
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -444,24 +492,36 @@ Using the deductions from above, we can only observe an “inner” distribution
 <span id="cb1-2"><a href="#cb1-2"></a><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">rep</span>(<span class="fl">0.3</span>, <span class="dv">7</span>))</span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="co">#&gt; [1] 0.0823543 0.2470629 0.3176523 0.2268945 0.0972405 0.0250047 0.0035721</span></span>
 <span id="cb1-4"><a href="#cb1-4"></a><span class="co">#&gt; [8] 0.0002187</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="kw">dbinom</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">7</span>, <span class="dv">7</span>, <span class="fl">0.3</span>)</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="kw">dbinom</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">7</span>, <span class="dv">7</span>, <span class="fl">0.3</span>) <span class="co"># equal results</span></span>
 <span id="cb1-6"><a href="#cb1-6"></a><span class="co">#&gt; [1] 0.0823543 0.2470629 0.3176523 0.2268945 0.0972405 0.0250047 0.0035721</span></span>
 <span id="cb1-7"><a href="#cb1-7"></a><span class="co">#&gt; [8] 0.0002187</span></span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="co"># equal results</span></span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>))</span>
+<span id="cb1-8"><a href="#cb1-8"></a></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)) <span class="co"># only 0 is observable</span></span>
 <span id="cb1-10"><a href="#cb1-10"></a><span class="co">#&gt; [1] 1 0 0 0 0 0 0 0</span></span>
-<span id="cb1-11"><a href="#cb1-11"></a><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>))</span>
-<span id="cb1-12"><a href="#cb1-12"></a><span class="co">#&gt; [1] 0 0 0 0 0 0 0 1</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="kw">dpbinom</span>(<span class="dv">0</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)) <span class="co"># confirmation</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="co">#&gt; [1] 1</span></span>
 <span id="cb1-13"><a href="#cb1-13"></a></span>
-<span id="cb1-14"><a href="#cb1-14"></a><span class="co"># Case 2</span></span>
-<span id="cb1-15"><a href="#cb1-15"></a><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>))</span>
-<span id="cb1-16"><a href="#cb1-16"></a><span class="co">#&gt; [1] 0 0 0 1 0 0 0 0</span></span>
-<span id="cb1-17"><a href="#cb1-17"></a></span>
-<span id="cb1-18"><a href="#cb1-18"></a><span class="co"># Case 3</span></span>
-<span id="cb1-19"><a href="#cb1-19"></a><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.8</span>, <span class="dv">1</span>))</span>
-<span id="cb1-20"><a href="#cb1-20"></a><span class="co">#&gt; [1] 0.0000 0.0864 0.4344 0.3784 0.0944 0.0064 0.0000 0.0000</span></span>
-<span id="cb1-21"><a href="#cb1-21"></a><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.4</span>, <span class="dv">1</span>))</span>
-<span id="cb1-22"><a href="#cb1-22"></a><span class="co">#&gt; [1] 0.0 0.6 0.4 0.0 0.0</span></span></code></pre></div>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)) <span class="co"># only 7 is observable</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="co">#&gt; [1] 0 0 0 0 0 0 0 1</span></span>
+<span id="cb1-16"><a href="#cb1-16"></a><span class="kw">dpbinom</span>(<span class="dv">7</span>, <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)) <span class="co"># confirmation</span></span>
+<span id="cb1-17"><a href="#cb1-17"></a><span class="co">#&gt; [1] 1</span></span>
+<span id="cb1-18"><a href="#cb1-18"></a></span>
+<span id="cb1-19"><a href="#cb1-19"></a><span class="co"># Case 2</span></span>
+<span id="cb1-20"><a href="#cb1-20"></a><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)) <span class="co"># only 3 is observable</span></span>
+<span id="cb1-21"><a href="#cb1-21"></a><span class="co">#&gt; [1] 0 0 0 1 0 0 0 0</span></span>
+<span id="cb1-22"><a href="#cb1-22"></a><span class="kw">dpbinom</span>(<span class="dv">3</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)) <span class="co"># confirmation</span></span>
+<span id="cb1-23"><a href="#cb1-23"></a><span class="co">#&gt; [1] 1</span></span>
+<span id="cb1-24"><a href="#cb1-24"></a></span>
+<span id="cb1-25"><a href="#cb1-25"></a><span class="co"># Case 3</span></span>
+<span id="cb1-26"><a href="#cb1-26"></a><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.8</span>, <span class="dv">1</span>)) <span class="co"># only 1-5 are observable</span></span>
+<span id="cb1-27"><a href="#cb1-27"></a><span class="co">#&gt; [1] 0.0000 0.0864 0.4344 0.3784 0.0944 0.0064 0.0000 0.0000</span></span>
+<span id="cb1-28"><a href="#cb1-28"></a><span class="kw">dpbinom</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.8</span>, <span class="dv">1</span>)) <span class="co"># confirmation</span></span>
+<span id="cb1-29"><a href="#cb1-29"></a><span class="co">#&gt; [1] 0.0864 0.4344 0.3784 0.0944 0.0064</span></span>
+<span id="cb1-30"><a href="#cb1-30"></a></span>
+<span id="cb1-31"><a href="#cb1-31"></a><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.4</span>, <span class="dv">1</span>)) <span class="co"># only 1 and 2 are observable</span></span>
+<span id="cb1-32"><a href="#cb1-32"></a><span class="co">#&gt; [1] 0.0 0.6 0.4 0.0 0.0</span></span>
+<span id="cb1-33"><a href="#cb1-33"></a><span class="kw">dpbinom</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.4</span>, <span class="dv">1</span>)) <span class="co"># confirmation</span></span>
+<span id="cb1-34"><a href="#cb1-34"></a><span class="co">#&gt; [1] 0.6 0.4</span></span></code></pre></div>
 </div>
 <div id="generalized-poisson-binomial-distributions" class="section level3">
 <h3>Generalized Poisson Binomial Distributions</h3>
@@ -469,7 +529,7 @@ Using the deductions from above, we can only observe an “inner” distribution
 <li>All <span class="math inline">\(u_i \in \{0, 1\}\)</span> and all <span class="math inline">\(v_i = 1 - u_i\)</span>?<br />
 Then, it is an ordinary Poisson binomial distribution with parameters <span class="math inline">\(p_i&#39; = p_i\)</span> for all <span class="math inline">\(i\)</span> for which <span class="math inline">\(u_i = 1\)</span> and <span class="math inline">\(p_i&#39; = 1 - p_i\)</span> otherwise. This includes all the special cases described above.</li>
 <li>All <span class="math inline">\(u_i = u\)</span> are equal and all <span class="math inline">\(v_i = v\)</span> are equal?<br />
-In this case, we have a linearly transformed ordinary Poisson binomial distribution, i.e. <span class="math inline">\(N\)</span> can be expressed as <span class="math inline">\(X = uY + v(n - Y)\)</span> with <span class="math inline">\(Y \sim PBin(p_1, ..., p_n)\)</span>. In particular, if all <span class="math inline">\(p_i = p\)</span> are also the same, we have a linear transformation of the usual binomial distribution, i.e. <span class="math inline">\(X = uZ + v(n - Z)\)</span> with <span class="math inline">\(Z \sim Bin(n, p)\)</span>. Summarizing this, the following applies:
+In this case, we have a linearly transformed ordinary Poisson binomial distribution, i.e. <span class="math inline">\(X\)</span> can be expressed as <span class="math inline">\(X = uY + v(n - Y)\)</span> with <span class="math inline">\(Y \sim PBin(p_1, ..., p_n)\)</span>. In particular, if all <span class="math inline">\(p_i = p\)</span> are also the same, we have a linear transformation of the usual binomial distribution, i.e. <span class="math inline">\(X = uZ + v(n - Z)\)</span> with <span class="math inline">\(Z \sim Bin(n, p)\)</span>. Summarizing this, the following applies:
 <ol style="list-style-type: lower-alpha">
 <li>All <span class="math inline">\(p_i = 0\)</span>: The only observable value is <span class="math inline">\(n \cdot v\)</span>, i.e. <span class="math inline">\(P(X = n \cdot v) = 1\)</span> and <span class="math inline">\(P(X \neq n \cdot v) = 0\)</span>.</li>
 <li>All <span class="math inline">\(p_i = 1\)</span>: The only observable value is <span class="math inline">\(n \cdot u\)</span>, i.e. <span class="math inline">\(P(X = n \cdot u) = 1\)</span> and <span class="math inline">\(P(X \neq n \cdot u) = 0\)</span>.</li>
@@ -497,102 +557,92 @@ Let <span class="math inline">\(I\)</span>, <span class="math inline">\(J\)</spa
 <span id="cb2-7"><a href="#cb2-7"></a><span class="kw">dgpbinom</span>(<span class="ot">NULL</span>, pp, <span class="kw">rep</span>(<span class="dv">1</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">7</span>))</span>
 <span id="cb2-8"><a href="#cb2-8"></a><span class="co">#&gt; [1] 8.114776e-05 3.112722e-03 4.063146e-02 2.115237e-01 3.793308e-01</span></span>
 <span id="cb2-9"><a href="#cb2-9"></a><span class="co">#&gt; [6] 2.735489e-01 8.297278e-02 8.798512e-03</span></span>
-<span id="cb2-10"><a href="#cb2-10"></a><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, pp)</span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, pp) <span class="co"># equal results</span></span>
 <span id="cb2-11"><a href="#cb2-11"></a><span class="co">#&gt; [1] 8.114776e-05 3.112722e-03 4.063146e-02 2.115237e-01 3.793308e-01</span></span>
 <span id="cb2-12"><a href="#cb2-12"></a><span class="co">#&gt; [6] 2.735489e-01 8.297278e-02 8.798512e-03</span></span>
-<span id="cb2-13"><a href="#cb2-13"></a><span class="co"># equal results</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a></span>
 <span id="cb2-14"><a href="#cb2-14"></a><span class="kw">dgpbinom</span>(<span class="ot">NULL</span>, pp, <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="dv">1</span>, <span class="dv">7</span>))</span>
 <span id="cb2-15"><a href="#cb2-15"></a><span class="co">#&gt; [1] 8.798512e-03 8.297278e-02 2.735489e-01 3.793308e-01 2.115237e-01</span></span>
 <span id="cb2-16"><a href="#cb2-16"></a><span class="co">#&gt; [6] 4.063146e-02 3.112722e-03 8.114776e-05</span></span>
-<span id="cb2-17"><a href="#cb2-17"></a><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="dv">1</span> <span class="op">-</span><span class="st"> </span>pp)</span>
+<span id="cb2-17"><a href="#cb2-17"></a><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="dv">1</span> <span class="op">-</span><span class="st"> </span>pp) <span class="co"># equal results</span></span>
 <span id="cb2-18"><a href="#cb2-18"></a><span class="co">#&gt; [1] 8.798512e-03 8.297278e-02 2.735489e-01 3.793308e-01 2.115237e-01</span></span>
 <span id="cb2-19"><a href="#cb2-19"></a><span class="co">#&gt; [6] 4.063146e-02 3.112722e-03 8.114776e-05</span></span>
-<span id="cb2-20"><a href="#cb2-20"></a><span class="co"># equal results</span></span>
+<span id="cb2-20"><a href="#cb2-20"></a></span>
 <span id="cb2-21"><a href="#cb2-21"></a><span class="kw">dgpbinom</span>(<span class="ot">NULL</span>, pp, <span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">4</span>)), <span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">3</span>), <span class="kw">rep</span>(<span class="dv">1</span>, <span class="dv">4</span>)))</span>
 <span id="cb2-22"><a href="#cb2-22"></a><span class="co">#&gt; [1] 3.062225e-02 1.998504e-01 3.769239e-01 2.828424e-01 9.450797e-02</span></span>
 <span id="cb2-23"><a href="#cb2-23"></a><span class="co">#&gt; [6] 1.426764e-02 9.620692e-04 2.331571e-05</span></span>
-<span id="cb2-24"><a href="#cb2-24"></a><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(pp[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dv">1</span> <span class="op">-</span><span class="st"> </span>pp[<span class="dv">4</span><span class="op">:</span><span class="dv">7</span>])) <span class="co"># reorder for 0 and 1</span></span>
+<span id="cb2-24"><a href="#cb2-24"></a><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(pp[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dv">1</span> <span class="op">-</span><span class="st"> </span>pp[<span class="dv">4</span><span class="op">:</span><span class="dv">7</span>])) <span class="co"># reorder for 0 and 1; equal results</span></span>
 <span id="cb2-25"><a href="#cb2-25"></a><span class="co">#&gt; [1] 3.062225e-02 1.998504e-01 3.769239e-01 2.828424e-01 9.450797e-02</span></span>
 <span id="cb2-26"><a href="#cb2-26"></a><span class="co">#&gt; [6] 1.426764e-02 9.620692e-04 2.331571e-05</span></span>
-<span id="cb2-27"><a href="#cb2-27"></a><span class="co"># equal results</span></span>
-<span id="cb2-28"><a href="#cb2-28"></a></span>
-<span id="cb2-29"><a href="#cb2-29"></a><span class="co"># Case 2 a)</span></span>
-<span id="cb2-30"><a href="#cb2-30"></a><span class="kw">dgpbinom</span>(<span class="ot">NULL</span>, <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="dv">4</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="dv">2</span>, <span class="dv">7</span>))</span>
-<span id="cb2-31"><a href="#cb2-31"></a><span class="co">#&gt;  [1] 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0</span></span>
-<span id="cb2-32"><a href="#cb2-32"></a><span class="kw">dgpbinom</span>(<span class="dv">7</span> <span class="op">*</span><span class="st"> </span><span class="dv">2</span>, <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="dv">4</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="dv">2</span>, <span class="dv">7</span>))</span>
-<span id="cb2-33"><a href="#cb2-33"></a><span class="co">#&gt; [1] 1</span></span>
-<span id="cb2-34"><a href="#cb2-34"></a><span class="co"># equal results</span></span>
-<span id="cb2-35"><a href="#cb2-35"></a></span>
-<span id="cb2-36"><a href="#cb2-36"></a><span class="co"># Case 2 b)</span></span>
-<span id="cb2-37"><a href="#cb2-37"></a><span class="kw">dgpbinom</span>(<span class="ot">NULL</span>, <span class="kw">rep</span>(<span class="dv">1</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="dv">4</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="dv">2</span>, <span class="dv">7</span>))</span>
-<span id="cb2-38"><a href="#cb2-38"></a><span class="co">#&gt;  [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1</span></span>
-<span id="cb2-39"><a href="#cb2-39"></a><span class="kw">dgpbinom</span>(<span class="dv">7</span> <span class="op">*</span><span class="st"> </span><span class="dv">4</span>, <span class="kw">rep</span>(<span class="dv">1</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="dv">4</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="dv">2</span>, <span class="dv">7</span>))</span>
-<span id="cb2-40"><a href="#cb2-40"></a><span class="co">#&gt; [1] 1</span></span>
-<span id="cb2-41"><a href="#cb2-41"></a><span class="co"># equal results</span></span>
-<span id="cb2-42"><a href="#cb2-42"></a></span>
-<span id="cb2-43"><a href="#cb2-43"></a><span class="co"># Case 2 c)</span></span>
-<span id="cb2-44"><a href="#cb2-44"></a><span class="kw">dgpbinom</span>(<span class="ot">NULL</span>, <span class="kw">rep</span>(<span class="fl">0.3</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="dv">4</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="dv">2</span>, <span class="dv">7</span>))</span>
-<span id="cb2-45"><a href="#cb2-45"></a><span class="co">#&gt;  [1] 0.0823543 0.0000000 0.2470629 0.0000000 0.3176523 0.0000000 0.2268945</span></span>
-<span id="cb2-46"><a href="#cb2-46"></a><span class="co">#&gt;  [8] 0.0000000 0.0972405 0.0000000 0.0250047 0.0000000 0.0035721 0.0000000</span></span>
-<span id="cb2-47"><a href="#cb2-47"></a><span class="co">#&gt; [15] 0.0002187</span></span>
-<span id="cb2-48"><a href="#cb2-48"></a><span class="kw">dbinom</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">7</span>, <span class="dv">7</span>, <span class="fl">0.3</span>)</span>
-<span id="cb2-49"><a href="#cb2-49"></a><span class="co">#&gt; [1] 0.0823543 0.2470629 0.3176523 0.2268945 0.0972405 0.0250047 0.0035721</span></span>
-<span id="cb2-50"><a href="#cb2-50"></a><span class="co">#&gt; [8] 0.0002187</span></span>
-<span id="cb2-51"><a href="#cb2-51"></a><span class="co"># equal results, but on different support set</span></span>
-<span id="cb2-52"><a href="#cb2-52"></a></span>
-<span id="cb2-53"><a href="#cb2-53"></a><span class="co"># Case 2 d)</span></span>
-<span id="cb2-54"><a href="#cb2-54"></a><span class="kw">dgpbinom</span>(<span class="ot">NULL</span>, pp, <span class="kw">rep</span>(<span class="dv">4</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="dv">2</span>, <span class="dv">7</span>))</span>
-<span id="cb2-55"><a href="#cb2-55"></a><span class="co">#&gt;  [1] 8.114776e-05 0.000000e+00 3.112722e-03 0.000000e+00 4.063146e-02</span></span>
-<span id="cb2-56"><a href="#cb2-56"></a><span class="co">#&gt;  [6] 0.000000e+00 2.115237e-01 0.000000e+00 3.793308e-01 0.000000e+00</span></span>
-<span id="cb2-57"><a href="#cb2-57"></a><span class="co">#&gt; [11] 2.735489e-01 0.000000e+00 8.297278e-02 0.000000e+00 8.798512e-03</span></span>
-<span id="cb2-58"><a href="#cb2-58"></a><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, pp)</span>
-<span id="cb2-59"><a href="#cb2-59"></a><span class="co">#&gt; [1] 8.114776e-05 3.112722e-03 4.063146e-02 2.115237e-01 3.793308e-01</span></span>
-<span id="cb2-60"><a href="#cb2-60"></a><span class="co">#&gt; [6] 2.735489e-01 8.297278e-02 8.798512e-03</span></span>
-<span id="cb2-61"><a href="#cb2-61"></a><span class="co"># equal results, but on different support set</span></span>
-<span id="cb2-62"><a href="#cb2-62"></a></span>
-<span id="cb2-63"><a href="#cb2-63"></a><span class="co"># Case 3 a)</span></span>
-<span id="cb2-64"><a href="#cb2-64"></a><span class="kw">dgpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>), va, vb)</span>
-<span id="cb2-65"><a href="#cb2-65"></a><span class="co">#&gt;  [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0</span></span>
-<span id="cb2-66"><a href="#cb2-66"></a><span class="kw">dgpbinom</span>(<span class="kw">sum</span>(vb), <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">7</span>), va, vb)</span>
-<span id="cb2-67"><a href="#cb2-67"></a><span class="co">#&gt; [1] 1</span></span>
-<span id="cb2-68"><a href="#cb2-68"></a><span class="co"># equal results</span></span>
+<span id="cb2-27"><a href="#cb2-27"></a></span>
+<span id="cb2-28"><a href="#cb2-28"></a><span class="co"># Case 2 a)</span></span>
+<span id="cb2-29"><a href="#cb2-29"></a><span class="kw">dgpbinom</span>(<span class="ot">NULL</span>, <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="dv">4</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="dv">2</span>, <span class="dv">7</span>)) <span class="co"># only 14 is observable</span></span>
+<span id="cb2-30"><a href="#cb2-30"></a><span class="co">#&gt;  [1] 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0</span></span>
+<span id="cb2-31"><a href="#cb2-31"></a><span class="kw">dgpbinom</span>(<span class="dv">7</span> <span class="op">*</span><span class="st"> </span><span class="dv">2</span>, <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="dv">4</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="dv">2</span>, <span class="dv">7</span>)) <span class="co"># confirmation</span></span>
+<span id="cb2-32"><a href="#cb2-32"></a><span class="co">#&gt; [1] 1</span></span>
+<span id="cb2-33"><a href="#cb2-33"></a></span>
+<span id="cb2-34"><a href="#cb2-34"></a><span class="co"># Case 2 b)</span></span>
+<span id="cb2-35"><a href="#cb2-35"></a><span class="kw">dgpbinom</span>(<span class="ot">NULL</span>, <span class="kw">rep</span>(<span class="dv">1</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="dv">4</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="dv">2</span>, <span class="dv">7</span>)) <span class="co"># only 28 is observable</span></span>
+<span id="cb2-36"><a href="#cb2-36"></a><span class="co">#&gt;  [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1</span></span>
+<span id="cb2-37"><a href="#cb2-37"></a><span class="kw">dgpbinom</span>(<span class="dv">7</span> <span class="op">*</span><span class="st"> </span><span class="dv">4</span>, <span class="kw">rep</span>(<span class="dv">1</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="dv">4</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="dv">2</span>, <span class="dv">7</span>)) <span class="co"># confirmation</span></span>
+<span id="cb2-38"><a href="#cb2-38"></a><span class="co">#&gt; [1] 1</span></span>
+<span id="cb2-39"><a href="#cb2-39"></a></span>
+<span id="cb2-40"><a href="#cb2-40"></a><span class="co"># Case 2 c)</span></span>
+<span id="cb2-41"><a href="#cb2-41"></a><span class="kw">dgpbinom</span>(<span class="ot">NULL</span>, <span class="kw">rep</span>(<span class="fl">0.3</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="dv">4</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="dv">2</span>, <span class="dv">7</span>))</span>
+<span id="cb2-42"><a href="#cb2-42"></a><span class="co">#&gt;  [1] 0.0823543 0.0000000 0.2470629 0.0000000 0.3176523 0.0000000 0.2268945</span></span>
+<span id="cb2-43"><a href="#cb2-43"></a><span class="co">#&gt;  [8] 0.0000000 0.0972405 0.0000000 0.0250047 0.0000000 0.0035721 0.0000000</span></span>
+<span id="cb2-44"><a href="#cb2-44"></a><span class="co">#&gt; [15] 0.0002187</span></span>
+<span id="cb2-45"><a href="#cb2-45"></a><span class="kw">dbinom</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">7</span>, <span class="dv">7</span>, <span class="fl">0.3</span>) <span class="co"># equal results, but on different support set</span></span>
+<span id="cb2-46"><a href="#cb2-46"></a><span class="co">#&gt; [1] 0.0823543 0.2470629 0.3176523 0.2268945 0.0972405 0.0250047 0.0035721</span></span>
+<span id="cb2-47"><a href="#cb2-47"></a><span class="co">#&gt; [8] 0.0002187</span></span>
+<span id="cb2-48"><a href="#cb2-48"></a></span>
+<span id="cb2-49"><a href="#cb2-49"></a><span class="co"># Case 2 d)</span></span>
+<span id="cb2-50"><a href="#cb2-50"></a><span class="kw">dgpbinom</span>(<span class="ot">NULL</span>, pp, <span class="kw">rep</span>(<span class="dv">4</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="dv">2</span>, <span class="dv">7</span>))</span>
+<span id="cb2-51"><a href="#cb2-51"></a><span class="co">#&gt;  [1] 8.114776e-05 0.000000e+00 3.112722e-03 0.000000e+00 4.063146e-02</span></span>
+<span id="cb2-52"><a href="#cb2-52"></a><span class="co">#&gt;  [6] 0.000000e+00 2.115237e-01 0.000000e+00 3.793308e-01 0.000000e+00</span></span>
+<span id="cb2-53"><a href="#cb2-53"></a><span class="co">#&gt; [11] 2.735489e-01 0.000000e+00 8.297278e-02 0.000000e+00 8.798512e-03</span></span>
+<span id="cb2-54"><a href="#cb2-54"></a><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, pp) <span class="co"># equal results, but on different support set</span></span>
+<span id="cb2-55"><a href="#cb2-55"></a><span class="co">#&gt; [1] 8.114776e-05 3.112722e-03 4.063146e-02 2.115237e-01 3.793308e-01</span></span>
+<span id="cb2-56"><a href="#cb2-56"></a><span class="co">#&gt; [6] 2.735489e-01 8.297278e-02 8.798512e-03</span></span>
+<span id="cb2-57"><a href="#cb2-57"></a></span>
+<span id="cb2-58"><a href="#cb2-58"></a><span class="co"># Case 3 a)</span></span>
+<span id="cb2-59"><a href="#cb2-59"></a><span class="kw">dgpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>), va, vb) <span class="co"># only sum(vb) is observable</span></span>
+<span id="cb2-60"><a href="#cb2-60"></a><span class="co">#&gt;  [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0</span></span>
+<span id="cb2-61"><a href="#cb2-61"></a><span class="kw">dgpbinom</span>(<span class="kw">sum</span>(vb), <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">7</span>), va, vb) <span class="co"># confirmation</span></span>
+<span id="cb2-62"><a href="#cb2-62"></a><span class="co">#&gt; [1] 1</span></span>
+<span id="cb2-63"><a href="#cb2-63"></a></span>
+<span id="cb2-64"><a href="#cb2-64"></a><span class="co"># Case 3 b)</span></span>
+<span id="cb2-65"><a href="#cb2-65"></a><span class="kw">dgpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>), va, vb) <span class="co"># only sum(va) is observable</span></span>
+<span id="cb2-66"><a href="#cb2-66"></a><span class="co">#&gt;  [1] 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</span></span>
+<span id="cb2-67"><a href="#cb2-67"></a><span class="kw">dgpbinom</span>(<span class="kw">sum</span>(va), <span class="kw">rep</span>(<span class="dv">1</span>, <span class="dv">7</span>), va, vb) <span class="co"># confirmation</span></span>
+<span id="cb2-68"><a href="#cb2-68"></a><span class="co">#&gt; [1] 1</span></span>
 <span id="cb2-69"><a href="#cb2-69"></a></span>
-<span id="cb2-70"><a href="#cb2-70"></a><span class="co"># Case 3 b)</span></span>
-<span id="cb2-71"><a href="#cb2-71"></a><span class="kw">dgpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>), va, vb)</span>
-<span id="cb2-72"><a href="#cb2-72"></a><span class="co">#&gt;  [1] 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</span></span>
-<span id="cb2-73"><a href="#cb2-73"></a><span class="kw">dgpbinom</span>(<span class="kw">sum</span>(va), <span class="kw">rep</span>(<span class="dv">1</span>, <span class="dv">7</span>), va, vb)</span>
+<span id="cb2-70"><a href="#cb2-70"></a><span class="co"># Case 3 c)</span></span>
+<span id="cb2-71"><a href="#cb2-71"></a><span class="kw">dgpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>), va, vb) <span class="co"># only sum(va[4:7], vb[1:3]) is observable</span></span>
+<span id="cb2-72"><a href="#cb2-72"></a><span class="co">#&gt;  [1] 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0</span></span>
+<span id="cb2-73"><a href="#cb2-73"></a><span class="kw">dgpbinom</span>(<span class="kw">sum</span>(va[<span class="dv">4</span><span class="op">:</span><span class="dv">7</span>], vb[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]), <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>), va, vb) <span class="co"># confirmation</span></span>
 <span id="cb2-74"><a href="#cb2-74"></a><span class="co">#&gt; [1] 1</span></span>
-<span id="cb2-75"><a href="#cb2-75"></a><span class="co"># equal results</span></span>
-<span id="cb2-76"><a href="#cb2-76"></a></span>
-<span id="cb2-77"><a href="#cb2-77"></a><span class="co"># Case 3 c)</span></span>
-<span id="cb2-78"><a href="#cb2-78"></a><span class="kw">dgpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>), va, vb)</span>
-<span id="cb2-79"><a href="#cb2-79"></a><span class="co">#&gt;  [1] 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0</span></span>
-<span id="cb2-80"><a href="#cb2-80"></a><span class="kw">dgpbinom</span>(<span class="kw">sum</span>(va[<span class="dv">4</span><span class="op">:</span><span class="dv">7</span>], vb[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]), <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>), va, vb)</span>
-<span id="cb2-81"><a href="#cb2-81"></a><span class="co">#&gt; [1] 1</span></span>
-<span id="cb2-82"><a href="#cb2-82"></a><span class="co"># equal results</span></span>
-<span id="cb2-83"><a href="#cb2-83"></a></span>
-<span id="cb2-84"><a href="#cb2-84"></a><span class="co"># Case 4</span></span>
-<span id="cb2-85"><a href="#cb2-85"></a><span class="kw">dgpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.3</span>, <span class="fl">0.6</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>), va, vb)</span>
-<span id="cb2-86"><a href="#cb2-86"></a><span class="co">#&gt;  [1] 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.18 0.00 0.00 0.12 0.42 0.00 0.00 0.28</span></span>
-<span id="cb2-87"><a href="#cb2-87"></a><span class="co">#&gt; [16] 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00</span></span>
-<span id="cb2-88"><a href="#cb2-88"></a>sure &lt;-<span class="st"> </span><span class="kw">sum</span>(va[<span class="dv">5</span><span class="op">:</span><span class="dv">7</span>], vb[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>])</span>
-<span id="cb2-89"><a href="#cb2-89"></a>x.transf &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">pmin</span>(va[<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>], vb[<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>]))<span class="op">:</span><span class="kw">sum</span>(<span class="kw">pmax</span>(va[<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>], vb[<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>]))</span>
-<span id="cb2-90"><a href="#cb2-90"></a><span class="kw">dgpbinom</span>(sure <span class="op">+</span><span class="st"> </span>x.transf, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.3</span>, <span class="fl">0.6</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>), va, vb)</span>
-<span id="cb2-91"><a href="#cb2-91"></a><span class="co">#&gt; [1] 0.18 0.00 0.00 0.12 0.42 0.00 0.00 0.28</span></span>
-<span id="cb2-92"><a href="#cb2-92"></a><span class="kw">dgpbinom</span>(x.transf, <span class="kw">c</span>(<span class="fl">0.3</span>, <span class="fl">0.6</span>), va[<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>], vb[<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>])</span>
-<span id="cb2-93"><a href="#cb2-93"></a><span class="co">#&gt; [1] 0.18 0.00 0.00 0.12 0.42 0.00 0.00 0.28</span></span>
-<span id="cb2-94"><a href="#cb2-94"></a><span class="co"># equal results</span></span>
-<span id="cb2-95"><a href="#cb2-95"></a></span>
-<span id="cb2-96"><a href="#cb2-96"></a><span class="kw">dgpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.6</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>), va, vb)</span>
-<span id="cb2-97"><a href="#cb2-97"></a><span class="co">#&gt;  [1] 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.6 0.0 0.0 0.4 0.0 0.0 0.0 0.0</span></span>
-<span id="cb2-98"><a href="#cb2-98"></a><span class="co">#&gt; [20] 0.0 0.0 0.0 0.0 0.0 0.0</span></span>
-<span id="cb2-99"><a href="#cb2-99"></a>sure &lt;-<span class="st"> </span><span class="kw">sum</span>(va[<span class="dv">5</span><span class="op">:</span><span class="dv">7</span>], vb[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>])</span>
-<span id="cb2-100"><a href="#cb2-100"></a>x.transf &lt;-<span class="st"> </span>va[<span class="dv">4</span>]<span class="op">:</span>vb[<span class="dv">4</span>]</span>
-<span id="cb2-101"><a href="#cb2-101"></a><span class="kw">dgpbinom</span>(sure <span class="op">+</span><span class="st"> </span>x.transf, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.6</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>), va, vb)</span>
-<span id="cb2-102"><a href="#cb2-102"></a><span class="co">#&gt; [1] 0.6 0.0 0.0 0.4</span></span>
-<span id="cb2-103"><a href="#cb2-103"></a><span class="kw">dgpbinom</span>(x.transf, <span class="fl">0.6</span>, va[<span class="dv">4</span>], vb[<span class="dv">4</span>])</span>
-<span id="cb2-104"><a href="#cb2-104"></a><span class="co">#&gt; [1] 0.6 0.0 0.0 0.4</span></span>
-<span id="cb2-105"><a href="#cb2-105"></a><span class="co"># equal results; essentially transformed Bernoulli</span></span></code></pre></div>
+<span id="cb2-75"><a href="#cb2-75"></a></span>
+<span id="cb2-76"><a href="#cb2-76"></a><span class="co"># Case 4</span></span>
+<span id="cb2-77"><a href="#cb2-77"></a><span class="kw">dgpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.3</span>, <span class="fl">0.6</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>), va, vb)</span>
+<span id="cb2-78"><a href="#cb2-78"></a><span class="co">#&gt;  [1] 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.18 0.00 0.00 0.12 0.42 0.00 0.00 0.28</span></span>
+<span id="cb2-79"><a href="#cb2-79"></a><span class="co">#&gt; [16] 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00</span></span>
+<span id="cb2-80"><a href="#cb2-80"></a>sure &lt;-<span class="st"> </span><span class="kw">sum</span>(va[<span class="dv">5</span><span class="op">:</span><span class="dv">7</span>], vb[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>])</span>
+<span id="cb2-81"><a href="#cb2-81"></a>x.transf &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">pmin</span>(va[<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>], vb[<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>]))<span class="op">:</span><span class="kw">sum</span>(<span class="kw">pmax</span>(va[<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>], vb[<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>]))</span>
+<span id="cb2-82"><a href="#cb2-82"></a><span class="kw">dgpbinom</span>(sure <span class="op">+</span><span class="st"> </span>x.transf, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.3</span>, <span class="fl">0.6</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>), va, vb)</span>
+<span id="cb2-83"><a href="#cb2-83"></a><span class="co">#&gt; [1] 0.18 0.00 0.00 0.12 0.42 0.00 0.00 0.28</span></span>
+<span id="cb2-84"><a href="#cb2-84"></a><span class="kw">dgpbinom</span>(x.transf, <span class="kw">c</span>(<span class="fl">0.3</span>, <span class="fl">0.6</span>), va[<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>], vb[<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>]) <span class="co"># equal results</span></span>
+<span id="cb2-85"><a href="#cb2-85"></a><span class="co">#&gt; [1] 0.18 0.00 0.00 0.12 0.42 0.00 0.00 0.28</span></span>
+<span id="cb2-86"><a href="#cb2-86"></a></span>
+<span id="cb2-87"><a href="#cb2-87"></a><span class="kw">dgpbinom</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.6</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>), va, vb)</span>
+<span id="cb2-88"><a href="#cb2-88"></a><span class="co">#&gt;  [1] 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.6 0.0 0.0 0.4 0.0 0.0 0.0 0.0</span></span>
+<span id="cb2-89"><a href="#cb2-89"></a><span class="co">#&gt; [20] 0.0 0.0 0.0 0.0 0.0 0.0</span></span>
+<span id="cb2-90"><a href="#cb2-90"></a>sure &lt;-<span class="st"> </span><span class="kw">sum</span>(va[<span class="dv">5</span><span class="op">:</span><span class="dv">7</span>], vb[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>])</span>
+<span id="cb2-91"><a href="#cb2-91"></a>x.transf &lt;-<span class="st"> </span>va[<span class="dv">4</span>]<span class="op">:</span>vb[<span class="dv">4</span>]</span>
+<span id="cb2-92"><a href="#cb2-92"></a><span class="kw">dgpbinom</span>(sure <span class="op">+</span><span class="st"> </span>x.transf, <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.6</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>), va, vb)</span>
+<span id="cb2-93"><a href="#cb2-93"></a><span class="co">#&gt; [1] 0.6 0.0 0.0 0.4</span></span>
+<span id="cb2-94"><a href="#cb2-94"></a><span class="kw">dgpbinom</span>(x.transf, <span class="fl">0.6</span>, va[<span class="dv">4</span>], vb[<span class="dv">4</span>]) <span class="co"># equal results; essentially transformed Bernoulli</span></span>
+<span id="cb2-95"><a href="#cb2-95"></a><span class="co">#&gt; [1] 0.6 0.0 0.0 0.4</span></span></code></pre></div>
 <hr />
 </div>
 </div>

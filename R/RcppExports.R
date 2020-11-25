@@ -4,6 +4,10 @@
 #'
 NULL
 
+vectorGCD <- function(x) {
+    .Call(`_PoissonBinomial_vectorGCD`, x)
+}
+
 dpb_conv <- function(obs, probs) {
     .Call(`_PoissonBinomial_dpb_conv`, obs, probs)
 }
@@ -68,6 +72,10 @@ dpb_na <- function(obs, probs, refined = TRUE) {
     .Call(`_PoissonBinomial_dpb_na`, obs, probs, refined)
 }
 
+rpb_bernoulli <- function(n, probs) {
+    .Call(`_PoissonBinomial_rpb_bernoulli`, n, probs)
+}
+
 dgpb_conv <- function(obs, probs, val_p, val_q) {
     .Call(`_PoissonBinomial_dgpb_conv`, obs, probs, val_p, val_q)
 }
@@ -98,6 +106,10 @@ pgpb_na <- function(obs, probs, val_p, val_q, refined = TRUE, lower_tail = TRUE)
 
 dgpb_na <- function(obs, probs, val_p, val_q, refined = TRUE) {
     .Call(`_PoissonBinomial_dgpb_na`, obs, probs, val_p, val_q, refined)
+}
+
+rgpb_bernoulli <- function(n, probs, val_p, val_q) {
+    .Call(`_PoissonBinomial_rgpb_bernoulli`, n, probs, val_p, val_q)
 }
 
 # Register entry points for exported C++ functions

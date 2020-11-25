@@ -30,6 +30,54 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
+<style type="text/css">
+a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
+a.anchor-section::before {content: '#';}
+.hasAnchor:hover a.anchor-section {visibility: visible;}
+</style>
+<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
+document.addEventListener('DOMContentLoaded', function() {
+  // Do nothing if AnchorJS is used
+  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
+    return;
+  }
+
+  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+  // Do nothing if sections are already anchored
+  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
+    return null;
+  }
+
+  // Use section id when pandoc runs with --section-divs
+  const section_id = function(x) {
+    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
+            ? x.id : '');
+  };
+
+  // Add anchors
+  h.forEach(function(x) {
+    const id = x.id || section_id(x.parentElement);
+    if (id === '') {
+      return null;
+    }
+    let anchor = document.createElement('a');
+    anchor.href = '#' + id;
+    anchor.classList = ['anchor-section'];
+    x.classList.add('hasAnchor');
+    x.appendChild(anchor);
+  });
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -415,9 +463,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb3-3"><a href="#cb3-3"></a>pp2 &lt;-<span class="st"> </span>pp1[<span class="dv">1</span><span class="op">:</span><span class="dv">750</span>]</span>
 <span id="cb3-4"><a href="#cb3-4"></a></span>
 <span id="cb3-5"><a href="#cb3-5"></a><span class="kw">sum</span>(<span class="kw">abs</span>(<span class="kw">dpbinom</span>(<span class="ot">NULL</span>, pp2, <span class="dt">method =</span> <span class="st">&quot;DivideFFT&quot;</span>) <span class="op">-</span><span class="st"> </span><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, pp2, <span class="dt">method =</span> <span class="st">&quot;Convolve&quot;</span>)))</span>
-<span id="cb3-6"><a href="#cb3-6"></a><span class="co">#&gt; [1] 3.149919e-16</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="co">#&gt; [1] 0</span></span>
 <span id="cb3-7"><a href="#cb3-7"></a><span class="kw">sum</span>(<span class="kw">abs</span>(<span class="kw">dpbinom</span>(<span class="ot">NULL</span>, pp1, <span class="dt">method =</span> <span class="st">&quot;DivideFFT&quot;</span>) <span class="op">-</span><span class="st"> </span><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, pp1, <span class="dt">method =</span> <span class="st">&quot;Convolve&quot;</span>)))</span>
-<span id="cb3-8"><a href="#cb3-8"></a><span class="co">#&gt; [1] 1.587793e-16</span></span></code></pre></div>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="co">#&gt; [1] 0</span></span></code></pre></div>
 <p>The reason is that the DC-FFT method splits the input <code>probs</code> vector into as equally sized parts as possible and computes their distributions separately with the DC approach. The results of the portions are then convoluted by means of the Fast Fourier Transformation. As proposed by <a href="http://dx.doi.org/10.1016/j.csda.2018.01.007">Biscarri, Zhao &amp; Brunner (2018)</a>, no splitting is done for <span class="math inline">\(n \leq 750\)</span>. In addition, the DC-FFT procedure does not produce probabilities <span class="math inline">\(\leq 5.55e\text{-}17\)</span>, i.e. smaller values are rounded off to 0, if <span class="math inline">\(n &gt; 750\)</span>, whereas the smallest possible result of the DC algorithm is <span class="math inline">\(\sim 1e\text{-}323\)</span>. This is most likely caused by the used FFTW3 library.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb4-2"><a href="#cb4-2"></a>pp1 &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">751</span>)</span>
@@ -426,7 +474,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb4-5"><a href="#cb4-5"></a>d2 &lt;-<span class="st"> </span><span class="kw">dpbinom</span>(<span class="ot">NULL</span>, pp1, <span class="dt">method =</span> <span class="st">&quot;Convolve&quot;</span>)</span>
 <span id="cb4-6"><a href="#cb4-6"></a></span>
 <span id="cb4-7"><a href="#cb4-7"></a><span class="kw">min</span>(d1[d1 <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>])</span>
-<span id="cb4-8"><a href="#cb4-8"></a><span class="co">#&gt; [1] 6.683932e-17</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="co">#&gt; [1] 1.635357e-321</span></span>
 <span id="cb4-9"><a href="#cb4-9"></a><span class="kw">min</span>(d2[d2 <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>])</span>
 <span id="cb4-10"><a href="#cb4-10"></a><span class="co">#&gt; [1] 1.635357e-321</span></span></code></pre></div>
 </div>
@@ -512,23 +560,23 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="processing-speed-comparisons" class="section level3">
 <h3>Processing Speed Comparisons</h3>
-<p>To assess the performance of the exact procedures, we use the <code>microbenchmark</code> package. Each algorithm has to calculate the PMF repeatedly based on random probability vectors. The run times are then summarized in a table that presents, among other statistics, their minima, maxima and means. The following results were recorded on an AMD Ryzen 7 1800X with 32 GiB of RAM and Windows 10 Education (2004).</p>
+<p>To assess the performance of the exact procedures, we use the <code>microbenchmark</code> package. Each algorithm has to calculate the PMF repeatedly based on random probability vectors. The run times are then summarized in a table that presents, among other statistics, their minima, maxima and means. The following results were recorded on an AMD Ryzen 7 1800X with 32 GiB of RAM and Windows 10 Education (20H2).</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">library</span>(microbenchmark)</span>
 <span id="cb8-2"><a href="#cb8-2"></a><span class="kw">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb8-3"><a href="#cb8-3"></a></span>
-<span id="cb8-4"><a href="#cb8-4"></a>f1 &lt;-<span class="st"> </span><span class="cf">function</span>() <span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">runif</span>(<span class="dv">4000</span>), <span class="dt">method =</span> <span class="st">&quot;DivideFFT&quot;</span>)</span>
-<span id="cb8-5"><a href="#cb8-5"></a>f2 &lt;-<span class="st"> </span><span class="cf">function</span>() <span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">runif</span>(<span class="dv">4000</span>), <span class="dt">method =</span> <span class="st">&quot;Convolve&quot;</span>)</span>
-<span id="cb8-6"><a href="#cb8-6"></a>f3 &lt;-<span class="st"> </span><span class="cf">function</span>() <span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">runif</span>(<span class="dv">4000</span>), <span class="dt">method =</span> <span class="st">&quot;Recursive&quot;</span>)</span>
-<span id="cb8-7"><a href="#cb8-7"></a>f4 &lt;-<span class="st"> </span><span class="cf">function</span>() <span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">runif</span>(<span class="dv">4000</span>), <span class="dt">method =</span> <span class="st">&quot;Characteristic&quot;</span>)</span>
+<span id="cb8-4"><a href="#cb8-4"></a>f1 &lt;-<span class="st"> </span><span class="cf">function</span>() <span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">runif</span>(<span class="dv">5000</span>), <span class="dt">method =</span> <span class="st">&quot;DivideFFT&quot;</span>)</span>
+<span id="cb8-5"><a href="#cb8-5"></a>f2 &lt;-<span class="st"> </span><span class="cf">function</span>() <span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">runif</span>(<span class="dv">5000</span>), <span class="dt">method =</span> <span class="st">&quot;Convolve&quot;</span>)</span>
+<span id="cb8-6"><a href="#cb8-6"></a>f3 &lt;-<span class="st"> </span><span class="cf">function</span>() <span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">runif</span>(<span class="dv">5000</span>), <span class="dt">method =</span> <span class="st">&quot;Recursive&quot;</span>)</span>
+<span id="cb8-7"><a href="#cb8-7"></a>f4 &lt;-<span class="st"> </span><span class="cf">function</span>() <span class="kw">dpbinom</span>(<span class="ot">NULL</span>, <span class="kw">runif</span>(<span class="dv">5000</span>), <span class="dt">method =</span> <span class="st">&quot;Characteristic&quot;</span>)</span>
 <span id="cb8-8"><a href="#cb8-8"></a></span>
 <span id="cb8-9"><a href="#cb8-9"></a><span class="kw">microbenchmark</span>(<span class="kw">f1</span>(), <span class="kw">f2</span>(), <span class="kw">f3</span>(), <span class="kw">f4</span>())</span>
 <span id="cb8-10"><a href="#cb8-10"></a><span class="co">#&gt; Unit: milliseconds</span></span>
-<span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt;  expr     min       lq      mean   median       uq      max neval  cld</span></span>
-<span id="cb8-12"><a href="#cb8-12"></a><span class="co">#&gt;  f1()  6.8535  7.14980  8.014779  7.41725  9.47760  10.9880   100 a   </span></span>
-<span id="cb8-13"><a href="#cb8-13"></a><span class="co">#&gt;  f2() 16.2600 18.51505 20.547122 18.95190 19.30330 118.5848   100  b  </span></span>
-<span id="cb8-14"><a href="#cb8-14"></a><span class="co">#&gt;  f3() 35.4179 35.87310 36.183334 36.16395 36.34445  38.9865   100   c </span></span>
-<span id="cb8-15"><a href="#cb8-15"></a><span class="co">#&gt;  f4() 42.3817 42.88050 43.202445 43.15315 43.34380  45.7945   100    d</span></span></code></pre></div>
-<p>Clearly, the DC-FFT procedure is the fastest, followed by the DC method, which needs roughly three times as much time here. RF and DFT-CF are almost five and six times, respectively, slower than DC-FFT, respectively (although RF has some advantages in precision, as stated before).</p>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt;  expr     min       lq     mean   median       uq     max neval  cld</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="co">#&gt;  f1() 13.4042 13.65425 13.96337 13.77990 13.91975 17.1088   100 a   </span></span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="co">#&gt;  f2() 20.6392 20.93765 21.15733 21.10240 21.32325 22.6958   100  b  </span></span>
+<span id="cb8-14"><a href="#cb8-14"></a><span class="co">#&gt;  f3() 27.5966 27.97090 28.28354 28.17785 28.43690 31.1628   100   c </span></span>
+<span id="cb8-15"><a href="#cb8-15"></a><span class="co">#&gt;  f4() 65.7154 66.30750 66.72891 66.55035 66.91000 70.2184   100    d</span></span></code></pre></div>
+<p>Clearly, the DC-FFT procedure is the fastest, followed by the DC method, which needs roughly 1.5 times as much time here. RF and DFT-CF are almost two and five times, respectively, slower than DC-FFT, respectively (although RF has some advantages in precision, as stated before).</p>
 </div>
 </div>
 <div id="generalized-poisson-binomial-distribution" class="section level2">
@@ -771,10 +819,10 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb13-9"><a href="#cb13-9"></a><span class="co">#&gt;   [6] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00</span></span>
 <span id="cb13-10"><a href="#cb13-10"></a><span class="co">#&gt;  [11] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00</span></span>
 <span id="cb13-11"><a href="#cb13-11"></a><span class="co">#&gt;  [16] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00</span></span>
-<span id="cb13-12"><a href="#cb13-12"></a><span class="co">#&gt;  [21] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 2.811537e-16</span></span>
-<span id="cb13-13"><a href="#cb13-13"></a><span class="co">#&gt;  [26] 6.252714e-16 1.363862e-15 2.933867e-15 6.200544e-15 1.292510e-14</span></span>
-<span id="cb13-14"><a href="#cb13-14"></a><span class="co">#&gt;  [31] 2.657288e-14 5.394348e-14 1.081953e-13 2.144817e-13 4.201567e-13</span></span>
-<span id="cb13-15"><a href="#cb13-15"></a><span class="co">#&gt;  [36] 8.135550e-13 1.557738e-12 2.949811e-12 5.527686e-12 1.025815e-11</span></span>
+<span id="cb13-12"><a href="#cb13-12"></a><span class="co">#&gt;  [21] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 2.837237e-16</span></span>
+<span id="cb13-13"><a href="#cb13-13"></a><span class="co">#&gt;  [26] 6.270062e-16 1.364746e-15 2.935666e-15 6.201829e-15 1.292176e-14</span></span>
+<span id="cb13-14"><a href="#cb13-14"></a><span class="co">#&gt;  [31] 2.657237e-14 5.394193e-14 1.081902e-13 2.144802e-13 4.201557e-13</span></span>
+<span id="cb13-15"><a href="#cb13-15"></a><span class="co">#&gt;  [36] 8.135509e-13 1.557735e-12 2.949809e-12 5.527683e-12 1.025814e-11</span></span>
 <span id="cb13-16"><a href="#cb13-16"></a><span class="co">#&gt;  [41] 1.885776e-11 3.434640e-11 6.196980e-11 1.106787e-10 1.956340e-10</span></span>
 <span id="cb13-17"><a href="#cb13-17"></a><span class="co">#&gt;  [46] 3.425394e-10 5.948077e-10 1.025224e-09 1.753750e-09 2.972596e-09</span></span>
 <span id="cb13-18"><a href="#cb13-18"></a><span class="co">#&gt;  [51] 4.985314e-09 8.275458e-09 1.362195e-08 2.227979e-08 3.622799e-08</span></span>
@@ -806,9 +854,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb13-44"><a href="#cb13-44"></a><span class="co">#&gt; [181] 1.515662e-07 9.401686e-08 5.742327e-08 3.451481e-08 2.039831e-08</span></span>
 <span id="cb13-45"><a href="#cb13-45"></a><span class="co">#&gt; [186] 1.184350e-08 6.751380e-09 3.777327e-09 2.073644e-09 1.116337e-09</span></span>
 <span id="cb13-46"><a href="#cb13-46"></a><span class="co">#&gt; [191] 5.887148e-10 3.036829e-10 1.529887e-10 7.516829e-11 3.598151e-11</span></span>
-<span id="cb13-47"><a href="#cb13-47"></a><span class="co">#&gt; [196] 1.676155e-11 7.585980e-12 3.326432e-12 1.407531e-12 5.717412e-13</span></span>
-<span id="cb13-48"><a href="#cb13-48"></a><span class="co">#&gt; [201] 2.216406e-13 8.149757e-14 2.825672e-14 9.187867e-15 2.788407e-15</span></span>
-<span id="cb13-49"><a href="#cb13-49"></a><span class="co">#&gt; [206] 7.871790e-16 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00</span></span>
+<span id="cb13-47"><a href="#cb13-47"></a><span class="co">#&gt; [196] 1.676154e-11 7.585978e-12 3.326430e-12 1.407529e-12 5.717381e-13</span></span>
+<span id="cb13-48"><a href="#cb13-48"></a><span class="co">#&gt; [201] 2.216360e-13 8.149551e-14 2.825209e-14 9.182470e-15 2.781725e-15</span></span>
+<span id="cb13-49"><a href="#cb13-49"></a><span class="co">#&gt; [206] 7.813323e-16 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00</span></span>
 <span id="cb13-50"><a href="#cb13-50"></a><span class="co">#&gt; [211] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00</span></span>
 <span id="cb13-51"><a href="#cb13-51"></a><span class="co">#&gt; [216] 0.000000e+00</span></span>
 <span id="cb13-52"><a href="#cb13-52"></a><span class="kw">pgpbinom</span>(<span class="ot">NULL</span>, pp, va, vb, wt, <span class="st">&quot;Characteristic&quot;</span>)</span>
@@ -816,11 +864,11 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb13-54"><a href="#cb13-54"></a><span class="co">#&gt;   [6] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00</span></span>
 <span id="cb13-55"><a href="#cb13-55"></a><span class="co">#&gt;  [11] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00</span></span>
 <span id="cb13-56"><a href="#cb13-56"></a><span class="co">#&gt;  [16] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00</span></span>
-<span id="cb13-57"><a href="#cb13-57"></a><span class="co">#&gt;  [21] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 2.811537e-16</span></span>
-<span id="cb13-58"><a href="#cb13-58"></a><span class="co">#&gt;  [26] 9.064251e-16 2.270287e-15 5.204154e-15 1.140470e-14 2.432980e-14</span></span>
-<span id="cb13-59"><a href="#cb13-59"></a><span class="co">#&gt;  [31] 5.090268e-14 1.048462e-13 2.130415e-13 4.275232e-13 8.476799e-13</span></span>
-<span id="cb13-60"><a href="#cb13-60"></a><span class="co">#&gt;  [36] 1.661235e-12 3.218973e-12 6.168784e-12 1.169647e-11 2.195462e-11</span></span>
-<span id="cb13-61"><a href="#cb13-61"></a><span class="co">#&gt;  [41] 4.081237e-11 7.515877e-11 1.371286e-10 2.478072e-10 4.434412e-10</span></span>
+<span id="cb13-57"><a href="#cb13-57"></a><span class="co">#&gt;  [21] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 2.837237e-16</span></span>
+<span id="cb13-58"><a href="#cb13-58"></a><span class="co">#&gt;  [26] 9.107298e-16 2.275475e-15 5.211141e-15 1.141297e-14 2.433473e-14</span></span>
+<span id="cb13-59"><a href="#cb13-59"></a><span class="co">#&gt;  [31] 5.090710e-14 1.048490e-13 2.130392e-13 4.275194e-13 8.476751e-13</span></span>
+<span id="cb13-60"><a href="#cb13-60"></a><span class="co">#&gt;  [36] 1.661226e-12 3.218961e-12 6.168770e-12 1.169645e-11 2.195459e-11</span></span>
+<span id="cb13-61"><a href="#cb13-61"></a><span class="co">#&gt;  [41] 4.081235e-11 7.515875e-11 1.371285e-10 2.478072e-10 4.434412e-10</span></span>
 <span id="cb13-62"><a href="#cb13-62"></a><span class="co">#&gt;  [46] 7.859806e-10 1.380788e-09 2.406013e-09 4.159763e-09 7.132359e-09</span></span>
 <span id="cb13-63"><a href="#cb13-63"></a><span class="co">#&gt;  [51] 1.211767e-08 2.039313e-08 3.401508e-08 5.629487e-08 9.252285e-08</span></span>
 <span id="cb13-64"><a href="#cb13-64"></a><span class="co">#&gt;  [56] 1.509756e-07 2.442977e-07 3.915989e-07 6.218786e-07 9.795436e-07</span></span>
@@ -860,9 +908,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="processing-speed-comparisons-1" class="section level3">
 <h3>Processing Speed Comparisons</h3>
-<p>To assess the performance of the exact procedures, we use the <code>microbenchmark</code> package. Each algorithm has to calculate the PMF repeatedly based on random probability and value vectors. The run times are then summarized in a table that presents, among other statistics, their minima, maxima and means. The following results were recorded on an AMD Ryzen 7 1800X with 32 GiB of RAM and Windows 10 Education (1909).</p>
+<p>To assess the performance of the exact procedures, we use the <code>microbenchmark</code> package. Each algorithm has to calculate the PMF repeatedly based on random probability and value vectors. The run times are then summarized in a table that presents, among other statistics, their minima, maxima and means. The following results were recorded on an AMD Ryzen 7 1800X with 32 GiB of RAM and Windows 10 Education (20H2).</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">library</span>(microbenchmark)</span>
-<span id="cb14-2"><a href="#cb14-2"></a>n &lt;-<span class="st"> </span><span class="dv">600</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>n &lt;-<span class="st"> </span><span class="dv">2500</span></span>
 <span id="cb14-3"><a href="#cb14-3"></a><span class="kw">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb14-4"><a href="#cb14-4"></a>va &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">50</span>, n, <span class="ot">TRUE</span>)</span>
 <span id="cb14-5"><a href="#cb14-5"></a>vb &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">50</span>, n, <span class="ot">TRUE</span>)</span>
@@ -873,11 +921,11 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb14-10"><a href="#cb14-10"></a></span>
 <span id="cb14-11"><a href="#cb14-11"></a><span class="kw">microbenchmark</span>(<span class="kw">f1</span>(), <span class="kw">f2</span>(), <span class="kw">f3</span>())</span>
 <span id="cb14-12"><a href="#cb14-12"></a><span class="co">#&gt; Unit: milliseconds</span></span>
-<span id="cb14-13"><a href="#cb14-13"></a><span class="co">#&gt;  expr     min      lq     mean   median       uq      max neval cld</span></span>
-<span id="cb14-14"><a href="#cb14-14"></a><span class="co">#&gt;  f1()  8.8023  9.2470 10.80158  9.53325 11.92740  38.1785   100 a  </span></span>
-<span id="cb14-15"><a href="#cb14-15"></a><span class="co">#&gt;  f2()  9.5887 11.5270 14.86567 12.35930 14.49295 107.4843   100  b </span></span>
-<span id="cb14-16"><a href="#cb14-16"></a><span class="co">#&gt;  f3() 46.7124 47.5152 47.88891 47.69890 47.92325  50.6901   100   c</span></span></code></pre></div>
-<p>Clearly, the G-DC-FFT procedure is the fastest one. It outperforms both the G-DC and G-DFT-CF approaches. The latter one needs roughly four to five times as much time as G-DC. Generally, the computational speed advantage of the G-DC-FFT procedure increases with larger <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span>.</p>
+<span id="cb14-13"><a href="#cb14-13"></a><span class="co">#&gt;  expr      min        lq      mean    median        uq      max neval cld</span></span>
+<span id="cb14-14"><a href="#cb14-14"></a><span class="co">#&gt;  f1()  56.8388  57.76210  63.44748  58.63540  60.26615 338.7246   100 a  </span></span>
+<span id="cb14-15"><a href="#cb14-15"></a><span class="co">#&gt;  f2()  91.1376  91.98105  93.34477  93.04655  94.50995  97.0263   100  b </span></span>
+<span id="cb14-16"><a href="#cb14-16"></a><span class="co">#&gt;  f3() 509.4249 517.44770 521.62463 519.51470 522.53045 614.7971   100   c</span></span></code></pre></div>
+<p>Clearly, the G-DC-FFT procedure is the fastest one. If <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span> are large enough, it outperforms both the G-DC and G-DFT-CF approaches. The latter one needs almost six times as much time as G-DC. Generally, the computational speed advantage of the G-DC-FFT procedure increases with larger <span class="math inline">\(n\)</span> (and <span class="math inline">\(m\)</span>).</p>
 </div>
 </div>
 

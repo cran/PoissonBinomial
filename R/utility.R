@@ -50,35 +50,50 @@ transform.GPB <- function(x, probs, val_p, val_q, wts){
   val_p <- rep(val_p, wts)
   val_q <- rep(val_q, wts)
   
+  # reorder 'val_p' and 'val_q' so that values in 'val_p' are always greater
+  val_gr <- pmax(val_p, val_q)
+  val_lo <- pmin(val_p, val_q)
+  probs[val_gr > val_p] <- 1 - probs[val_gr > val_p]
+  
   # re-compute length of 'probs' (= sum of 'wts')
   n <- sum(wts)
   
   ## determine relevant range of observations
   # determine minimum and maximum possible observations
-  sum_min <- sum(pmin(val_p, val_q))
-  sum_max <- sum(pmax(val_p, val_q))
+  sum_min <- sum(val_lo)
+  sum_max <- sum(val_gr)
   
   # which probabilities are 0 or 1, which val_p and val_q are equal
   idx.0 <- which(probs == 0)
   idx.1 <- which(probs == 1)
-  idx.v <- which(val_p == val_q & probs > 0 & probs < 1)
+  idx.v <- which(val_gr == val_lo & probs > 0 & probs < 1)
   idx.r <- setdiff(1:n, union(union(idx.0, idx.1), idx.v))
   
   # guaranteed
-  val_p_sure <- val_p[idx.1]
-  val_q_sure <- val_q[idx.0]
-  vals_equal <- val_p[idx.v]# == val_q[idx.v]
-  sum_sure <- sum(val_p_sure, val_q_sure, vals_equal)
+  val_gr_sure <- val_gr[idx.1]
+  val_lo_sure <- val_lo[idx.0]
+  vals_equal <- val_gr[idx.v]# equal to val_lo[idx.v]
+  sum_sure <- sum(val_gr_sure, val_lo_sure, vals_equal)
   
   # limit 'probs', 'val_p' and 'val_q' to relevant range
-  probs <- probs[idx.r]
-  val_p <- val_p[idx.r]
-  val_q <- val_q[idx.r]
   np <- length(idx.r)
+  if(np){
+    probs <- probs[idx.r]
+    val_gr <- val_gr[idx.r]
+    val_lo <- val_lo[idx.r]
+  }else{
+    probs <- 1
+    val_gr <- 0
+    val_lo <- 0
+  }
+  
+  # compute differences and their GCD
+  diffs <- val_gr - val_lo
+  diffsGCD <- vectorGCD(diffs)
   
   # bounds of relevant observations
-  sum_min_in <- sum(pmin(val_p, val_q)) + sum_sure
-  sum_max_in <- sum(pmax(val_p, val_q)) + sum_sure
+  sum_min_in <- sum(val_lo) + sum_sure
+  sum_max_in <- sum(val_gr) + sum_sure
   
-  return(list(probs = probs, val_p = val_p, val_q = val_q, guaranteed = sum_sure, compl.range = sum_min:sum_max, inner.range = sum_min_in:sum_max_in, n = np))
+  return(list(probs = probs, val_p = val_gr, val_q = val_lo, compl.range = sum_min:sum_max, inner.range = sum_min_in:sum_max_in, inner.size = sum_max_in - sum_min_in + 1, n = np, diffs = diffs, diffsGCD = diffsGCD))
 }

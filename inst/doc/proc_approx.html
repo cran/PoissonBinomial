@@ -30,6 +30,54 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
+<style type="text/css">
+a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
+a.anchor-section::before {content: '#';}
+.hasAnchor:hover a.anchor-section {visibility: visible;}
+</style>
+<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
+document.addEventListener('DOMContentLoaded', function() {
+  // Do nothing if AnchorJS is used
+  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
+    return;
+  }
+
+  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+  // Do nothing if sections are already anchored
+  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
+    return null;
+  }
+
+  // Use section id when pandoc runs with --section-divs
+  const section_id = function(x) {
+    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
+            ? x.id : '');
+  };
+
+  // Add anchors
+  h.forEach(function(x) {
+    const id = x.id || section_id(x.parentElement);
+    if (id === '') {
+      return null;
+    }
+    let anchor = document.createElement('a');
+    anchor.href = '#' + id;
+    anchor.classList = ['anchor-section'];
+    x.classList.add('hasAnchor');
+    x.appendChild(anchor);
+  });
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -749,7 +797,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb10-16"><a href="#cb10-16"></a>idx &lt;-<span class="st"> </span><span class="kw">which</span>(dpn <span class="op">!=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>dpd <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>)</span>
 <span id="cb10-17"><a href="#cb10-17"></a><span class="kw">summary</span>((dpn <span class="op">-</span><span class="st"> </span>dpd)[idx])</span>
 <span id="cb10-18"><a href="#cb10-18"></a><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></span>
-<span id="cb10-19"><a href="#cb10-19"></a><span class="co">#&gt; -8.412e-06  0.000e+00  2.656e-09  0.000e+00  6.073e-07  3.815e-06</span></span>
+<span id="cb10-19"><a href="#cb10-19"></a><span class="co">#&gt; -8.412e-06  0.000e+00  0.000e+00  0.000e+00  0.000e+00  3.815e-06</span></span>
 <span id="cb10-20"><a href="#cb10-20"></a></span>
 <span id="cb10-21"><a href="#cb10-21"></a><span class="co"># 100000 random probabilities of success</span></span>
 <span id="cb10-22"><a href="#cb10-22"></a>pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">100000</span>)</span>
@@ -758,7 +806,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb10-25"><a href="#cb10-25"></a>idx &lt;-<span class="st"> </span><span class="kw">which</span>(dpn <span class="op">!=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>dpd <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>)</span>
 <span id="cb10-26"><a href="#cb10-26"></a><span class="kw">summary</span>((dpn <span class="op">-</span><span class="st"> </span>dpd)[idx])</span>
 <span id="cb10-27"><a href="#cb10-27"></a><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></span>
-<span id="cb10-28"><a href="#cb10-28"></a><span class="co">#&gt; -4.484e-09  0.000e+00  8.700e-13  0.000e+00  4.911e-10  2.734e-09</span></span></code></pre></div>
+<span id="cb10-28"><a href="#cb10-28"></a><span class="co">#&gt; -4.484e-09  0.000e+00  8.720e-13  0.000e+00  4.914e-10  2.734e-09</span></span></code></pre></div>
 </div>
 <div id="refined-normal-approximation" class="section level3">
 <h3>Refined Normal Approximation</h3>
@@ -814,7 +862,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb12-16"><a href="#cb12-16"></a>idx &lt;-<span class="st"> </span><span class="kw">which</span>(dpn <span class="op">!=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>dpd <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>)</span>
 <span id="cb12-17"><a href="#cb12-17"></a><span class="kw">summary</span>((dpn <span class="op">-</span><span class="st"> </span>dpd)[idx])</span>
 <span id="cb12-18"><a href="#cb12-18"></a><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></span>
-<span id="cb12-19"><a href="#cb12-19"></a><span class="co">#&gt; -2.974e-06  0.000e+00  3.181e-10  0.000e+00  3.747e-07  2.270e-06</span></span>
+<span id="cb12-19"><a href="#cb12-19"></a><span class="co">#&gt; -2.974e-06  0.000e+00  0.000e+00  0.000e+00  0.000e+00  2.270e-06</span></span>
 <span id="cb12-20"><a href="#cb12-20"></a></span>
 <span id="cb12-21"><a href="#cb12-21"></a><span class="co"># 100000 random probabilities of success</span></span>
 <span id="cb12-22"><a href="#cb12-22"></a>pp &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">100000</span>)</span>
@@ -823,11 +871,11 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb12-25"><a href="#cb12-25"></a>idx &lt;-<span class="st"> </span><span class="kw">which</span>(dpn <span class="op">!=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>dpd <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>)</span>
 <span id="cb12-26"><a href="#cb12-26"></a><span class="kw">summary</span>((dpn <span class="op">-</span><span class="st"> </span>dpd)[idx])</span>
 <span id="cb12-27"><a href="#cb12-27"></a><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></span>
-<span id="cb12-28"><a href="#cb12-28"></a><span class="co">#&gt; -3.126e-09  0.000e+00  6.157e-13  0.000e+00  4.608e-10  2.293e-09</span></span></code></pre></div>
+<span id="cb12-28"><a href="#cb12-28"></a><span class="co">#&gt; -3.126e-09  0.000e+00  6.200e-13  0.000e+00  4.616e-10  2.293e-09</span></span></code></pre></div>
 </div>
 <div id="processing-speed-comparisons" class="section level3">
 <h3>Processing Speed Comparisons</h3>
-<p>To assess the performance of the approximation procedures, we use the <code>microbenchmark</code> package. Each algorithm has to calculate the PMF repeatedly based on random probability vectors. The run times are then summarized in a table that presents, among other statistics, their minima, maxima and means. The following results were recorded on an AMD Ryzen 7 1800X with 32 GiB of RAM and Windows 10 Education (2004).</p>
+<p>To assess the performance of the approximation procedures, we use the <code>microbenchmark</code> package. Each algorithm has to calculate the PMF repeatedly based on random probability vectors. The run times are then summarized in a table that presents, among other statistics, their minima, maxima and means. The following results were recorded on an AMD Ryzen 7 1800X with 32 GiB of RAM and Windows 10 Education (20H2).</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">library</span>(microbenchmark)</span>
 <span id="cb13-2"><a href="#cb13-2"></a><span class="kw">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb13-3"><a href="#cb13-3"></a></span>
@@ -841,15 +889,15 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb13-11"><a href="#cb13-11"></a></span>
 <span id="cb13-12"><a href="#cb13-12"></a><span class="kw">microbenchmark</span>(<span class="kw">f1</span>(), <span class="kw">f2</span>(), <span class="kw">f3</span>(), <span class="kw">f4</span>(), <span class="kw">f5</span>(), <span class="kw">f6</span>(), <span class="kw">f7</span>())</span>
 <span id="cb13-13"><a href="#cb13-13"></a><span class="co">#&gt; Unit: microseconds</span></span>
-<span id="cb13-14"><a href="#cb13-14"></a><span class="co">#&gt;  expr    min      lq     mean  median      uq     max neval cld</span></span>
-<span id="cb13-15"><a href="#cb13-15"></a><span class="co">#&gt;  f1()  591.8  635.60  719.911  644.00  674.30  3667.4   100 a  </span></span>
-<span id="cb13-16"><a href="#cb13-16"></a><span class="co">#&gt;  f2()  750.2  799.75  898.596  811.65  832.25  4660.5   100 a  </span></span>
-<span id="cb13-17"><a href="#cb13-17"></a><span class="co">#&gt;  f3()  921.6  976.25 1001.239  990.05 1004.25  1988.9   100 a  </span></span>
-<span id="cb13-18"><a href="#cb13-18"></a><span class="co">#&gt;  f4() 1354.5 1422.85 1492.410 1446.00 1477.10  4868.6   100  b </span></span>
-<span id="cb13-19"><a href="#cb13-19"></a><span class="co">#&gt;  f5() 1499.2 1592.95 1694.790 1613.20 1643.10  8878.2   100  b </span></span>
-<span id="cb13-20"><a href="#cb13-20"></a><span class="co">#&gt;  f6() 1477.8 1586.15 1679.647 1605.90 1626.05  5192.8   100  b </span></span>
-<span id="cb13-21"><a href="#cb13-21"></a><span class="co">#&gt;  f7() 6711.2 6959.10 7764.820 7081.80 7352.00 14006.3   100   c</span></span></code></pre></div>
-<p>Clearly, the NA procedure is the fastest, followed by the RNA and PA methods, which need roughly 25% (RNA) and 40% (PA) more time, and the AMBA and GMBA approaches that need 2-3 times as long as the NA algorithm. AMBA, GMBA-A and GMBA-B procedures exhibit almost equal mean execution speed, with the AMBA algorithm being slightly faster. All of the approximation procedures outperform the fastest exact approach, DC-FFT, by far. Even the slowest approximate algorithm is nearly five times as fast as DC-FFT.</p>
+<span id="cb13-14"><a href="#cb13-14"></a><span class="co">#&gt;  expr    min      lq     mean  median      uq     max neval    cld</span></span>
+<span id="cb13-15"><a href="#cb13-15"></a><span class="co">#&gt;  f1()  587.4  605.90  683.605  639.00  658.95  2795.2   100 a     </span></span>
+<span id="cb13-16"><a href="#cb13-16"></a><span class="co">#&gt;  f2()  749.0  768.20  845.499  809.50  832.55  2948.2   100  b    </span></span>
+<span id="cb13-17"><a href="#cb13-17"></a><span class="co">#&gt;  f3()  904.7  932.55 1016.075  988.90 1013.00  3253.0   100   c   </span></span>
+<span id="cb13-18"><a href="#cb13-18"></a><span class="co">#&gt;  f4() 1309.2 1351.25 1459.436 1421.05 1452.20  3580.8   100    d  </span></span>
+<span id="cb13-19"><a href="#cb13-19"></a><span class="co">#&gt;  f5() 1456.8 1502.05 1580.386 1584.05 1608.00  2833.1   100    de </span></span>
+<span id="cb13-20"><a href="#cb13-20"></a><span class="co">#&gt;  f6() 1454.5 1539.85 1629.553 1586.85 1615.20  3869.5   100     e </span></span>
+<span id="cb13-21"><a href="#cb13-21"></a><span class="co">#&gt;  f7() 7180.6 7560.60 7836.733 7701.75 7835.70 10873.5   100      f</span></span></code></pre></div>
+<p>Clearly, the NA procedure is the fastest, followed by the RNA and PA methods, which need approximately 25% (RNA) and 50% (PA) more time, and the AMBA and GMBA approaches that need 2.5 times as long as the NA algorithm. AMBA, GMBA-A and GMBA-B procedures exhibit almost equal mean execution speed, with the AMBA algorithm being slightly faster. All of the approximation procedures outperform the fastest exact approach, DC-FFT, by far. Even the slowest approximate algorithm is roughly five times as fast as DC-FFT.</p>
 </div>
 </div>
 <div id="generalized-poisson-binomial-distribution" class="section level2">
@@ -1117,12 +1165,12 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="processing-speed-comparisons-1" class="section level3">
 <h3>Processing Speed Comparisons</h3>
-<p>To assess the performance of the approximation procedures, we use the <code>microbenchmark</code> package. Each algorithm has to calculate the PMF repeatedly based on random probability vectors. The run times are then summarized in a table that presents, among other statistics, their minima, maxima and means. The following results were recorded on an AMD Ryzen 7 1800X with 32 GiB of RAM and Windows 10 Education (2004).</p>
+<p>To assess the performance of the approximation procedures, we use the <code>microbenchmark</code> package. Each algorithm has to calculate the PMF repeatedly based on random probability vectors. The run times are then summarized in a table that presents, among other statistics, their minima, maxima and means. The following results were recorded on an AMD Ryzen 7 1800X with 32 GiB of RAM and Windows 10 Education (20H2).</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="kw">library</span>(microbenchmark)</span>
-<span id="cb18-2"><a href="#cb18-2"></a>n &lt;-<span class="st"> </span><span class="dv">200</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a>n &lt;-<span class="st"> </span><span class="dv">1500</span></span>
 <span id="cb18-3"><a href="#cb18-3"></a><span class="kw">set.seed</span>(<span class="dv">2</span>)</span>
-<span id="cb18-4"><a href="#cb18-4"></a>va &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span>n, n, <span class="ot">FALSE</span>)</span>
-<span id="cb18-5"><a href="#cb18-5"></a>vb &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span>n, n, <span class="ot">FALSE</span>)</span>
+<span id="cb18-4"><a href="#cb18-4"></a>va &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">50</span>, n, <span class="ot">TRUE</span>)</span>
+<span id="cb18-5"><a href="#cb18-5"></a>vb &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">50</span>, n, <span class="ot">TRUE</span>)</span>
 <span id="cb18-6"><a href="#cb18-6"></a></span>
 <span id="cb18-7"><a href="#cb18-7"></a>f1 &lt;-<span class="st"> </span><span class="cf">function</span>() <span class="kw">dgpbinom</span>(<span class="ot">NULL</span>, <span class="kw">runif</span>(n), va, vb, <span class="dt">method =</span> <span class="st">&quot;Normal&quot;</span>)</span>
 <span id="cb18-8"><a href="#cb18-8"></a>f2 &lt;-<span class="st"> </span><span class="cf">function</span>() <span class="kw">dgpbinom</span>(<span class="ot">NULL</span>, <span class="kw">runif</span>(n), va, vb, <span class="dt">method =</span> <span class="st">&quot;RefinedNormal&quot;</span>)</span>
@@ -1130,11 +1178,11 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb18-10"><a href="#cb18-10"></a></span>
 <span id="cb18-11"><a href="#cb18-11"></a><span class="kw">microbenchmark</span>(<span class="kw">f1</span>(), <span class="kw">f2</span>(), <span class="kw">f3</span>())</span>
 <span id="cb18-12"><a href="#cb18-12"></a><span class="co">#&gt; Unit: milliseconds</span></span>
-<span id="cb18-13"><a href="#cb18-13"></a><span class="co">#&gt;  expr    min      lq     mean  median      uq     max neval cld</span></span>
-<span id="cb18-14"><a href="#cb18-14"></a><span class="co">#&gt;  f1() 2.1993 2.33245 2.509784 2.37270 2.44740  5.1839   100 a  </span></span>
-<span id="cb18-15"><a href="#cb18-15"></a><span class="co">#&gt;  f2() 2.9052 3.09900 3.315057 3.14650 3.25095  6.1022   100  b </span></span>
-<span id="cb18-16"><a href="#cb18-16"></a><span class="co">#&gt;  f3() 4.9926 5.33495 7.198516 7.19075 8.02795 13.4710   100   c</span></span></code></pre></div>
-<p>Clearly, the G-NA procedure is the fastest, followed by the G-RNA method, which needs roughly 40% more time. But even the slowest approximate algorithm is more than two times as fast as G-DC-FFT.</p>
+<span id="cb18-13"><a href="#cb18-13"></a><span class="co">#&gt;  expr     min      lq     mean   median       uq      max neval cld</span></span>
+<span id="cb18-14"><a href="#cb18-14"></a><span class="co">#&gt;  f1()  7.4946  7.7760  9.47421  7.90435  9.78010 103.3693   100  a </span></span>
+<span id="cb18-15"><a href="#cb18-15"></a><span class="co">#&gt;  f2()  9.0003  9.4788 10.30017  9.89730 10.67315  14.0978   100  a </span></span>
+<span id="cb18-16"><a href="#cb18-16"></a><span class="co">#&gt;  f3() 41.3829 42.4004 43.17172 42.72855 43.25600  54.2157   100   b</span></span></code></pre></div>
+<p>Clearly, the G-NA procedure is the fastest, followed by the G-RNA method. Both are roughly 4-5 times as fast as G-DC-FFT.</p>
 </div>
 </div>
 

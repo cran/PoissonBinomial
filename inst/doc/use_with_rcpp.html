@@ -30,6 +30,54 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
+<style type="text/css">
+a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
+a.anchor-section::before {content: '#';}
+.hasAnchor:hover a.anchor-section {visibility: visible;}
+</style>
+<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
+document.addEventListener('DOMContentLoaded', function() {
+  // Do nothing if AnchorJS is used
+  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
+    return;
+  }
+
+  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+  // Do nothing if sections are already anchored
+  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
+    return null;
+  }
+
+  // Use section id when pandoc runs with --section-divs
+  const section_id = function(x) {
+    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
+            ? x.id : '');
+  };
+
+  // Add anchors
+  h.forEach(function(x) {
+    const id = x.id || section_id(x.parentElement);
+    if (id === '') {
+      return null;
+    }
+    let anchor = document.createElement('a');
+    anchor.href = '#' + id;
+    anchor.classList = ['anchor-section'];
+    x.classList.add('hasAnchor');
+    x.appendChild(anchor);
+  });
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 
 
@@ -238,61 +286,107 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 /***   Exact Procedures   ***/
 
 // Direct Convolution (DC)
+
 // PMF
-NumericVector dpb_conv(IntegerVector obs, NumericVector probs);
+NumericVector dpb_conv(const IntegerVector obs,
+                       const NumericVector probs);
+                       
 // CDF
-NumericVector ppb_conv(IntegerVector obs, NumericVector probs, bool lower_tail);
+NumericVector ppb_conv(const IntegerVector obs,
+                       const NumericVector probs,
+                       const bool lower_tail);
+
 
 // Divide &amp; Conquer FFT Tree Convolution (DC-FFT)
+
 // PMF
-NumericVector dpb_dc(IntegerVector obs, NumericVector probs);
+NumericVector dpb_dc(const IntegerVector obs,
+                     const NumericVector probs);
+                     
 // CDF
-NumericVector ppb_dc(IntegerVector obs, NumericVector probs, bool lower_tail);
+NumericVector ppb_dc(const IntegerVector obs,
+                     const NumericVector probs,
+                     const bool lower_tail);
+
 
 // Discrete Fourier Transformation of the Characteristic Function (DFT-CF)
+
 // PMF
-NumericVector dpb_dftcf(IntegerVector obs, NumericVector probs);
+NumericVector dpb_dftcf(const IntegerVector obs,
+                        const NumericVector probs);
+                        
 // CDF
-NumericVector ppb_dftcf(IntegerVector obs, NumericVector probs, bool lower_tail);
+NumericVector ppb_dftcf(const IntegerVector obs, const NumericVector probs,
+                        const bool lower_tail);
+                        
 
 // Recursive Formula (RF)
+
 // PMF
-NumericVector dpb_rf(IntegerVector obs, NumericVector probs);
+NumericVector dpb_rf(const IntegerVector obs,
+                     const NumericVector probs);
+
 // CDF
-NumericVector ppb_rf(IntegerVector obs, NumericVector probs, bool lower_tail);
+NumericVector ppb_rf(const IntegerVector obs,
+                     const NumericVector probs,
+                     const bool lower_tail);
+
 
 
 /***   Approximations   ***/
 
+
 // Arithmetic Mean Binomial Approximation (AMBA)
+
 // PMF
-NumericVector dpb_mean(IntegerVector obs, NumericVector probs);
+NumericVector dpb_mean(const IntegerVector obs,
+                       const NumericVector probs);
+
 // CDF
-NumericVector ppb_mean(IntegerVector obs, NumericVector probs,
-                       bool lower_tail);
+NumericVector ppb_mean(const IntegerVector obs,
+                       const NumericVector probs,
+                       const bool lower_tail);
+
 
 // Geometric Mean Binomial Approximations (GMBA)
+
 // PMF
-NumericVector dpb_gmba(IntegerVector obs, NumericVector probs,
-                       bool anti);
+NumericVector dpb_gmba(const IntegerVector obs, 
+                       const NumericVector const probs,
+                       const bool anti);
+                       
 // CDF
-NumericVector ppb_gmba(IntegerVector obs, NumericVector probs,
-                       bool anti, bool lower_tail);
+NumericVector ppb_gmba(const IntegerVector obs,
+                       const NumericVector probs,
+                       const bool anti,
+                       const bool lower_tail);
+
 
 // Poisson Approximation (PA)
+
 // PMF
-NumericVector dpb_pa(IntegerVector obs, NumericVector probs);
+NumericVector dpb_pa(const IntegerVector obs,
+                     const NumericVector probs);
+                     
 // CDF
-NumericVector ppb_pa(IntegerVector obs, NumericVector probs,
-                     bool lower_tail);
+NumericVector ppb_pa(const IntegerVector obs,
+                     const NumericVector probs,
+                     const bool lower_tail);
+                     
 
 // Normal Approximations (NA, RNA)
+
 // PMF
-NumericVector dpb_na(IntegerVector obs, NumericVector probs,
-                     bool refined);
+NumericVector dpb_na(const IntegerVector obs,
+                     const NumericVector probs,
+                     const bool refined);
+                     
 // CDF
-NumericVector ppb_na(IntegerVector obs, NumericVector probs,
-                     bool refined,bool lower_tail);
+NumericVector ppb_na(const IntegerVector obs,
+                     const NumericVector probs,
+                     const bool refined,
+                     const bool lower_tail);
+                     
 
 
 
@@ -301,36 +395,60 @@ NumericVector ppb_na(IntegerVector obs, NumericVector probs,
 
 /***   Exact Procedures   ***/
 
+
 // Generalized Direct Convolution (G-DC)
+
 // PMF
-NumericVector dgpb_conv(IntegerVector obs,   NumericVector probs,
-                        NumericVector val_p, NumericVector val_q);
+NumericVector dgpb_conv(const IntegerVector obs,
+                        const NumericVector probs,
+                        const NumericVector val_p,
+                        const NumericVector val_q);
+                        
 // CDF
-NumericVector pgpb_conv(IntegerVector obs,   NumericVector probs,
-                        NumericVector val_p, NumericVector val_q,
-                        bool lower_tail);
+NumericVector pgpb_conv(const IntegerVector obs,
+                        const NumericVector probs,
+                        const NumericVector val_p,
+                        const NumericVector val_q,
+                        const bool lower_tail);
+                        
 
 // Generalized Discrete Fourier Transformation of the Characteristic Function (G-DFT-CF)
+
 // PMF
-NumericVector dgpb_dftcf(IntegerVector obs,  NumericVector probs,
-                         NumericVector val_p, NumericVector val_q);
+NumericVector dgpb_dftcf(const IntegerVector obs,
+                         const NumericVector probs,
+                         const NumericVector val_p,
+                         const NumericVector val_q);
+                         
 // CDF
-NumericVector pgpb_dftcf(IntegerVector obs,  NumericVector probs,
-                         NumericVector val_p, NumericVector val_q,
-                         bool lower_tail);
+NumericVector pgpb_dftcf(const IntegerVector obs,
+                         const NumericVector probs,
+                         const NumericVector val_p,
+                         const NumericVector val_q,
+                         const bool lower_tail);
+                       
                        
                        
 /***   Approximations   ***/
 
+
 // Generalized Normal Approximations (G-NA, G-RNA)
+
 // PMF
-NumericVector dgpb_na(IntegerVector obs,  NumericVector probs,
-                      NumericVector val_p, NumericVector val_q, bool refined,
-                      bool lower_tail);
+NumericVector dgpb_na(const IntegerVector obs,
+                      const NumericVector probs,
+                      const NumericVector val_p,
+                      const NumericVector val_q,
+                      const bool refined,
+                      const bool lower_tail);
+                      
 // CDF
-NumericVector pgpb_na(IntegerVector obs,  NumericVector probs,
-                      NumericVector val_p, NumericVector val_q, bool refined,
-                      bool lower_tail);</code></pre>
+NumericVector pgpb_na(const IntegerVector obs,
+                      const NumericVector probs,
+                      const NumericVector val_p,
+                      const NumericVector val_q,
+                      const bool refined,
+                      const bool lower_tail);</code></pre>
 <div id="making-the-functions-usable" class="section level2">
 <h2>Making the functions usable</h2>
 <p>There are only a few simple steps to follow:</p>

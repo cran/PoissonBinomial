@@ -1,3 +1,14 @@
+# PoissonBinomial 1.2.0
+
+* Performance improvements for exact methods of `dgpbinom` and `pgpbinom`.
+* Input variable of the Rcpp implementations of all methods are made `const`
+  to prevent inadvertent changes to them. Any package that imports headers must
+  be updated. The 'Imports' field of the DESCRIPTION file should include a
+  version requirement, i.e. PoissonBinomial (>= 1.2.0).
+* Added additional random generation methods for `rpbinom` and `rgpbinom` (see
+  function documentation). They are much faster than the old quantile-based
+  inversion method (which has been removed).
+
 # PoissonBinomial 1.1.3
 
 * Improved numerical accuracy of normal approximations of `dpbinom` and 
@@ -17,7 +28,7 @@
 * Bug fixes in `ppbinom` and `pgpbinom` that caused incorrect calculation of
   logarithms and cumulative upper-tail probabilities.
 
-# PoissonBinomial 1.1
+# PoissonBinomial 1.1.0
 
 * Added exact and approximate algorithms for the generalized Poisson binomial
   distribution described in Zhang, Hong & Balakrishnan (2018). The

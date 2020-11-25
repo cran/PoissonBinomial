@@ -68,10 +68,10 @@ sum(abs(dpbinom(NULL, pp, wt, "Convolve") - dpbinom(NULL, pp, wt, "Recursive")))
 library(microbenchmark)
 set.seed(1)
 
-f1 <- function() dpbinom(NULL, runif(4000), method = "DivideFFT")
-f2 <- function() dpbinom(NULL, runif(4000), method = "Convolve")
-f3 <- function() dpbinom(NULL, runif(4000), method = "Recursive")
-f4 <- function() dpbinom(NULL, runif(4000), method = "Characteristic")
+f1 <- function() dpbinom(NULL, runif(5000), method = "DivideFFT")
+f2 <- function() dpbinom(NULL, runif(5000), method = "Convolve")
+f3 <- function() dpbinom(NULL, runif(5000), method = "Recursive")
+f4 <- function() dpbinom(NULL, runif(5000), method = "Characteristic")
 
 microbenchmark(f1(), f2(), f3(), f4())
 
@@ -129,7 +129,7 @@ pgpbinom(NULL, pp, va, vb, wt, "Characteristic")
 
 ## ----benchmark-gen------------------------------------------------------------
 library(microbenchmark)
-n <- 600
+n <- 2500
 set.seed(1)
 va <- sample(1:50, n, TRUE)
 vb <- sample(1:50, n, TRUE)

@@ -279,10 +279,10 @@ summary((dpn - dpd)[idx])
 
 ## ----benchmark-gen------------------------------------------------------------
 library(microbenchmark)
-n <- 200
+n <- 1500
 set.seed(2)
-va <- sample(1:n, n, FALSE)
-vb <- sample(1:n, n, FALSE)
+va <- sample(1:50, n, TRUE)
+vb <- sample(1:50, n, TRUE)
 
 f1 <- function() dgpbinom(NULL, runif(n), va, vb, method = "Normal")
 f2 <- function() dgpbinom(NULL, runif(n), va, vb, method = "RefinedNormal")

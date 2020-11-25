@@ -251,7 +251,7 @@ summary((dpn - dpd)[idx])
 
 ### Processing Speed Comparisons
 
-To assess the performance of the approximation procedures, we use the `microbenchmark` package. Each algorithm has to calculate the PMF repeatedly based on random probability vectors. The run times are then summarized in a table that presents, among other statistics, their minima, maxima and means. The following results were recorded on an AMD Ryzen 7 1800X with 32 GiB of RAM and Windows 10 Education (2004).
+To assess the performance of the approximation procedures, we use the `microbenchmark` package. Each algorithm has to calculate the PMF repeatedly based on random probability vectors. The run times are then summarized in a table that presents, among other statistics, their minima, maxima and means. The following results were recorded on an AMD Ryzen 7 1800X with 32 GiB of RAM and Windows 10 Education (20H2).
 
 ```{r benchmark-ord}
 library(microbenchmark)
@@ -268,7 +268,7 @@ f7 <- function() dpbinom(NULL, runif(4000), method = "DivideFFT")
 microbenchmark(f1(), f2(), f3(), f4(), f5(), f6(), f7())
 ```
 
-Clearly, the NA procedure is the fastest, followed by the RNA and PA methods, which need roughly 25% (RNA) and 40% (PA) more time, and the AMBA and GMBA approaches that need 2-3 times as long as the NA algorithm. AMBA, GMBA-A and GMBA-B procedures exhibit almost equal mean execution speed, with the AMBA algorithm being slightly faster. All of the approximation procedures outperform the fastest exact approach, DC-FFT, by far. Even the slowest approximate algorithm is nearly five times as fast as DC-FFT.
+Clearly, the NA procedure is the fastest, followed by the RNA and PA methods, which need approximately 25% (RNA) and 50% (PA) more time, and the AMBA and GMBA approaches that need 2.5 times as long as the NA algorithm. AMBA, GMBA-A and GMBA-B procedures exhibit almost equal mean execution speed, with the AMBA algorithm being slightly faster. All of the approximation procedures outperform the fastest exact approach, DC-FFT, by far. Even the slowest approximate algorithm is roughly five times as fast as DC-FFT.
 
 
 ## Generalized Poisson Binomial Distribution
@@ -370,14 +370,14 @@ summary((dpn - dpd)[idx])
 
 ### Processing Speed Comparisons
 
-To assess the performance of the approximation procedures, we use the `microbenchmark` package. Each algorithm has to calculate the PMF repeatedly based on random probability vectors. The run times are then summarized in a table that presents, among other statistics, their minima, maxima and means. The following results were recorded on an AMD Ryzen 7 1800X with 32 GiB of RAM and Windows 10 Education (2004).
+To assess the performance of the approximation procedures, we use the `microbenchmark` package. Each algorithm has to calculate the PMF repeatedly based on random probability vectors. The run times are then summarized in a table that presents, among other statistics, their minima, maxima and means. The following results were recorded on an AMD Ryzen 7 1800X with 32 GiB of RAM and Windows 10 Education (20H2).
 
 ```{r benchmark-gen}
 library(microbenchmark)
-n <- 200
+n <- 1500
 set.seed(2)
-va <- sample(1:n, n, FALSE)
-vb <- sample(1:n, n, FALSE)
+va <- sample(1:50, n, TRUE)
+vb <- sample(1:50, n, TRUE)
 
 f1 <- function() dgpbinom(NULL, runif(n), va, vb, method = "Normal")
 f2 <- function() dgpbinom(NULL, runif(n), va, vb, method = "RefinedNormal")
@@ -386,4 +386,4 @@ f3 <- function() dgpbinom(NULL, runif(n), va, vb, method = "DivideFFT")
 microbenchmark(f1(), f2(), f3())
 ```
 
-Clearly, the G-NA procedure is the fastest, followed by the G-RNA method, which needs roughly 40% more time. But even the slowest approximate algorithm is more than two times as fast as G-DC-FFT.
+Clearly, the G-NA procedure is the fastest, followed by the G-RNA method. Both are roughly 4-5 times as fast as G-DC-FFT.
