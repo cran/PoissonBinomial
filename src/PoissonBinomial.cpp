@@ -268,11 +268,11 @@ NumericVector dpb_dc(const IntegerVector obs, const NumericVector probs){//, con
   
   // automatically determine number of splits, if size is above 600
   //int num_splits = splits < 0 ? std::max<int>(0, (int)std::ceil(std::log(size / 950) / std::log(2.0))) : splits;
-  int num_splits = std::max<int>(0, (int)std::ceil(std::log(size / 950) / std::log(2.0)));
+  int num_splits = size > 950 ? (int)std::ceil(std::log(size / 950) / std::log(2.0)) : 0;
   // direct convolution is sufficient in case of 0 splits
   if(num_splits == 0) return dpb_conv(obs, probs);
   // number of groups
-  int num_groups = (int)std::pow(2, num_splits);
+  int num_groups = std::pow(2, num_splits);
   // reduce number of splits and groups if too large
   while(num_splits > 0 && num_groups > size){
     num_splits -= 1;
@@ -846,11 +846,11 @@ NumericVector dgpb_dc(const IntegerVector obs, const NumericVector probs, const 
   
   // number of tree splits
   //int num_splits = splits < 0 ? std::max<int>(0, (int)round(std::log(sizeOut)/std::log(2.0)/6 + 5 * std::log(sizeIn)/std::log(2.0)/6 - 8.75)) : splits;
-  int num_splits = std::max<int>(0, (int)round(0.79 * std::log(sizeIn)/std::log(2.0) + 0.035 * std::log(sizeOut)/std::log(2.0) - 6.85));
+  int num_splits = sizeIn > 0 ? std::max<int>(0, (int)round(0.79 * std::log(sizeIn)/std::log(2.0) + 0.035 * std::log(sizeOut)/std::log(2.0) - 6.85)) : 0;
   // direct convolution is sufficient in case of 0 splits
   if(num_splits == 0) return dgpb_conv(obs, probs, val_p, val_q);
   // number of groups
-  int num_groups = (int)std::pow(2, num_splits);
+  int num_groups = std::pow(2, num_splits);
   // fraction of total size per group
   double frac = (double)sizeOut/num_groups;
   // reduce number of splits and groups if inner-group sizes are too large
@@ -1120,7 +1120,7 @@ NumericVector pgpb_na(const IntegerVector obs, const NumericVector probs, const 
   // p * q
   const NumericVector pq = probs * (1 - probs);
   // sigma
-  const double sigma = std::sqrt(sum(pq * pow(val_p - val_q, 2)));
+  const double sigma = std::sqrt(sum(pq * pow(NumericVector(val_p) - NumericVector(val_q), 2.0)));
   // standardized observations with continuity correction
   IntegerVector observed;
   if(obs.length() == 0)
@@ -1132,12 +1132,12 @@ NumericVector pgpb_na(const IntegerVector obs, const NumericVector probs, const 
   // cumulative probabilities
   if(refined && sigma){
     // gamma
-    const double gamma = sum(pq * (1 - 2 * probs) * pow(val_p - val_q, 3))/std::pow(sigma, 3);
+    const double gamma = sum(pq * (1 - 2 * probs) * pow(NumericVector(val_p) - NumericVector(val_q), 3.0))/std::pow(sigma, 3.0);
     // probabilities
     if(lower_tail)
-      results += gamma * (1 - pow(obs_std, 2)) * dnorm(obs_std) / 6;
+      results += gamma * (1 - pow(obs_std, 2.0)) * dnorm(obs_std) / 6;
     else
-      results += -gamma * (1 - pow(obs_std, 2)) * dnorm(obs_std) / 6;
+      results += -gamma * (1 - pow(obs_std, 2.0)) * dnorm(obs_std) / 6;
   }
   // make sure that all probabilities do not exceed 1 and are at least 0
   results[results < 0] = 0;

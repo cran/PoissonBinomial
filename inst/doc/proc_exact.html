@@ -572,10 +572,10 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb8-9"><a href="#cb8-9"></a><span class="kw">microbenchmark</span>(<span class="kw">f1</span>(), <span class="kw">f2</span>(), <span class="kw">f3</span>(), <span class="kw">f4</span>())</span>
 <span id="cb8-10"><a href="#cb8-10"></a><span class="co">#&gt; Unit: milliseconds</span></span>
 <span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt;  expr     min       lq     mean   median       uq     max neval  cld</span></span>
-<span id="cb8-12"><a href="#cb8-12"></a><span class="co">#&gt;  f1() 13.4042 13.65425 13.96337 13.77990 13.91975 17.1088   100 a   </span></span>
-<span id="cb8-13"><a href="#cb8-13"></a><span class="co">#&gt;  f2() 20.6392 20.93765 21.15733 21.10240 21.32325 22.6958   100  b  </span></span>
-<span id="cb8-14"><a href="#cb8-14"></a><span class="co">#&gt;  f3() 27.5966 27.97090 28.28354 28.17785 28.43690 31.1628   100   c </span></span>
-<span id="cb8-15"><a href="#cb8-15"></a><span class="co">#&gt;  f4() 65.7154 66.30750 66.72891 66.55035 66.91000 70.2184   100    d</span></span></code></pre></div>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="co">#&gt;  f1() 13.7388 13.98920 14.24036 14.07430 14.18050 18.6597   100 a   </span></span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="co">#&gt;  f2() 20.8997 21.40085 21.51780 21.52930 21.61505 22.7991   100  b  </span></span>
+<span id="cb8-14"><a href="#cb8-14"></a><span class="co">#&gt;  f3() 28.3662 28.80610 29.00823 28.96065 29.07945 31.8566   100   c </span></span>
+<span id="cb8-15"><a href="#cb8-15"></a><span class="co">#&gt;  f4() 66.7758 67.37795 67.66081 67.63415 67.92170 69.4124   100    d</span></span></code></pre></div>
 <p>Clearly, the DC-FFT procedure is the fastest, followed by the DC method, which needs roughly 1.5 times as much time here. RF and DFT-CF are almost two and five times, respectively, slower than DC-FFT, respectively (although RF has some advantages in precision, as stated before).</p>
 </div>
 </div>
@@ -922,9 +922,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb14-11"><a href="#cb14-11"></a><span class="kw">microbenchmark</span>(<span class="kw">f1</span>(), <span class="kw">f2</span>(), <span class="kw">f3</span>())</span>
 <span id="cb14-12"><a href="#cb14-12"></a><span class="co">#&gt; Unit: milliseconds</span></span>
 <span id="cb14-13"><a href="#cb14-13"></a><span class="co">#&gt;  expr      min        lq      mean    median        uq      max neval cld</span></span>
-<span id="cb14-14"><a href="#cb14-14"></a><span class="co">#&gt;  f1()  56.8388  57.76210  63.44748  58.63540  60.26615 338.7246   100 a  </span></span>
-<span id="cb14-15"><a href="#cb14-15"></a><span class="co">#&gt;  f2()  91.1376  91.98105  93.34477  93.04655  94.50995  97.0263   100  b </span></span>
-<span id="cb14-16"><a href="#cb14-16"></a><span class="co">#&gt;  f3() 509.4249 517.44770 521.62463 519.51470 522.53045 614.7971   100   c</span></span></code></pre></div>
+<span id="cb14-14"><a href="#cb14-14"></a><span class="co">#&gt;  f1()  55.4850  58.28000  63.65059  58.79150  60.58415 333.5652   100 a  </span></span>
+<span id="cb14-15"><a href="#cb14-15"></a><span class="co">#&gt;  f2()  89.4355  93.52265  95.50789  94.32915  95.95510 195.0174   100  b </span></span>
+<span id="cb14-16"><a href="#cb14-16"></a><span class="co">#&gt;  f3() 511.4210 524.34290 528.88073 528.69490 532.80085 563.9598   100   c</span></span></code></pre></div>
 <p>Clearly, the G-DC-FFT procedure is the fastest one. If <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span> are large enough, it outperforms both the G-DC and G-DFT-CF approaches. The latter one needs almost six times as much time as G-DC. Generally, the computational speed advantage of the G-DC-FFT procedure increases with larger <span class="math inline">\(n\)</span> (and <span class="math inline">\(m\)</span>).</p>
 </div>
 </div>

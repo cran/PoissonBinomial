@@ -1,3 +1,8 @@
+# PoissonBinomial 1.2.1
+
+* Fixed a minor code issue that prevented compilation on Solaris systems.
+
+
 # PoissonBinomial 1.2.0
 
 * Performance improvements for exact methods of `dgpbinom` and `pgpbinom`.
@@ -5,14 +10,16 @@
   to prevent inadvertent changes to them. Any package that imports headers must
   be updated. The 'Imports' field of the DESCRIPTION file should include a
   version requirement, i.e. PoissonBinomial (>= 1.2.0).
-* Added additional random generation methods for `rpbinom` and `rgpbinom` (see
+* Added new random generation methods for `rpbinom` and `rgpbinom` (see
   function documentation). They are much faster than the old quantile-based
-  inversion method (which has been removed).
+  inversion method, which has been removed.
+
 
 # PoissonBinomial 1.1.3
 
 * Improved numerical accuracy of normal approximations of `dpbinom` and 
   `dgpbinom`.
+  
 
 # PoissonBinomial 1.1.2
 
@@ -23,10 +30,12 @@
   are now capable of computing these values for `lower.tail = FALSE` on their
   own, which improves accuracy.
 
+
 # PoissonBinomial 1.1.1
 
 * Bug fixes in `ppbinom` and `pgpbinom` that caused incorrect calculation of
   logarithms and cumulative upper-tail probabilities.
+
 
 # PoissonBinomial 1.1.0
 
@@ -37,9 +46,11 @@
 * Restructured vignettes. Added tables of content and fixed smaller issues.
 * Minor bug fixes for `dbinom`, `ppbinom` and `qpbinom` functions.
 
+
 # PoissonBinomial 1.0.2-1
 
 * Fixes and improvements of the vignettes; no code changes.
+
 
 # PoissonBinomial 1.0.2
 
