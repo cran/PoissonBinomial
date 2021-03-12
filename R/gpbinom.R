@@ -73,22 +73,17 @@
 #'@section References:
 #'Hong, Y. (2018). On computing the distribution function for the Poisson
 #'    binomial distribution. \emph{Computational Statistics & Data Analysis},
-#'    \strong{59}, pp. 41-51. doi:
-#'    \href{https://doi.org/10.1016/j.csda.2012.10.006}{
-#'    10.1016/j.csda.2012.10.006}
+#'    \strong{59}, pp. 41-51. \doi{10.1016/j.csda.2012.10.006}
 #'
 #'Biscarri, W., Zhao, S. D. and Brunner, R. J. (2018) A simple and fast method
 #'    for computing the Poisson binomial distribution.
 #'    \emph{Computational Statistics and Data Analysis}, \strong{31}, pp.
-#'    216–222. doi: \href{https://doi.org/10.1016/j.csda.2018.01.007}{
-#'    10.1016/j.csda.2018.01.007}
+#'    216–222. \doi{10.1016/j.csda.2018.01.007}
 #'    
 #'Zhang, M., Hong, Y. and Balakrishnan, N. (2018). The generalized 
 #'    Poisson-binomial distribution and the computation of its distribution
 #'    function. \emph{Journal of Statistical Computational and Simulation},
-#'    \strong{88}(8), pp. 1515-1527. doi:
-#'    \href{https://doi.org/10.1080/00949655.2018.1440294}{
-#'    10.1080/00949655.2018.1440294}
+#'    \strong{88}(8), pp. 1515-1527. \doi{10.1080/00949655.2018.1440294}
 #'    
 #'@examples
 #'set.seed(1)
@@ -152,34 +147,28 @@ dgpbinom <- function(x, probs, val_p, val_q, wts = NULL, method = "DivideFFT", l
     if(length(idx.inner)){
       # transformed input parameters
       n <- transf$n
-      diffGCD <- transf$diffsGCD
       probs <- transf$probs
-      #val_p <- transf$val_p
-      #val_q <- transf$val_q
-      diffs <- transf$diffs / diffGCD
+      diffs <- transf$diffs
       
       if(n == 0){
         # 'probs' contains only zeros and ones, i.e. only one possible observation
         d[idx.valid][idx.inner] <- 1
       }else{
         z <- y[idx.inner] - transf$inner.range[1]
-        # reduce relevant observations with GCD, if possible
-        diff.range <- seq(0, transf$inner.size - 1, diffGCD)
-        z.gcd <- z[z %in% intersect(z, diff.range)]/diffGCD
-        idx.gcd <- which((z/diffGCD) %in% z.gcd)
-        
         # compute distribution
-        if(all(diffs == 1)){
-          # all GCD-optimized values of 'diffs' are equal, i.e. a standard binomial distribution
-          if(length(idx.gcd)) d[idx.valid][idx.inner][idx.gcd] <- dpbinom(z.gcd, probs, method = method)
+        if(all(diffs == diffs[1])){
+          # all values of 'diffs' are equal, i.e. a multiplied ordinary poisson binomial distribution
+          remainder <- z %% diffs[1]
+          idx.r <- which(remainder == 0)
+          d[idx.valid][idx.inner][idx.r] <- dpbinom((z %/% diffs[1])[idx.r], probs, method = method)
         }else{
           # compute distribution according to 'method'
-          d[idx.valid][idx.inner][idx.gcd] <- switch(method,
-                                                     DivideFFT = dgpb_dc(z.gcd, probs, diffs, rep(0, n)),
-                                                     Convolve = dgpb_conv(z.gcd, probs, diffs, rep(0, n)),
-                                                     Characteristic = dgpb_dftcf(z.gcd, probs, diffs, rep(0, n)),
-                                                     Normal = dgpb_na(z.gcd, probs, diffs, rep(0, n), FALSE),
-                                                     RefinedNormal = dgpb_na(z.gcd, probs, diffs, rep(0, n), TRUE))
+          d[idx.valid][idx.inner] <- switch(method,
+                                            DivideFFT = dgpb_dc(z, probs, diffs, rep(0, n)),
+                                            Convolve = dgpb_conv(z, probs, diffs, rep(0, n)),
+                                            Characteristic = dgpb_dftcf(z, probs, diffs, rep(0, n)),
+                                            Normal = dgpb_na(z, probs, diffs, rep(0, n), FALSE),
+                                            RefinedNormal = dgpb_na(z, probs, diffs, rep(0, n), TRUE))
         }
       }
     }
@@ -222,35 +211,28 @@ pgpbinom <- function(x, probs, val_p, val_q, wts = NULL, method = "DivideFFT", l
     if(length(idx.inner)){
       # transformed input parameters
       n <- transf$n
-      diffGCD <- transf$diffsGCD
       probs <- transf$probs
-      #val_p <- transf$val_p
-      #val_q <- transf$val_q
-      diffs <- transf$diffs / diffGCD
+      diffs <- transf$diffs
       
       if(n == 0){
         # 'probs' contains only zeros and ones, i.e. only one possible observation
         d[idx.valid][idx.inner] <- as.numeric(lower.tail)
       }else{
         # select and rescale relevant observations
-        z <- floor((y[idx.inner] - transf$inner.range[1])/diffGCD)
-        # reduce relevant observations with GCD, if possible
-        diff.range <- 0:((transf$inner.size - 1)/diffGCD)
-        z.gcd <- z[z %in% intersect(z, diff.range)]
-        idx.gcd <- which(z %in% z.gcd)
+        z <- y[idx.inner] - transf$inner.range[1]
         
         # compute distribution
-        if(all(diffs == 1)){
+        if(all(diffs == diffs[1])){
           # all GCD-optimized values of 'diffs' are equal, i.e. a standard binomial distribution
-          if(length(idx.gcd)) d[idx.valid][idx.inner][idx.gcd] <- ppbinom(z.gcd, probs, method = method, lower.tail = lower.tail)
+          d[idx.valid][idx.inner] <- ppbinom(z %/% diffs[1], probs, method = method, lower.tail = lower.tail)
         }else{
           # compute distribution according to 'method'
-          d[idx.valid][idx.inner][idx.gcd] <- switch(method,
-                                                     DivideFFT = pgpb_dc(z.gcd, probs, diffs, rep(0, n), lower.tail),
-                                                     Convolve = pgpb_conv(z.gcd, probs, diffs, rep(0, n), lower.tail),
-                                                     Characteristic = pgpb_dftcf(z.gcd, probs, diffs, rep(0, n), lower.tail),
-                                                     Normal = pgpb_na(z.gcd, probs, diffs, rep(0, n), FALSE, lower.tail),
-                                                     RefinedNormal = pgpb_na(z.gcd, probs, diffs, rep(0, n), TRUE, lower.tail))
+          d[idx.valid][idx.inner] <- switch(method,
+                                            DivideFFT = pgpb_dc(z, probs, diffs, rep(0, n), lower.tail),
+                                            Convolve = pgpb_conv(z, probs, diffs, rep(0, n), lower.tail),
+                                            Characteristic = pgpb_dftcf(z, probs, diffs, rep(0, n), lower.tail),
+                                            Normal = pgpb_na(z, probs, diffs, rep(0, n), FALSE, lower.tail),
+                                            RefinedNormal = pgpb_na(z, probs, diffs, rep(0, n), TRUE, lower.tail))
         }
       }
     }
@@ -320,7 +302,7 @@ qgpbinom <- function(p, probs, val_p, val_q, wts = NULL, method = "DivideFFT", l
   for(i in 1:length(p.s)){
     # handle 0's and 1's
     if(p.s[i] == as.numeric(!lower.tail)){
-      res[i] <- ifelse(lower.tail, 0, first)
+      res[i] <- ifelse(lower.tail, min(transf$compl.range), first)
       next
     }
     if(p.s[i] == as.numeric(lower.tail)){

@@ -89,11 +89,10 @@ transform.GPB <- function(x, probs, val_p, val_q, wts){
   
   # compute differences and their GCD
   diffs <- val_gr - val_lo
-  diffsGCD <- vectorGCD(diffs)
   
   # bounds of relevant observations
   sum_min_in <- sum(val_lo) + sum_sure
   sum_max_in <- sum(val_gr) + sum_sure
   
-  return(list(probs = probs, val_p = val_gr, val_q = val_lo, compl.range = sum_min:sum_max, inner.range = sum_min_in:sum_max_in, inner.size = sum_max_in - sum_min_in + 1, n = np, diffs = diffs, diffsGCD = diffsGCD))
+  return(list(probs = probs, val_p = val_gr, val_q = val_lo, compl.range = sum_min:sum_max, inner.range = sum_min_in:sum_max_in, inner.size = sum_max_in - sum_min_in + 1, n = np, diffs = diffs))
 }

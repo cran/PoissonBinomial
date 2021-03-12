@@ -115,15 +115,12 @@ values.
 
 Hong, Y. (2013). On computing the distribution function for the Poisson
    binomial distribution. \emph{Computational Statistics & Data Analysis},
-   \strong{59}, pp. 41-51. doi:
-   \href{https://doi.org/10.1016/j.csda.2012.10.006}{
-   10.1016/j.csda.2012.10.006}
+   \strong{59}, pp. 41-51. \doi{10.1016/j.csda.2012.10.006}
 
 Biscarri, W., Zhao, S. D. and Brunner, R. J. (2018) A simple and fast method
    for computing the Poisson binomial distribution.
    \emph{Computational Statistics and Data Analysis}, \strong{31}, pp.
-   216–222. doi: \href{https://doi.org/10.1016/j.csda.2018.01.007}{
-   10.1016/j.csda.2018.01.007}
+   216–222. \doi{10.1016/j.csda.2018.01.007}
 }
 
 \examples{

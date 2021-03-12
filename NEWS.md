@@ -1,3 +1,17 @@
+# PoissonBinomial 1.2.2
+
+* Performance improvements for "Convolve" (and subsequently "DivideFFT")
+  procedures.
+* GCD optimizations for generalized poisson distributions have been moved to
+  the respective C++ functions, so that packages that import them may benefit
+  from them as well.
+* Removed dependence on `BH` package, as it was only needed for one constant in
+  the C++ code, which has now been defined manually.
+* Adjustment to vignettes. Benchmarks (for performance comparisons) are now
+  done with 51 runs (instead of 100) to accelerate building of the package.
+* Fixed a minor bug with `qgpbinom`.
+
+
 # PoissonBinomial 1.2.1
 
 * Fixed a minor code issue that prevented compilation on Solaris systems.

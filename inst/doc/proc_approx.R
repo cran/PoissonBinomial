@@ -196,7 +196,7 @@ f5 <- function() dpbinom(NULL, runif(4000), method = "GeoMean")
 f6 <- function() dpbinom(NULL, runif(4000), method = "GeoMeanCounter")
 f7 <- function() dpbinom(NULL, runif(4000), method = "DivideFFT")
 
-microbenchmark(f1(), f2(), f3(), f4(), f5(), f6(), f7())
+microbenchmark(f1(), f2(), f3(), f4(), f5(), f6(), f7(), times = 51)
 
 ## ----na1-gen------------------------------------------------------------------
 set.seed(2)
@@ -288,5 +288,5 @@ f1 <- function() dgpbinom(NULL, runif(n), va, vb, method = "Normal")
 f2 <- function() dgpbinom(NULL, runif(n), va, vb, method = "RefinedNormal")
 f3 <- function() dgpbinom(NULL, runif(n), va, vb, method = "DivideFFT")
 
-microbenchmark(f1(), f2(), f3())
+microbenchmark(f1(), f2(), f3(), times = 51)
 

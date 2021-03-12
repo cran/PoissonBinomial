@@ -68,12 +68,12 @@ sum(abs(dpbinom(NULL, pp, wt, "Convolve") - dpbinom(NULL, pp, wt, "Recursive")))
 library(microbenchmark)
 set.seed(1)
 
-f1 <- function() dpbinom(NULL, runif(5000), method = "DivideFFT")
-f2 <- function() dpbinom(NULL, runif(5000), method = "Convolve")
-f3 <- function() dpbinom(NULL, runif(5000), method = "Recursive")
-f4 <- function() dpbinom(NULL, runif(5000), method = "Characteristic")
+f1 <- function() dpbinom(NULL, runif(6000), method = "DivideFFT")
+f2 <- function() dpbinom(NULL, runif(6000), method = "Convolve")
+f3 <- function() dpbinom(NULL, runif(6000), method = "Recursive")
+f4 <- function() dpbinom(NULL, runif(6000), method = "Characteristic")
 
-microbenchmark(f1(), f2(), f3(), f4())
+microbenchmark(f1(), f2(), f3(), f4(), times = 51)
 
 ## ----directconv-gen-----------------------------------------------------------
 set.seed(1)
@@ -138,5 +138,5 @@ f1 <- function() dgpbinom(NULL, runif(n), va, vb, method = "DivideFFT")
 f2 <- function() dgpbinom(NULL, runif(n), va, vb, method = "Convolve")
 f3 <- function() dgpbinom(NULL, runif(n), va, vb, method = "Characteristic")
 
-microbenchmark(f1(), f2(), f3())
+microbenchmark(f1(), f2(), f3(), times = 51)
 
