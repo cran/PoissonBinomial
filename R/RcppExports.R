@@ -4,6 +4,10 @@
 #'
 NULL
 
+test <- function() {
+    .Call(`_PoissonBinomial_test`)
+}
+
 vectorGCD <- function(x) {
     .Call(`_PoissonBinomial_vectorGCD`, x)
 }

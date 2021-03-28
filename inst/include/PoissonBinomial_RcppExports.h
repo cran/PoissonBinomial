@@ -24,6 +24,27 @@ namespace PoissonBinomial {
         }
     }
 
+    inline double test() {
+        typedef SEXP(*Ptr_test)();
+        static Ptr_test p_test = NULL;
+        if (p_test == NULL) {
+            validateSignature("double(*test)()");
+            p_test = (Ptr_test)R_GetCCallable("PoissonBinomial", "_PoissonBinomial_test");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_test();
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<double >(rcpp_result_gen);
+    }
+
     inline int vectorGCD(const IntegerVector x) {
         typedef SEXP(*Ptr_vectorGCD)(SEXP);
         static Ptr_vectorGCD p_vectorGCD = NULL;

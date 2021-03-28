@@ -96,6 +96,11 @@ IntegerVector order(NumericVector x, bool decreasing = false){
 }
 
 // [[Rcpp::export]]
+double test(){
+  return PI;
+}
+
+// [[Rcpp::export]]
 int vectorGCD(const IntegerVector x){
   // input size
   const int size = x.length();
@@ -271,9 +276,9 @@ NumericVector dpb_dc(const IntegerVector obs, const NumericVector probs){//, con
   // number of probabilities of success
   const int size = probs.length();
   
-  // automatically determine number of splits, if size is above 600
-  //int num_splits = splits < 0 ? std::max<int>(0, (int)std::ceil(std::log(size / 950) / std::log(2.0))) : splits;
-  int num_splits = size > 950 ? (int)std::ceil(std::log(size / 950) / std::log(2.0)) : 0;
+  // automatically determine number of splits, if size is above 1950
+  //int num_splits = splits < 0 ? std::max<int>(0, (int)std::ceil(std::log(size / 1950) / std::log(2.0))) : splits;
+  int num_splits = size > 1950 ? (int)std::ceil(std::log(size / 1950) / std::log(2.0)) : 0;
   // direct convolution is sufficient in case of 0 splits
   if(num_splits == 0) return dpb_conv(obs, probs);
   // number of groups
@@ -854,6 +859,8 @@ NumericVector dgpb_dc(const IntegerVector obs, const NumericVector probs, const 
   // determine pairwise minimum and maximum
   IntegerVector v = pmin(val_p, val_q);
   IntegerVector u = pmax(val_p, val_q);
+  // theoretical minimum
+  const int min_v = sum(v);
   // compute differences
   IntegerVector d = u - v;
   // final output size
@@ -886,8 +893,8 @@ NumericVector dgpb_dc(const IntegerVector obs, const NumericVector probs, const 
     results_rescaled = dpb_dc(IntegerVector(), probs_flipped);
   }else{
     // number of tree splits
-    //int num_splits = splits < 0 ? std::max<int>(0, (int)round(std::log(sizeOut_rescaled)/std::log(2.0)/6 + 5 * std::log(sizeIn)/std::log(2.0)/6 - 8.75)) : splits;
-    int num_splits = sizeIn > 0 ? std::max<int>(0, (int)round(0.79 * std::log(sizeIn)/std::log(2.0) + 0.035 * std::log(sizeOut_rescaled)/std::log(2.0) - 6.85)) : 0;
+    //int num_splits = splits < 0 ? std::max<int>(0, (int)std::ceil(std::log(sizeIn / 860) / std::log(2.0))) : splits;
+    int num_splits = sizeIn > 860 ? std::max<int>(0, (int)std::ceil(std::log(sizeIn / 860) / std::log(2.0))) : 0;
     // direct convolution is sufficient in case of 0 splits
     if(num_splits == 0) return dgpb_conv(obs, probs_flipped, u, v);
     // number of groups
@@ -1000,7 +1007,7 @@ NumericVector dgpb_dc(const IntegerVector obs, const NumericVector probs, const 
     results[i * gcd] = results_rescaled[i];
   
   // return final results
-  if(obs.length()) return results[obs - sum(v)]; else return results;
+  if(obs.length()) return results[obs - min_v]; else return results;
 }
 
 // [[Rcpp::export]]

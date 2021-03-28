@@ -2,8 +2,8 @@ Package: PoissonBinomial
 Type: Package
 Title: Efficient Computation of Ordinary and Generalized Poisson
         Binomial Distributions
-Version: 1.2.2
-Date: 2021-03-12
+Version: 1.2.3
+Date: 2021-03-26
 Authors@R: person("Florian", "Junge", role = c("aut", "cre"), email = "florian.junge@h-da.de")
 Maintainer: Florian Junge <florian.junge@h-da.de>
 Language: en-US
@@ -17,7 +17,7 @@ RoxygenNote: 7.1.1
 Suggests: knitr, rmarkdown, microbenchmark
 VignetteBuilder: knitr
 NeedsCompilation: yes
-Packaged: 2021-03-12 09:29:50 UTC; Florian Junge
+Packaged: 2021-03-26 14:47:47 UTC; Florian Junge
 Author: Florian Junge [aut, cre]
 Repository: CRAN
-Date/Publication: 2021-03-12 10:20:02 UTC
+Date/Publication: 2021-03-28 06:51:21 UTC

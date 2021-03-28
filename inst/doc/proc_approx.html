@@ -26,11 +26,19 @@
     </style>
 
 
-<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -657,14 +665,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="fu">f1</span>(), <span class="fu">f2</span>(), <span class="fu">f3</span>(), <span class="fu">f4</span>(), <span class="fu">f5</span>(), <span class="fu">f6</span>(), <span class="fu">f7</span>(), <span class="at">times =</span> <span class="dv">51</span>)</span>
 <span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Unit: microseconds</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  expr    min      lq      mean median      uq    max neval  cld</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f1()  598.7  645.85  741.4000  653.9  675.75 2962.2    51 a   </span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f2()  758.2  805.00  919.8961  825.1  857.15 3110.2    51 ab  </span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f3()  914.9  972.15 1073.6471  996.9 1012.05 3302.7    51  b  </span></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f4() 1326.1 1417.20 1465.6569 1428.2 1456.25 2635.0    51   c </span></span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f5() 1476.1 1578.15 1622.6667 1589.8 1607.25 2985.4    51   c </span></span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f6() 1464.9 1571.10 1678.3020 1589.6 1631.40 3940.1    51   c </span></span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f7() 5762.7 6064.85 6281.2549 6120.8 6185.15 8623.5    51    d</span></span></code></pre></div>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  expr    min      lq      mean median      uq    max neval   cld</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f1()  587.2  603.60  704.4216  611.1  639.90 2929.8    51 a    </span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f2()  752.2  771.60  890.3157  792.2  866.60 2998.6    51 ab   </span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f3()  923.4  931.10 1036.8314  939.4 1016.55 3350.6    51  b   </span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f4() 1318.5 1329.35 1411.4922 1351.8 1441.65 2320.6    51   c  </span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f5() 1473.8 1480.10 1655.4275 1502.1 1566.55 4020.0    51    d </span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f6() 1463.8 1479.10 1552.3922 1496.4 1564.75 2470.2    51   cd </span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f7() 6533.4 6639.45 6807.3627 6717.6 6802.30 8499.2    51     e</span></span></code></pre></div>
 <p>Clearly, the NA procedure is the fastest, followed by the RNA and PA methods. The next fastest algorithms are AMBA, GMBA-A and GMBA-B. They exhibit almost equal mean execution speed, with the AMBA algorithm being slightly faster. All of the approximation procedures outperform the fastest exact approach, DC-FFT, by far.</p>
 </div>
 </div>
@@ -799,7 +807,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">which</span>(dpn <span class="sc">!=</span> <span class="dv">0</span> <span class="sc">&amp;</span> dpd <span class="sc">!=</span> <span class="dv">0</span>)</span>
 <span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>((dpn <span class="sc">-</span> dpd)[idx])</span>
 <span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></span>
-<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -3.152e-08  0.000e+00  3.060e-12  0.000e+00  8.991e-10  3.707e-08</span></span></code></pre></div>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -3.152e-08  0.000e+00  0.000e+00  0.000e+00  0.000e+00  3.707e-08</span></span></code></pre></div>
 </div>
 <div id="generalized-refined-normal-approximation" class="section level3">
 <h3>Generalized Refined Normal Approximation</h3>
@@ -929,7 +937,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">which</span>(dpn <span class="sc">!=</span> <span class="dv">0</span> <span class="sc">&amp;</span> dpd <span class="sc">!=</span> <span class="dv">0</span>)</span>
 <span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>((dpn <span class="sc">-</span> dpd)[idx])</span>
 <span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></span>
-<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -1.980e-08  0.000e+00  4.960e-12  0.000e+00  1.561e-09  3.197e-08</span></span></code></pre></div>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -1.980e-08  0.000e+00  0.000e+00  0.000e+00  0.000e+00  3.197e-08</span></span></code></pre></div>
 </div>
 <div id="processing-speed-comparisons-1" class="section level3">
 <h3>Processing Speed Comparisons</h3>
@@ -946,10 +954,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="fu">f1</span>(), <span class="fu">f2</span>(), <span class="fu">f3</span>(), <span class="at">times =</span> <span class="dv">51</span>)</span>
 <span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Unit: milliseconds</span></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  expr     min      lq      mean  median       uq      max neval cld</span></span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f1()  5.4328  5.5898  5.875559  5.7124  5.85060   8.1924    51  a </span></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f2()  6.7147  7.0995  9.602563  7.2103  7.48995 106.0331    51  a </span></span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f3() 37.9302 38.6177 39.652061 39.1261 39.57830  57.4351    51   b</span></span></code></pre></div>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  expr     min       lq      mean  median       uq      max neval cld</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f1()  5.1788  5.46020  6.002518  5.5654  5.90080   9.2687    51  a </span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f2()  6.9762  8.09095  8.796610  8.2973  9.33385  12.9158    51  a </span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f3() 27.2830 27.68820 29.931600 27.9514 28.28040 122.3169    51   b</span></span></code></pre></div>
 <p>Clearly, the G-NA procedure is the fastest, followed by the G-RNA method. Both are hugely faster than G-DC-FFT.</p>
 </div>
 </div>

@@ -1,8 +1,14 @@
+# PoissonBinomial 1.2.3
+
+* Further optimizations of determining the number of splits for "DivideFFT"
+  procedures.
+
+
 # PoissonBinomial 1.2.2
 
 * Performance improvements for "Convolve" (and subsequently "DivideFFT")
   procedures.
-* GCD optimizations for generalized poisson distributions have been moved to
+* GCD optimizations for generalized Poisson distributions have been moved to
   the respective C++ functions, so that packages that import them may benefit
   from them as well.
 * Removed dependence on `BH` package, as it was only needed for one constant in
