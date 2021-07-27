@@ -1,3 +1,8 @@
+# PoissonBinomial 1.2.4
+
+* Performance improvements and minor bug fix for quantile functions
+
+
 # PoissonBinomial 1.2.3
 
 * Further optimizations of determining the number of splits for "DivideFFT"

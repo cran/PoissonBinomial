@@ -1,7 +1,9 @@
 check.args.GPB <- function(x, probs, val_p, val_q, wts, method, log.p = FALSE){
   # check if 'x' contains only integers
-  if(!is.null(x) && any(abs(x - round(x)) > 1e-7))
-    stop("'x' must contain integers only!")
+  if(!is.null(x) && any(x - round(x) != 0)){
+    warning("'x' should contain integers only! Using rounded off values.")
+    x <- floor(x)
+  }
   
   # check if 'probs' contains only probabilities
   if(is.null(probs) || any(is.na(probs) | probs < 0 | probs > 1))
@@ -17,12 +19,16 @@ check.args.GPB <- function(x, probs, val_p, val_q, wts, method, log.p = FALSE){
     stop("'probs' and 'wts' (if not NULL) must have the same length!")
   
   # check if 'val_p' contains only integers
-  if(!is.null(val_p) && any(abs(val_p - round(val_p)) > 1e-7))
-    stop("'val_p' must contain integers only!")
+  if(!is.null(val_p) && any(val_p - round(val_p) != 0)){
+    warning("'val_p' should contain integers only! Using rounded off values.")
+    val_p <- floor(val_p)
+  }
   
   # check if 'val_q' contains only integers
-  if(!is.null(val_q) && any(abs(val_q - round(val_q)) > 1e-7))
-    stop("'val_q' must contain integers only!")
+  if(!is.null(val_q) && any(val_q - round(val_q) != 0)){
+    warning("'val_q' should contain integers only! Using rounded off values.")
+    val_q <- floor(val_q)
+  }
   
   # check if 'wts' contains only integers (zeros are allowed)
   if(!is.null(wts) && any(is.na(wts) | wts < 0 | abs(wts - round(wts)) > 1e-07))

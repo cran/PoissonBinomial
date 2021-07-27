@@ -2,13 +2,14 @@
 //'
 
 #include <fftw3.h>
+#define STRICT_R_HEADERS
 #include <Rcpp.h>
 using namespace Rcpp;
 
 // used to make fft computations more readable
 #define REAL 0
 #define IMAG 1
-#define PI2 3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651e+00
+//#define PI2 3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651e+00
 
 /******************************************************************/
 /**   Helper Functions                                           **/
@@ -93,11 +94,6 @@ IntegerVector order(NumericVector x, bool decreasing = false){
     }
   }
   return order;
-}
-
-// [[Rcpp::export]]
-double test(){
-  return PI;
 }
 
 // [[Rcpp::export]]
@@ -401,7 +397,7 @@ NumericVector dpb_dftcf(const IntegerVector obs, const NumericVector probs){
   input_fft[0][IMAG] = 0.0;
   
   // initialize complex numbers for "C" and "C to the power of i"
-  const std::complex<double> C = exp(std::complex<double>(0.0, 2.0) * PI2 / ((double)sizeOut));
+  const std::complex<double> C = exp(std::complex<double>(0.0, 2.0) * M_PI / ((double)sizeOut));
   std::complex<double> C_power = 1.0;
   
   // compute closed-form expression of Hernandez and Williams
@@ -1083,7 +1079,7 @@ NumericVector dgpb_dftcf(const IntegerVector obs, const NumericVector probs, con
     std::vector< std::complex<double> > C(sizeIn, 1.0);
     std::vector< std::complex<double> > C_power(sizeIn, 1.0);
     for(int i = 0; i < sizeIn; i++){
-      if(d[i]) C[i] = exp(std::complex<double>(0.0, d[i] * 2.0) * PI2 / ((double)sizeOut_rescaled));
+      if(d[i]) C[i] = exp(std::complex<double>(0.0, d[i] * 2.0) * M_PI / ((double)sizeOut_rescaled));
     }
     
     // compute closed-form expression of Hernandez and Williams

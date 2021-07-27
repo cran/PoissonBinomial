@@ -665,14 +665,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="fu">f1</span>(), <span class="fu">f2</span>(), <span class="fu">f3</span>(), <span class="fu">f4</span>(), <span class="fu">f5</span>(), <span class="fu">f6</span>(), <span class="fu">f7</span>(), <span class="at">times =</span> <span class="dv">51</span>)</span>
 <span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Unit: microseconds</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  expr    min      lq      mean median      uq    max neval   cld</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f1()  587.2  603.60  704.4216  611.1  639.90 2929.8    51 a    </span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f2()  752.2  771.60  890.3157  792.2  866.60 2998.6    51 ab   </span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f3()  923.4  931.10 1036.8314  939.4 1016.55 3350.6    51  b   </span></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f4() 1318.5 1329.35 1411.4922 1351.8 1441.65 2320.6    51   c  </span></span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f5() 1473.8 1480.10 1655.4275 1502.1 1566.55 4020.0    51    d </span></span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f6() 1463.8 1479.10 1552.3922 1496.4 1564.75 2470.2    51   cd </span></span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f7() 6533.4 6639.45 6807.3627 6717.6 6802.30 8499.2    51     e</span></span></code></pre></div>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  expr    min      lq      mean median      uq     max neval</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f1()  639.8  650.30  746.0882  663.7  695.20  2041.1    51</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f2()  789.9  803.95  886.6608  815.4  845.05  2190.7    51</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f3()  690.4  695.10  810.5333  711.0  739.75  4181.5    51</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f4() 1080.6 1085.95 1160.2745 1111.6 1158.40  2007.5    51</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f5() 1150.5 1160.80 1266.4745 1187.6 1239.90  2689.5    51</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f6() 1171.7 1176.85 1266.8588 1202.4 1259.85  2610.1    51</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f7() 9133.3 9309.05 9660.7471 9408.4 9822.85 13330.0    51</span></span></code></pre></div>
 <p>Clearly, the NA procedure is the fastest, followed by the RNA and PA methods. The next fastest algorithms are AMBA, GMBA-A and GMBA-B. They exhibit almost equal mean execution speed, with the AMBA algorithm being slightly faster. All of the approximation procedures outperform the fastest exact approach, DC-FFT, by far.</p>
 </div>
 </div>
@@ -954,10 +954,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="fu">f1</span>(), <span class="fu">f2</span>(), <span class="fu">f3</span>(), <span class="at">times =</span> <span class="dv">51</span>)</span>
 <span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Unit: milliseconds</span></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  expr     min       lq      mean  median       uq      max neval cld</span></span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f1()  5.1788  5.46020  6.002518  5.5654  5.90080   9.2687    51  a </span></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f2()  6.9762  8.09095  8.796610  8.2973  9.33385  12.9158    51  a </span></span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f3() 27.2830 27.68820 29.931600 27.9514 28.28040 122.3169    51   b</span></span></code></pre></div>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  expr     min       lq      mean  median      uq     max neval</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f1()  7.3175  7.58750  8.077786  7.8100  8.1227 12.7853    51</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f2()  8.6754  9.04880  9.463494  9.2844  9.6528 11.5537    51</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f3() 35.5874 36.96335 38.594629 38.4630 39.4759 43.4619    51</span></span></code></pre></div>
 <p>Clearly, the G-NA procedure is the fastest, followed by the G-RNA method. Both are hugely faster than G-DC-FFT.</p>
 </div>
 </div>

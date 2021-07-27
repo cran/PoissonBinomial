@@ -148,8 +148,10 @@ dpbinom <- function(x, probs, wts = NULL, method = "DivideFFT", log = FALSE){
   n <- length(probs)
   
   # check if 'x' contains only integers
-  if(!is.null(x) && any(abs(x - round(x)) > 1e-7))
-    stop("'x' must contain integers only!")
+  if(!is.null(x) && any(x - round(x) != 0)){
+    warning("'x' should contain integers only! Using rounded off values.")
+    x <- floor(x)
+  }
   
   # check if 'probs' contains only probabilities
   if(is.null(probs) || any(is.na(probs) | probs < 0 | probs > 1))
@@ -249,8 +251,10 @@ ppbinom <- function(x, probs, wts = NULL, method = "DivideFFT", lower.tail = TRU
   n <- length(probs)
   
   # check if 'x' contains only integers
-  if(!is.null(x) && any(abs(x - round(x)) > 1e-7))
-    stop("'x' must contain integers only!")
+  if(!is.null(x) && any(x - round(x) != 0)){
+    warning("'x' should contain integers only! Using rounded off values.")
+    x <- floor(x)
+  }
   
   # check if 'probs' contains only probabilities
   if(is.null(probs) || any(is.na(probs) | probs < 0 | probs > 1))
@@ -352,6 +356,7 @@ ppbinom <- function(x, probs, wts = NULL, method = "DivideFFT", lower.tail = TRU
 }
 
 #'@rdname PoissonBinomial-Distribution
+#'@importFrom stats stepfun
 #'@export
 qpbinom <- function(p, probs, wts = NULL, method = "DivideFFT", lower.tail = TRUE, log.p = FALSE){
   ## preliminary checks
@@ -374,41 +379,29 @@ qpbinom <- function(p, probs, wts = NULL, method = "DivideFFT", lower.tail = TRU
   size <- length(probs)
   
   # length of cdf
-  len <- length(cdf)
+  #len <- length(cdf)
   
   # logarithm, if required
   if(log.p) p <- exp(p)
   
   ## compute quantiles
-  # starting position in cdf
-  pos <- 1L
-  # reserve vector to store results
-  res <- integer(length(p))
+  # observable range and indices
+  n0 <- sum(probs == 0)
+  n1 <- sum(probs == 1)
+  hi <- size - n0
+  range <- n1:hi
+  #idx <- range + 1
   
-  # order 'p' depending on if they are lower tail probabilities; save order
-  ord <- order(p, decreasing = !lower.tail)
-  p.s <- p[ord]
-  # negative sign, if lower.tail = TRUE
-  sign <- (-1)^(1 - lower.tail)
-  cdf <- sign*cdf
-  # compute quantiles
-  for(i in 1:length(p.s)){
-    # handle 0's and 1's
-    if(p.s[i] == as.numeric(!lower.tail)){
-      res[i] <- ifelse(lower.tail, 0, max(0, sum(probs == 1) - 1))
-      next
-    }
-    if(p.s[i] == as.numeric(lower.tail)){
-      res[i] <- size - ifelse(lower.tail, sum(probs == 0), 0)
-      next
-    }
-    # find the cdf value smaller than or equal to current 'p.s' value
-    while(pos < len && cdf[pos] < sign*p.s[i]) pos <- pos + 1L
-    # save respective observation (-1 because position k is for observation k - 1)
-    res[i] <- pos - 1L
-  }
-  # arrange results in original order of 'p'
-  res <- res[order(ord)]
+  # handle quantiles between 0 and 1
+  if(lower.tail) Q <- stepfun(cdf[range + 1], c(range, hi), right = TRUE)
+  else Q <- stepfun(rev(cdf[range + 1]), c(hi, rev(range)), right = TRUE)
+  
+  # vector to store results
+  res <- Q(p)
+  
+  # handle quantiles of 0 or 1
+  res[p == lower.tail]  <- hi
+  res[p == !lower.tail] <- n1
   
   # return results
   return(res)

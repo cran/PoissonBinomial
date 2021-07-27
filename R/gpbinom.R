@@ -253,6 +253,7 @@ pgpbinom <- function(x, probs, val_p, val_q, wts = NULL, method = "DivideFFT", l
 }
 
 #'@rdname GenPoissonBinomial-Distribution
+#'@importFrom stats stepfun
 #'@export
 qgpbinom <- function(p, probs, val_p, val_q, wts = NULL, method = "DivideFFT", lower.tail = TRUE, log.p = FALSE){
   ## preliminary checks
@@ -287,35 +288,16 @@ qgpbinom <- function(p, probs, val_p, val_q, wts = NULL, method = "DivideFFT", l
   if(log.p) p <- exp(p)
   
   ## compute quantiles
-  # starting position in cdf
-  pos <- 1L
-  # reserve vector to store results
-  res <- integer(length(p))
+  # handle quantiles between 0 and 1
+  if(lower.tail) Q <- stepfun(cdf[transf$inner.range - first + 1], c(transf$inner.range, last), right = TRUE)
+  else Q <- stepfun(rev(cdf[transf$inner.range - first + 1]), c(last, rev(transf$inner.range)), right = TRUE)
   
-  # order 'p' depending on if they are lower tail probabilities; save order
-  ord <- order(p, decreasing = !lower.tail)
-  p.s <- p[ord]
-  # negative sign, if lower.tail = TRUE
-  sign <- (-1)^as.numeric(!lower.tail)
-  cdf <- sign*cdf
-  # compute quantiles
-  for(i in 1:length(p.s)){
-    # handle 0's and 1's
-    if(p.s[i] == as.numeric(!lower.tail)){
-      res[i] <- ifelse(lower.tail, min(transf$compl.range), first)
-      next
-    }
-    if(p.s[i] == as.numeric(lower.tail)){
-      res[i] <- ifelse(lower.tail, last, max(transf$compl.range))
-      next
-    }
-    # find the cdf value smaller than or equal to current 'p.s' value
-    while(pos < len && cdf[pos] < sign*p.s[i]) pos <- pos + 1L
-    # save respective observation (-1 because position k is for observation k - 1)
-    res[i] <- pos - 1L + first
-  }
-  # arrange results in original order of 'p'
-  res <- res[order(ord)]
+  # vector to store results
+  res <- Q(p)
+  
+  # handle quantiles of 0 or 1
+  res[p == lower.tail]  <- last
+  res[p == !lower.tail] <- first
   
   # return results
   return(res)
