@@ -14,7 +14,19 @@
 
 <title>Approximate Procedures</title>
 
-<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -24,6 +36,7 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
+
 
 
 <style type="text/css">
@@ -125,7 +138,187 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
 
 
 
@@ -142,21 +335,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <div id="TOC">
 <ul>
-<li><a href="#ordinary-poisson-binomial-distribution">Ordinary Poisson Binomial Distribution</a>
+<li><a href="#ordinary-poisson-binomial-distribution">Ordinary Poisson
+Binomial Distribution</a>
 <ul>
 <li><a href="#poisson-approximation">Poisson Approximation</a></li>
-<li><a href="#arithmetic-mean-binomial-approximation">Arithmetic Mean Binomial Approximation</a></li>
-<li><a href="#geometric-mean-binomial-approximation---variant-a">Geometric Mean Binomial Approximation - Variant A</a></li>
-<li><a href="#geometric-mean-binomial-approximation---variant-b">Geometric Mean Binomial Approximation - Variant B</a></li>
+<li><a href="#arithmetic-mean-binomial-approximation">Arithmetic Mean
+Binomial Approximation</a></li>
+<li><a href="#geometric-mean-binomial-approximation---variant-a">Geometric Mean
+Binomial Approximation - Variant A</a></li>
+<li><a href="#geometric-mean-binomial-approximation---variant-b">Geometric Mean
+Binomial Approximation - Variant B</a></li>
 <li><a href="#normal-approximation">Normal Approximation</a></li>
-<li><a href="#refined-normal-approximation">Refined Normal Approximation</a></li>
-<li><a href="#processing-speed-comparisons">Processing Speed Comparisons</a></li>
+<li><a href="#refined-normal-approximation">Refined Normal
+Approximation</a></li>
+<li><a href="#processing-speed-comparisons">Processing Speed
+Comparisons</a></li>
 </ul></li>
-<li><a href="#generalized-poisson-binomial-distribution">Generalized Poisson Binomial Distribution</a>
+<li><a href="#generalized-poisson-binomial-distribution">Generalized
+Poisson Binomial Distribution</a>
 <ul>
-<li><a href="#generalized-normal-approximation">Generalized Normal Approximation</a></li>
-<li><a href="#generalized-refined-normal-approximation">Generalized Refined Normal Approximation</a></li>
-<li><a href="#processing-speed-comparisons-1">Processing Speed Comparisons</a></li>
+<li><a href="#generalized-normal-approximation">Generalized Normal
+Approximation</a></li>
+<li><a href="#generalized-refined-normal-approximation">Generalized
+Refined Normal Approximation</a></li>
+<li><a href="#processing-speed-comparisons-1">Processing Speed
+Comparisons</a></li>
 </ul></li>
 </ul>
 </div>
@@ -165,7 +368,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2>Ordinary Poisson Binomial Distribution</h2>
 <div id="poisson-approximation" class="section level3">
 <h3>Poisson Approximation</h3>
-<p>The <em>Poisson Approximation</em> (DC) approach is requested with <code>method = &quot;Poisson&quot;</code>. It is based on a Poisson distribution, whose parameter is the sum of the probabilities of success.</p>
+<p>The <em>Poisson Approximation</em> (DC) approach is requested with
+<code>method = &quot;Poisson&quot;</code>. It is based on a Poisson distribution,
+whose parameter is the sum of the probabilities of success.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">10</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>wt <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="cn">TRUE</span>)</span>
@@ -198,7 +403,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [51] 9.892400e-01 9.927930e-01 9.952544e-01 9.969275e-01 9.980436e-01</span></span>
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [56] 9.987746e-01 9.992449e-01 9.995421e-01 9.997267e-01 9.998394e-01</span></span>
 <span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [61] 9.999071e-01 1.000000e+00</span></span></code></pre></div>
-<p>A comparison with exact computation shows that the approximation quality of the PA procedure increases with smaller probabilities of success. The reason is that the Poisson Binomial distribution approaches a Poisson distribution when the probabilities are very small.</p>
+<p>A comparison with exact computation shows that the approximation
+quality of the PA procedure increases with smaller probabilities of
+success. The reason is that the Poisson Binomial distribution approaches
+a Poisson distribution when the probabilities are very small.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># U(0, 1) random probabilities of success</span></span>
@@ -239,7 +447,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="arithmetic-mean-binomial-approximation" class="section level3">
 <h3>Arithmetic Mean Binomial Approximation</h3>
-<p>The <em>Arithmetic Mean Binomial Approximation</em> (AMBA) approach is requested with <code>method = &quot;Mean&quot;</code>. It is based on a Binomial distribution, whose parameter is the arithmetic mean of the probabilities of success.</p>
+<p>The <em>Arithmetic Mean Binomial Approximation</em> (AMBA) approach
+is requested with <code>method = &quot;Mean&quot;</code>. It is based on a
+Binomial distribution, whose parameter is the arithmetic mean of the
+probabilities of success.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">10</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>wt <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="cn">TRUE</span>)</span>
@@ -274,7 +485,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [51] 9.999648e-01 9.999906e-01 9.999978e-01 9.999995e-01 9.999999e-01</span></span>
 <span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [56] 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00</span></span>
 <span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [61] 1.000000e+00 1.000000e+00</span></span></code></pre></div>
-<p>A comparison with exact computation shows that the approximation quality of the AMBA procedure increases when the probabilities of success are closer to each other. The reason is that, although the expectation remains unchanged, the distribution’s variance becomes smaller the less the probabilities differ. Since this variance is minimized by equal probabilities (but still underestimated), the AMBA method is best suited for situations with very similar probabilities of success.</p>
+<p>A comparison with exact computation shows that the approximation
+quality of the AMBA procedure increases when the probabilities of
+success are closer to each other. The reason is that, although the
+expectation remains unchanged, the distribution’s variance becomes
+smaller the less the probabilities differ. Since this variance is
+minimized by equal probabilities (but still underestimated), the AMBA
+method is best suited for situations with very similar probabilities of
+success.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># U(0, 1) random probabilities of success</span></span>
@@ -333,7 +551,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="geometric-mean-binomial-approximation---variant-a" class="section level3">
 <h3>Geometric Mean Binomial Approximation - Variant A</h3>
-<p>The <em>Geometric Mean Binomial Approximation (Variant A)</em> (GMBA-A) approach is requested with <code>method = &quot;GeoMean&quot;</code>. It is based on a Binomial distribution, whose parameter is the geometric mean of the probabilities of success: <span class="math display">\[\hat{p} = \sqrt[n]{p_1 \cdot ... \cdot p_n}\]</span></p>
+<p>The <em>Geometric Mean Binomial Approximation (Variant A)</em>
+(GMBA-A) approach is requested with <code>method = &quot;GeoMean&quot;</code>. It
+is based on a Binomial distribution, whose parameter is the geometric
+mean of the probabilities of success: <span class="math display">\[\hat{p} = \sqrt[n]{p_1 \cdot ... \cdot
+p_n}\]</span></p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">10</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>wt <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="cn">TRUE</span>)</span>
@@ -368,7 +590,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [51] 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00</span></span>
 <span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [56] 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00</span></span>
 <span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [61] 1.000000e+00 1.000000e+00</span></span></code></pre></div>
-<p>It is known that the geometric mean of the probabilities of success is always smaller than their arithmetic mean. Thus, we get a stochastically <em>smaller</em> binomial distribution. A comparison with exact computation shows that the approximation quality of the GMBA-A procedure increases when the probabilities of success are closer to each other:</p>
+<p>It is known that the geometric mean of the probabilities of success
+is always smaller than their arithmetic mean. Thus, we get a
+stochastically <em>smaller</em> binomial distribution. A comparison with
+exact computation shows that the approximation quality of the GMBA-A
+procedure increases when the probabilities of success are closer to each
+other:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># U(0, 1) random probabilities of success</span></span>
@@ -427,7 +654,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="geometric-mean-binomial-approximation---variant-b" class="section level3">
 <h3>Geometric Mean Binomial Approximation - Variant B</h3>
-<p>The <em>Geometric Mean Binomial Approximation (Variant B)</em> (GMBA-B) approach is requested with <code>method = &quot;GeoMeanCounter&quot;</code>. It is based on a Binomial distribution, whose parameter is 1 minus the geometric mean of the probabilities of <strong>failure</strong>: <span class="math display">\[\hat{p} = 1 - \sqrt[n]{(1 - p_1) \cdot ... \cdot (1 - p_n)}\]</span></p>
+<p>The <em>Geometric Mean Binomial Approximation (Variant B)</em>
+(GMBA-B) approach is requested with
+<code>method = &quot;GeoMeanCounter&quot;</code>. It is based on a Binomial
+distribution, whose parameter is 1 minus the geometric mean of the
+probabilities of <strong>failure</strong>: <span class="math display">\[\hat{p} = 1 - \sqrt[n]{(1 - p_1) \cdot ... \cdot
+(1 - p_n)}\]</span></p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">10</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>wt <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="cn">TRUE</span>)</span>
@@ -462,7 +694,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [51] 9.655396e-01 9.838570e-01 9.932633e-01 9.975286e-01 9.992159e-01</span></span>
 <span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [56] 9.997894e-01 9.999534e-01 9.999919e-01 9.999989e-01 9.999999e-01</span></span>
 <span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [61] 1.000000e+00 1.000000e+00</span></span></code></pre></div>
-<p>It is known that the geometric mean of the probabilities of <strong>failure</strong> is always smaller than their arithmetic mean. As a result, 1 minus the geometric mean is larger than 1 minus the arithmetic mean. Thus, we get a stochastically <em>larger</em> binomial distribution. A comparison with exact computation shows that the approximation quality of the GMBA-B procedure again increases when the probabilities of success are closer to each other:</p>
+<p>It is known that the geometric mean of the probabilities of
+<strong>failure</strong> is always smaller than their arithmetic mean.
+As a result, 1 minus the geometric mean is larger than 1 minus the
+arithmetic mean. Thus, we get a stochastically <em>larger</em> binomial
+distribution. A comparison with exact computation shows that the
+approximation quality of the GMBA-B procedure again increases when the
+probabilities of success are closer to each other:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># U(0, 1) random probabilities of success</span></span>
@@ -521,7 +759,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="normal-approximation" class="section level3">
 <h3>Normal Approximation</h3>
-<p>The <em>Normal Approximation</em> (NA) approach is requested with <code>method = &quot;Normal&quot;</code>. It is based on a Normal distribution, whose parameters are derived from the theoretical mean and variance of the input probabilities of success.</p>
+<p>The <em>Normal Approximation</em> (NA) approach is requested with
+<code>method = &quot;Normal&quot;</code>. It is based on a Normal distribution,
+whose parameters are derived from the theoretical mean and variance of
+the input probabilities of success.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">10</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>wt <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="cn">TRUE</span>)</span>
@@ -554,7 +795,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [51] 9.999992e-01 9.999999e-01 1.000000e+00 1.000000e+00 1.000000e+00</span></span>
 <span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [56] 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00</span></span>
 <span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [61] 1.000000e+00 1.000000e+00</span></span></code></pre></div>
-<p>A comparison with exact computation shows that the approximation quality of the NA procedure increases with larger numbers of probabilities of success:</p>
+<p>A comparison with exact computation shows that the approximation
+quality of the NA procedure increases with larger numbers of
+probabilities of success:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 10 random probabilities of success</span></span>
@@ -586,7 +829,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="refined-normal-approximation" class="section level3">
 <h3>Refined Normal Approximation</h3>
-<p>The <em>Refined Normal Approximation</em> (RNA) approach is requested with <code>method = &quot;RefinedNormal&quot;</code>. It is based on a Normal distribution, whose parameters are derived from the theoretical mean, variance and skewness of the input probabilities of success.</p>
+<p>The <em>Refined Normal Approximation</em> (RNA) approach is requested
+with <code>method = &quot;RefinedNormal&quot;</code>. It is based on a Normal
+distribution, whose parameters are derived from the theoretical mean,
+variance and skewness of the input probabilities of success.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">10</span>)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>wt <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="cn">TRUE</span>)</span>
@@ -619,7 +865,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [51] 9.999997e-01 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00</span></span>
 <span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [56] 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00</span></span>
 <span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [61] 1.000000e+00 1.000000e+00</span></span></code></pre></div>
-<p>A comparison with exact computation shows that the approximation quality of the RNA procedure increases with larger numbers of probabilities of success:</p>
+<p>A comparison with exact computation shows that the approximation
+quality of the RNA procedure increases with larger numbers of
+probabilities of success:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 10 random probabilities of success</span></span>
@@ -651,7 +899,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="processing-speed-comparisons" class="section level3">
 <h3>Processing Speed Comparisons</h3>
-<p>To assess the performance of the approximation procedures, we use the <code>microbenchmark</code> package. Each algorithm has to calculate the PMF repeatedly based on random probability vectors. The run times are then summarized in a table that presents, among other statistics, their minima, maxima and means. The following results were recorded on an AMD Ryzen 7 1800X with 32 GiB of RAM and Windows 10 Education (20H2).</p>
+<p>To assess the performance of the approximation procedures, we use the
+<code>microbenchmark</code> package. Each algorithm has to calculate the
+PMF repeatedly based on random probability vectors. The run times are
+then summarized in a table that presents, among other statistics, their
+minima, maxima and means. The following results were recorded on an AMD
+Ryzen 7 1800X with 32 GiB of RAM and Windows 10 Education (20H2).</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microbenchmark)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -665,22 +918,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="fu">f1</span>(), <span class="fu">f2</span>(), <span class="fu">f3</span>(), <span class="fu">f4</span>(), <span class="fu">f5</span>(), <span class="fu">f6</span>(), <span class="fu">f7</span>(), <span class="at">times =</span> <span class="dv">51</span>)</span>
 <span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Unit: microseconds</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  expr    min      lq      mean median      uq     max neval</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f1()  639.8  650.30  746.0882  663.7  695.20  2041.1    51</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f2()  789.9  803.95  886.6608  815.4  845.05  2190.7    51</span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f3()  690.4  695.10  810.5333  711.0  739.75  4181.5    51</span></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f4() 1080.6 1085.95 1160.2745 1111.6 1158.40  2007.5    51</span></span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f5() 1150.5 1160.80 1266.4745 1187.6 1239.90  2689.5    51</span></span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f6() 1171.7 1176.85 1266.8588 1202.4 1259.85  2610.1    51</span></span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f7() 9133.3 9309.05 9660.7471 9408.4 9822.85 13330.0    51</span></span></code></pre></div>
-<p>Clearly, the NA procedure is the fastest, followed by the RNA and PA methods. The next fastest algorithms are AMBA, GMBA-A and GMBA-B. They exhibit almost equal mean execution speed, with the AMBA algorithm being slightly faster. All of the approximation procedures outperform the fastest exact approach, DC-FFT, by far.</p>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  expr     min       lq       mean  median       uq     max neval</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f1()   870.2   955.80   994.3627   982.5  1008.45  1891.1    51</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f2()   955.7  1075.05  1200.9961  1111.7  1129.55  5560.7    51</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f3()  1438.5  1514.25  1547.6569  1531.7  1552.60  2391.3    51</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f4()  1294.9  1448.65  1578.9569  1466.0  1481.40  6789.1    51</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f5()  1418.5  1522.80  1564.0118  1555.0  1566.65  2633.9    51</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f6()  1446.7  1527.20  1861.3569  1578.6  1599.30  6582.7    51</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f7() 10991.1 11378.10 11411.9176 11425.0 11472.00 12401.3    51</span></span></code></pre></div>
+<p>Clearly, the NA procedure is the fastest, followed by the RNA and PA
+methods. The next fastest algorithms are AMBA, GMBA-A and GMBA-B. They
+exhibit almost equal mean execution speed, with the AMBA algorithm being
+slightly faster. All of the approximation procedures outperform the
+fastest exact approach, DC-FFT, by far.</p>
 </div>
 </div>
 <div id="generalized-poisson-binomial-distribution" class="section level2">
 <h2>Generalized Poisson Binomial Distribution</h2>
 <div id="generalized-normal-approximation" class="section level3">
 <h3>Generalized Normal Approximation</h3>
-<p>The <em>Generalized Normal Approximation</em> (G-NA) approach is requested with <code>method = &quot;Normal&quot;</code>. It is based on a Normal distribution, whose parameters are derived from the theoretical mean and variance of the input probabilities of success (see <a href="intro.html">Introduction</a>.</p>
+<p>The <em>Generalized Normal Approximation</em> (G-NA) approach is
+requested with <code>method = &quot;Normal&quot;</code>. It is based on a Normal
+distribution, whose parameters are derived from the theoretical mean and
+variance of the input probabilities of success (see <a href="intro.html">Introduction</a>.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">10</span>)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>wt <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="cn">TRUE</span>)</span>
@@ -773,7 +1033,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb14-90"><a href="#cb14-90" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [196] 9.991579e-01 9.993569e-01 9.995117e-01 9.996314e-01 9.997233e-01</span></span>
 <span id="cb14-91"><a href="#cb14-91" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [201] 9.997935e-01 9.998467e-01 9.998869e-01 9.999171e-01 9.999395e-01</span></span>
 <span id="cb14-92"><a href="#cb14-92" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [206] 9.999561e-01 9.999684e-01 9.999773e-01 9.999839e-01 1.000000e+00</span></span></code></pre></div>
-<p>A comparison with exact computation shows that the approximation quality of the NA procedure increases with larger numbers of probabilities of success:</p>
+<p>A comparison with exact computation shows that the approximation
+quality of the NA procedure increases with larger numbers of
+probabilities of success:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 10 random probabilities of success</span></span>
@@ -811,7 +1073,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="generalized-refined-normal-approximation" class="section level3">
 <h3>Generalized Refined Normal Approximation</h3>
-<p>The <em>Generalized Refined Normal Approximation</em> (G-RNA) approach is requested with <code>method = &quot;RefinedNormal&quot;</code>. It is based on a Normal distribution, whose parameters are derived from the theoretical mean, variance and skewness of the input probabilities of success.</p>
+<p>The <em>Generalized Refined Normal Approximation</em> (G-RNA)
+approach is requested with <code>method = &quot;RefinedNormal&quot;</code>. It is
+based on a Normal distribution, whose parameters are derived from the
+theoretical mean, variance and skewness of the input probabilities of
+success.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">10</span>)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>wt <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="cn">TRUE</span>)</span>
@@ -903,7 +1169,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb16-89"><a href="#cb16-89" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [196] 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00</span></span>
 <span id="cb16-90"><a href="#cb16-90" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [201] 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00</span></span>
 <span id="cb16-91"><a href="#cb16-91" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [206] 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00</span></span></code></pre></div>
-<p>A comparison with exact computation shows that the approximation quality of the RNA procedure increases with larger numbers of probabilities of success:</p>
+<p>A comparison with exact computation shows that the approximation
+quality of the RNA procedure increases with larger numbers of
+probabilities of success:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2</span>)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 10 random probabilities of success</span></span>
@@ -941,7 +1209,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="processing-speed-comparisons-1" class="section level3">
 <h3>Processing Speed Comparisons</h3>
-<p>To assess the performance of the approximation procedures, we use the <code>microbenchmark</code> package. Each algorithm has to calculate the PMF repeatedly based on random probability vectors. The run times are then summarized in a table that presents, among other statistics, their minima, maxima and means. The following results were recorded on an AMD Ryzen 7 1800X with 32 GiB of RAM and Windows 10 Education (20H2).</p>
+<p>To assess the performance of the approximation procedures, we use the
+<code>microbenchmark</code> package. Each algorithm has to calculate the
+PMF repeatedly based on random probability vectors. The run times are
+then summarized in a table that presents, among other statistics, their
+minima, maxima and means. The following results were recorded on an AMD
+Ryzen 7 1800X with 32 GiB of RAM and Windows 10 Education (20H2).</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microbenchmark)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">1500</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2</span>)</span>
@@ -954,11 +1227,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="fu">f1</span>(), <span class="fu">f2</span>(), <span class="fu">f3</span>(), <span class="at">times =</span> <span class="dv">51</span>)</span>
 <span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Unit: milliseconds</span></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  expr     min       lq      mean  median      uq     max neval</span></span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f1()  7.3175  7.58750  8.077786  7.8100  8.1227 12.7853    51</span></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f2()  8.6754  9.04880  9.463494  9.2844  9.6528 11.5537    51</span></span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f3() 35.5874 36.96335 38.594629 38.4630 39.4759 43.4619    51</span></span></code></pre></div>
-<p>Clearly, the G-NA procedure is the fastest, followed by the G-RNA method. Both are hugely faster than G-DC-FFT.</p>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  expr     min       lq      mean  median       uq     max neval</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f1()  8.9871  9.65140  9.976512  9.7490  9.89340 13.4103    51</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f2() 10.4132 10.94535 11.381584 11.0310 11.19490 15.1404    51</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  f3() 43.0318 43.55320 44.276073 43.7453 44.49845 48.8385    51</span></span></code></pre></div>
+<p>Clearly, the G-NA procedure is the fastest, followed by the G-RNA
+method. Both are hugely faster than G-DC-FFT.</p>
 </div>
 </div>
 
