@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -189,8 +189,8 @@ library(microbenchmark)
 set.seed(1)
 
 f1 <- function() dpbinom(NULL, runif(4000), method = "Normal")
-f2 <- function() dpbinom(NULL, runif(4000), method = "RefinedNormal")
-f3 <- function() dpbinom(NULL, runif(4000), method = "Poisson")
+f2 <- function() dpbinom(NULL, runif(4000), method = "Poisson")
+f3 <- function() dpbinom(NULL, runif(4000), method = "RefinedNormal")
 f4 <- function() dpbinom(NULL, runif(4000), method = "Mean")
 f5 <- function() dpbinom(NULL, runif(4000), method = "GeoMean")
 f6 <- function() dpbinom(NULL, runif(4000), method = "GeoMeanCounter")
