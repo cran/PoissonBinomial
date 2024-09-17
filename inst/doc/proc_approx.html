@@ -49,7 +49,7 @@ overflow: visible;
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -832,7 +832,7 @@ probabilities of success:</p>
 <span id="cb10-25"><a href="#cb10-25" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">which</span>(dpn <span class="sc">!=</span> <span class="dv">0</span> <span class="sc">&amp;</span> dpd <span class="sc">!=</span> <span class="dv">0</span>)</span>
 <span id="cb10-26"><a href="#cb10-26" tabindex="-1"></a><span class="fu">summary</span>((dpn <span class="sc">-</span> dpd)[idx])</span>
 <span id="cb10-27"><a href="#cb10-27" tabindex="-1"></a><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></span>
-<span id="cb10-28"><a href="#cb10-28" tabindex="-1"></a><span class="co">#&gt; -4.484e-09  0.000e+00  8.720e-13  0.000e+00  4.914e-10  2.734e-09</span></span></code></pre></div>
+<span id="cb10-28"><a href="#cb10-28" tabindex="-1"></a><span class="co">#&gt; -4.484e-09  0.000e+00  8.990e-13  0.000e+00  4.919e-10  2.734e-09</span></span></code></pre></div>
 </div>
 <div id="refined-normal-approximation" class="section level3">
 <h3>Refined Normal Approximation</h3>
@@ -902,7 +902,7 @@ probabilities of success:</p>
 <span id="cb12-25"><a href="#cb12-25" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">which</span>(dpn <span class="sc">!=</span> <span class="dv">0</span> <span class="sc">&amp;</span> dpd <span class="sc">!=</span> <span class="dv">0</span>)</span>
 <span id="cb12-26"><a href="#cb12-26" tabindex="-1"></a><span class="fu">summary</span>((dpn <span class="sc">-</span> dpd)[idx])</span>
 <span id="cb12-27"><a href="#cb12-27" tabindex="-1"></a><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></span>
-<span id="cb12-28"><a href="#cb12-28" tabindex="-1"></a><span class="co">#&gt; -3.126e-09  0.000e+00  6.200e-13  0.000e+00  4.616e-10  2.293e-09</span></span></code></pre></div>
+<span id="cb12-28"><a href="#cb12-28" tabindex="-1"></a><span class="co">#&gt; -3.126e-09  0.000e+00  6.337e-13  0.000e+00  4.632e-10  2.293e-09</span></span></code></pre></div>
 </div>
 <div id="processing-speed-comparisons" class="section level3">
 <h3>Processing Speed Comparisons</h3>
@@ -924,15 +924,15 @@ Ryzen 9 5900X with 64 GiB of RAM and Windows 10 Education (22H2).</p>
 <span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>f7 <span class="ot">&lt;-</span> <span class="cf">function</span>() <span class="fu">dpbinom</span>(<span class="cn">NULL</span>, <span class="fu">runif</span>(<span class="dv">4000</span>), <span class="at">method =</span> <span class="st">&quot;DivideFFT&quot;</span>)</span>
 <span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a></span>
 <span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="fu">f1</span>(), <span class="fu">f2</span>(), <span class="fu">f3</span>(), <span class="fu">f4</span>(), <span class="fu">f5</span>(), <span class="fu">f6</span>(), <span class="fu">f7</span>(), <span class="at">times =</span> <span class="dv">51</span>)</span>
-<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a><span class="co">#&gt; Unit: microseconds</span></span>
-<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a><span class="co">#&gt;  expr    min      lq      mean median      uq    max neval</span></span>
-<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a><span class="co">#&gt;  f1()  550.8  659.15  701.3902  693.2  723.50 1328.8    51</span></span>
-<span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a><span class="co">#&gt;  f2() 1112.1 1212.05 1241.7000 1248.9 1260.50 1916.4    51</span></span>
-<span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a><span class="co">#&gt;  f3()  652.6  741.35  864.1373  784.0  807.05 4362.9    51</span></span>
-<span id="cb13-18"><a href="#cb13-18" tabindex="-1"></a><span class="co">#&gt;  f4() 1080.8 1214.40 1339.2961 1242.4 1258.40 5771.7    51</span></span>
-<span id="cb13-19"><a href="#cb13-19" tabindex="-1"></a><span class="co">#&gt;  f5() 1309.2 1393.90 1448.6294 1427.5 1440.05 2290.7    51</span></span>
-<span id="cb13-20"><a href="#cb13-20" tabindex="-1"></a><span class="co">#&gt;  f6() 1261.9 1336.30 1456.6510 1377.0 1407.70 5138.0    51</span></span>
-<span id="cb13-21"><a href="#cb13-21" tabindex="-1"></a><span class="co">#&gt;  f7() 4011.5 4136.10 4409.5588 4181.2 4311.95 8401.3    51</span></span></code></pre></div>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a><span class="co">#&gt; Unit: milliseconds</span></span>
+<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a><span class="co">#&gt;  expr    min      lq      mean  median       uq     max neval</span></span>
+<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a><span class="co">#&gt;  f1() 1.1876 1.53675  1.679771  1.5947  1.70300  3.4220    51</span></span>
+<span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a><span class="co">#&gt;  f2() 1.9875 2.26175  2.435045  2.3336  2.45460  3.6417    51</span></span>
+<span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a><span class="co">#&gt;  f3() 1.3930 1.68645  2.429490  1.7691  1.92655 12.5523    51</span></span>
+<span id="cb13-18"><a href="#cb13-18" tabindex="-1"></a><span class="co">#&gt;  f4() 1.7601 2.06140  2.173573  2.0982  2.18380  3.8555    51</span></span>
+<span id="cb13-19"><a href="#cb13-19" tabindex="-1"></a><span class="co">#&gt;  f5() 1.9121 2.20370  2.425631  2.2512  2.47990  3.9196    51</span></span>
+<span id="cb13-20"><a href="#cb13-20" tabindex="-1"></a><span class="co">#&gt;  f6() 1.9034 2.16790  2.342341  2.2510  2.39340  3.2313    51</span></span>
+<span id="cb13-21"><a href="#cb13-21" tabindex="-1"></a><span class="co">#&gt;  f7() 9.1318 9.91850 10.900441 10.3446 10.67755 21.3331    51</span></span></code></pre></div>
 <p>Clearly, the NA procedure is the fastest, followed by the PA and RNA
 methods. The next fastest algorithms are AMBA, GMBA-A and GMBA-B. They
 exhibit almost equal mean execution speed, with the AMBA algorithm being
@@ -1076,7 +1076,7 @@ probabilities of success:</p>
 <span id="cb15-31"><a href="#cb15-31" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">which</span>(dpn <span class="sc">!=</span> <span class="dv">0</span> <span class="sc">&amp;</span> dpd <span class="sc">!=</span> <span class="dv">0</span>)</span>
 <span id="cb15-32"><a href="#cb15-32" tabindex="-1"></a><span class="fu">summary</span>((dpn <span class="sc">-</span> dpd)[idx])</span>
 <span id="cb15-33"><a href="#cb15-33" tabindex="-1"></a><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></span>
-<span id="cb15-34"><a href="#cb15-34" tabindex="-1"></a><span class="co">#&gt; -3.152e-08  0.000e+00  0.000e+00  0.000e+00  0.000e+00  3.707e-08</span></span></code></pre></div>
+<span id="cb15-34"><a href="#cb15-34" tabindex="-1"></a><span class="co">#&gt; -3.152e-08  0.000e+00  3.060e-12  0.000e+00  8.992e-10  3.707e-08</span></span></code></pre></div>
 </div>
 <div id="generalized-refined-normal-approximation" class="section level3">
 <h3>Generalized Refined Normal Approximation</h3>
@@ -1212,7 +1212,7 @@ probabilities of success:</p>
 <span id="cb17-31"><a href="#cb17-31" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">which</span>(dpn <span class="sc">!=</span> <span class="dv">0</span> <span class="sc">&amp;</span> dpd <span class="sc">!=</span> <span class="dv">0</span>)</span>
 <span id="cb17-32"><a href="#cb17-32" tabindex="-1"></a><span class="fu">summary</span>((dpn <span class="sc">-</span> dpd)[idx])</span>
 <span id="cb17-33"><a href="#cb17-33" tabindex="-1"></a><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></span>
-<span id="cb17-34"><a href="#cb17-34" tabindex="-1"></a><span class="co">#&gt; -1.980e-08  0.000e+00  0.000e+00  0.000e+00  0.000e+00  3.197e-08</span></span></code></pre></div>
+<span id="cb17-34"><a href="#cb17-34" tabindex="-1"></a><span class="co">#&gt; -1.980e-08  0.000e+00  4.960e-12  0.000e+00  1.561e-09  3.197e-08</span></span></code></pre></div>
 </div>
 <div id="processing-speed-comparisons-1" class="section level3">
 <h3>Processing Speed Comparisons</h3>
@@ -1234,10 +1234,10 @@ Ryzen 9 5900X with 64 GiB of RAM and Windows 10 Education (22H2).</p>
 <span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a></span>
 <span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="fu">f1</span>(), <span class="fu">f2</span>(), <span class="fu">f3</span>(), <span class="at">times =</span> <span class="dv">51</span>)</span>
 <span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a><span class="co">#&gt; Unit: milliseconds</span></span>
-<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a><span class="co">#&gt;  expr     min       lq      mean  median       uq     max neval</span></span>
-<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a><span class="co">#&gt;  f1()  4.3508  4.92640  5.305698  5.1227  5.23225  9.1248    51</span></span>
-<span id="cb18-15"><a href="#cb18-15" tabindex="-1"></a><span class="co">#&gt;  f2()  5.1581  5.81630  6.320431  5.9394  6.12560  9.9268    51</span></span>
-<span id="cb18-16"><a href="#cb18-16" tabindex="-1"></a><span class="co">#&gt;  f3() 17.1744 17.73705 18.309422 17.8076 18.10440 22.1407    51</span></span></code></pre></div>
+<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a><span class="co">#&gt;  expr     min       lq     mean  median       uq     max neval</span></span>
+<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a><span class="co">#&gt;  f1() 13.9485 15.06530 16.01232 15.3961 15.75495 21.7301    51</span></span>
+<span id="cb18-15"><a href="#cb18-15" tabindex="-1"></a><span class="co">#&gt;  f2() 14.9863 16.63805 17.31783 16.9915 17.42155 24.1676    51</span></span>
+<span id="cb18-16"><a href="#cb18-16" tabindex="-1"></a><span class="co">#&gt;  f3() 47.9939 49.83140 51.69420 50.4454 51.70345 71.8334    51</span></span></code></pre></div>
 <p>Clearly, the G-NA procedure is the fastest, followed by the G-RNA
 method. Both are hugely faster than G-DC-FFT.</p>
 </div>

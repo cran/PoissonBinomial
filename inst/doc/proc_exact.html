@@ -49,7 +49,7 @@ overflow: visible;
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -586,11 +586,11 @@ Ryzen 9 5900X with 64 GiB of RAM and Windows 10 Education (22H2).</p>
 <span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a></span>
 <span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="fu">f1</span>(), <span class="fu">f2</span>(), <span class="fu">f3</span>(), <span class="fu">f4</span>(), <span class="at">times =</span> <span class="dv">51</span>)</span>
 <span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt; Unit: milliseconds</span></span>
-<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co">#&gt;  expr     min      lq      mean  median       uq     max neval</span></span>
-<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co">#&gt;  f1()  6.0839  6.1614  6.603937  6.2259  6.36975 11.8834    51</span></span>
-<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co">#&gt;  f2() 11.9620 12.0766 12.551157 12.1504 12.25110 28.2470    51</span></span>
-<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="co">#&gt;  f3() 24.3126 24.3727 24.647749 24.4297 24.55060 29.1372    51</span></span>
-<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="co">#&gt;  f4() 27.2692 27.3447 27.442700 27.4125 27.48850 28.3030    51</span></span></code></pre></div>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co">#&gt;  expr      min        lq      mean   median        uq      max neval</span></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co">#&gt;  f1()  20.9010  21.82365  23.03580  22.3124  22.60315  33.6471    51</span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co">#&gt;  f2()  44.1096  44.98895  45.64250  45.2764  45.94010  53.8505    51</span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="co">#&gt;  f3()  80.0998  80.81575  83.09995  81.6625  82.49565 129.9786    51</span></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="co">#&gt;  f4() 198.8036 203.35170 206.31347 205.5394 207.87380 237.2220    51</span></span></code></pre></div>
 <p>Clearly, the DC-FFT procedure is the fastest, followed by DC, RF and
 DFT-CF methods.</p>
 </div>
@@ -968,10 +968,10 @@ Education (22H2).</p>
 <span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a></span>
 <span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="fu">f1</span>(), <span class="fu">f2</span>(), <span class="fu">f3</span>(), <span class="at">times =</span> <span class="dv">51</span>)</span>
 <span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a><span class="co">#&gt; Unit: milliseconds</span></span>
-<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a><span class="co">#&gt;  expr      min        lq      mean   median       uq      max neval</span></span>
-<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a><span class="co">#&gt;  f1()  37.7105  39.22330  40.51796  39.5162  39.9696  67.0926    51</span></span>
-<span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a><span class="co">#&gt;  f2()  44.6782  45.41475  46.46469  46.1763  46.5835  53.0914    51</span></span>
-<span id="cb14-16"><a href="#cb14-16" tabindex="-1"></a><span class="co">#&gt;  f3() 122.4643 128.14945 129.74992 129.8714 131.0883 140.1369    51</span></span></code></pre></div>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a><span class="co">#&gt;  expr      min        lq      mean   median        uq      max neval</span></span>
+<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a><span class="co">#&gt;  f1()  78.0103  80.94265  85.83106  82.3256  84.77965 222.4554    51</span></span>
+<span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a><span class="co">#&gt;  f2() 185.1651 189.36355 192.53650 191.5913 194.92825 216.8803    51</span></span>
+<span id="cb14-16"><a href="#cb14-16" tabindex="-1"></a><span class="co">#&gt;  f3() 639.9733 721.50785 739.89051 747.7238 764.83850 801.4566    51</span></span></code></pre></div>
 <p>Clearly, the G-DC-FFT procedure is the fastest one. It outperforms
 both the G-DC and G-DFT-CF approaches. The latter one needs a lot more
 time than the others. Generally, the computational speed advantage of
