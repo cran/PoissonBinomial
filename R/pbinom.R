@@ -1,154 +1,154 @@
-#'@name PoissonBinomial-Distribution
+#' @name PoissonBinomial-Distribution
 #'
-#'@importFrom stats dbinom pbinom runif
+#' @importFrom stats dbinom pbinom runif
 #'
-#'@title The Poisson Binomial Distribution
+#' @title The Poisson Binomial Distribution
 #'
-#'@description
-#'Density, distribution function, quantile function and random generation for
-#'the Poisson binomial distribution with probability vector \code{probs}.
+#' @description
+#' Density, distribution function, quantile function and random generation for
+#' the Poisson binomial distribution with probability vector \code{probs}.
 #'
-#'@param x           Either a vector of observed numbers of successes or NULL.
-#'                   If NULL, probabilities of all possible observations are
-#'                   returned.
-#'@param p           Vector of probabilities for computation of quantiles.
-#'@param n           Number of observations. If \code{length(n) > 1}, the
-#'                   length is taken to be the number required.
-#'@param probs       Vector of probabilities of success of each Bernoulli
-#'                   trial.
-#'@param method      Character string that specifies the method of computation
-#'                   and must be one of \code{"DivideFFT"}, \code{"Convolve"},
-#'                   \code{"Characteristic"}, \code{"Recursive"},
-#'                   \code{"Mean"}, \code{"GeoMean"}, \code{"GeoMeanCounter"},
-#'                   \code{"Poisson"}, \code{"Normal"} or
-#'                   \code{"RefinedNormal"} (abbreviations are allowed).
-#'@param wts         Vector of non-negative integer weights for the input
-#'                   probabilities.
-#'@param log,log.p   Logical value indicating if results are given as
-#'                   logarithms.
-#'@param lower.tail  Logical value indicating if results are \eqn{P[X \leq x]}
-#'                   (if \code{TRUE}; default) or \eqn{P[X > x]} (if 
-#'                   \code{FALSE}).
-#'@param generator   Character string that specifies the random number
-#'                   generator and must either be \code{"Sample"} (default) or
-#'                   \code{"Bernoulli"} (abbreviations are allowed). See
-#'                   Details for more information.
+#' @param x           Either a vector of observed numbers of successes or NULL.
+#'                    If NULL, probabilities of all possible observations are
+#'                    returned.
+#' @param p           Vector of probabilities for computation of quantiles.
+#' @param n           Number of observations. If \code{length(n) > 1}, the
+#'                    length is taken to be the number required.
+#' @param probs       Vector of probabilities of success of each Bernoulli
+#'                    trial.
+#' @param method      Character string that specifies the method of computation
+#'                    and must be one of \code{"DivideFFT"}, \code{"Convolve"},
+#'                    \code{"Characteristic"}, \code{"Recursive"},
+#'                    \code{"Mean"}, \code{"GeoMean"}, \code{"GeoMeanCounter"},
+#'                    \code{"Poisson"}, \code{"Normal"} or
+#'                    \code{"RefinedNormal"} (abbreviations are allowed).
+#' @param wts         Vector of non-negative integer weights for the input
+#'                    probabilities.
+#' @param log,log.p   Logical value indicating if results are given as
+#'                    logarithms.
+#' @param lower.tail  Logical value indicating if results are \eqn{P[X \leq x]}
+#'                    (if \code{TRUE}; default) or \eqn{P[X > x]} (if 
+#'                    \code{FALSE}).
+#' @param generator   Character string that specifies the random number
+#'                    generator and must either be \code{"Sample"} (default) or
+#'                    \code{"Bernoulli"} (abbreviations are allowed). See
+#'                    Details for more information.
 #'
-#'@details
-#'See the references for computational details. The \emph{Divide and Conquer}
-#'(\code{"DivideFFT"}) and \emph{Direct Convolution} (\code{"Convolve"})
-#'algorithms are derived and described in Biscarri, Zhao & Brunner (2018). The
-#'\emph{Discrete Fourier Transformation of the Characteristic Function}
-#'(\code{"Characteristic"}), the \emph{Recursive Formula} (\code{"Recursive"}),
-#'the \emph{Poisson Approximation} (\code{"Poisson"}), the
-#'\emph{Normal Approach} (\code{"Normal"}) and the
-#'\emph{Refined Normal Approach} (\code{"RefinedNormal"}) are described in Hong
-#'(2013). The calculation of the \emph{Recursive Formula} was modified to
-#'overcome the excessive memory requirements of Hong's implementation.
+#' @details
+#' See the references for computational details. The \emph{Divide and Conquer}
+#' (\code{"DivideFFT"}) and \emph{Direct Convolution} (\code{"Convolve"})
+#' algorithms are derived and described in Biscarri, Zhao & Brunner (2018). The
+#' \emph{Discrete Fourier Transformation of the Characteristic Function}
+#' (\code{"Characteristic"}), the \emph{Recursive Formula} (\code{"Recursive"}),
+#' the \emph{Poisson Approximation} (\code{"Poisson"}), the
+#' \emph{Normal Approach} (\code{"Normal"}) and the
+#' \emph{Refined Normal Approach} (\code{"RefinedNormal"}) are described in Hong
+#' (2013). The calculation of the \emph{Recursive Formula} was modified to
+#' overcome the excessive memory requirements of Hong's implementation.
 #'
-#'The \code{"Mean"} method is a naive binomial approach using the arithmetic
-#'mean of the probabilities of success. Similarly, the \code{"GeoMean"} and
-#'\code{"GeoMeanCounter"} procedures are binomial approximations, too, but
-#'they form the geometric mean of the probabilities of success
-#'(\code{"GeoMean"}) and their counter probabilities (\code{"GeoMeanCounter"}),
-#'respectively.
+#' The \code{"Mean"} method is a naive binomial approach using the arithmetic
+#' mean of the probabilities of success. Similarly, the \code{"GeoMean"} and
+#' \code{"GeoMeanCounter"} procedures are binomial approximations, too, but
+#' they form the geometric mean of the probabilities of success
+#' (\code{"GeoMean"}) and their counter probabilities (\code{"GeoMeanCounter"}),
+#' respectively.
 #'
-#'In some special cases regarding the values of \code{probs}, the \code{method}
-#'parameter is ignored (see Introduction vignette).
+#' In some special cases regarding the values of \code{probs}, the \code{method}
+#' parameter is ignored (see Introduction vignette).
 #'
-#'Random numbers can be generated in two ways. The \code{"Sample"} method
-#'uses \code{R}'s \code{sample} function to draw random values according to
-#'their probabilities that are calculated by \code{dgpbinom}. The
-#'\code{"Bernoulli"} procedure ignores the \code{method} parameter and
-#'simulates Bernoulli-distributed random numbers according to the probabilities
-#'in \code{probs} and sums them up. It is a bit slower than the \code{"Sample"}
-#'generator, but may yield better results, as it allows to obtain observations
-#'that cannot be generated by the \code{"Sample"} procedure, because
-#'\code{dgpbinom} may compute 0-probabilities, due to rounding, if the length
-#'of \code{probs} is large and/or its values contain a lot of very small
-#'values.
+#' Random numbers can be generated in two ways. The \code{"Sample"} method
+#' uses \code{R}'s \code{sample} function to draw random values according to
+#' their probabilities that are calculated by \code{dgpbinom}. The
+#' \code{"Bernoulli"} procedure ignores the \code{method} parameter and
+#' simulates Bernoulli-distributed random numbers according to the probabilities
+#' in \code{probs} and sums them up. It is a bit slower than the \code{"Sample"}
+#' generator, but may yield better results, as it allows to obtain observations
+#' that cannot be generated by the \code{"Sample"} procedure, because
+#' \code{dgpbinom} may compute 0-probabilities, due to rounding, if the length
+#' of \code{probs} is large and/or its values contain a lot of very small
+#' values.
 #'
-#'@return
-#'\code{dpbinom} gives the density, \code{ppbinom} computes the distribution
-#'function, \code{qpbinom} gives the quantile function and \code{rpbinom}
-#'generates random deviates.
+#' @return
+#' \code{dpbinom} gives the density, \code{ppbinom} computes the distribution
+#' function, \code{qpbinom} gives the quantile function and \code{rpbinom}
+#' generates random deviates.
 #'
-#'For \code{rpbinom}, the length of the result is determined by \code{n}, and
-#'is the lengths of the numerical arguments for the other functions.
+#' For \code{rpbinom}, the length of the result is determined by \code{n}, and
+#' is the lengths of the numerical arguments for the other functions.
 #'
-#'@section References:
-#'Hong, Y. (2013). On computing the distribution function for the Poisson
-#'    binomial distribution. \emph{Computational Statistics & Data Analysis},
-#'    \strong{59}, pp. 41-51. \doi{10.1016/j.csda.2012.10.006}
+#' @references
+#' Hong, Y. (2013). On computing the distribution function for the Poisson
+#'   binomial distribution. \emph{Computational Statistics & Data Analysis},
+#'   \strong{59}, pp. 41-51. \doi{10.1016/j.csda.2012.10.006}
 #'
-#'Biscarri, W., Zhao, S. D. and Brunner, R. J. (2018) A simple and fast method
-#'    for computing the Poisson binomial distribution.
-#'    \emph{Computational Statistics and Data Analysis}, \strong{31}, pp.
-#'    216–222. \doi{10.1016/j.csda.2018.01.007}
-#'    
-#'@examples
-#'set.seed(1)
-#'pp <- c(0, 0, runif(995), 1, 1, 1)
-#'qq <- seq(0, 1, 0.01)
+#' Biscarri, W., Zhao, S. D. and Brunner, R. J. (2018) A simple and fast method
+#'   for computing the Poisson binomial distribution.
+#'   \emph{Computational Statistics and Data Analysis}, \strong{31}, pp.
+#'   216–222. \doi{10.1016/j.csda.2018.01.007}
 #'
-#'dpbinom(NULL, pp, method = "DivideFFT")
-#'ppbinom(450:550, pp, method = "DivideFFT")
-#'qpbinom(qq, pp, method = "DivideFFT")
-#'rpbinom(100, pp, method = "DivideFFT")
+#' @examples
+#' set.seed(1)
+#' pp <- c(0, 0, runif(995), 1, 1, 1)
+#' qq <- seq(0, 1, 0.01)
 #'
-#'dpbinom(NULL, pp, method = "Convolve")
-#'ppbinom(450:550, pp, method = "Convolve")
-#'qpbinom(qq, pp, method = "Convolve")
-#'rpbinom(100, pp, method = "Convolve")
+#' dpbinom(NULL, pp, method = "DivideFFT")
+#' ppbinom(450:550, pp, method = "DivideFFT")
+#' qpbinom(qq, pp, method = "DivideFFT")
+#' rpbinom(100, pp, method = "DivideFFT")
 #'
-#'dpbinom(NULL, pp, method = "Characteristic")
-#'ppbinom(450:550, pp, method = "Characteristic")
-#'qpbinom(qq, pp, method = "Characteristic")
-#'rpbinom(100, pp, method = "Characteristic")
+#' dpbinom(NULL, pp, method = "Convolve")
+#' ppbinom(450:550, pp, method = "Convolve")
+#' qpbinom(qq, pp, method = "Convolve")
+#' rpbinom(100, pp, method = "Convolve")
 #'
-#'dpbinom(NULL, pp, method = "Recursive")
-#'ppbinom(450:550, pp, method = "Recursive")
-#'qpbinom(qq, pp, method = "Recursive")
-#'rpbinom(100, pp, method = "Recursive")
+#' dpbinom(NULL, pp, method = "Characteristic")
+#' ppbinom(450:550, pp, method = "Characteristic")
+#' qpbinom(qq, pp, method = "Characteristic")
+#' rpbinom(100, pp, method = "Characteristic")
 #'
-#'dpbinom(NULL, pp, method = "Mean")
-#'ppbinom(450:550, pp, method = "Mean")
-#'qpbinom(qq, pp, method = "Mean")
-#'rpbinom(100, pp, method = "Mean")
+#' dpbinom(NULL, pp, method = "Recursive")
+#' ppbinom(450:550, pp, method = "Recursive")
+#' qpbinom(qq, pp, method = "Recursive")
+#' rpbinom(100, pp, method = "Recursive")
 #'
-#'dpbinom(NULL, pp, method = "GeoMean")
-#'ppbinom(450:550, pp, method = "GeoMean")
-#'qpbinom(qq, pp, method = "GeoMean")
-#'rpbinom(100, pp, method = "GeoMean")
+#' dpbinom(NULL, pp, method = "Mean")
+#' ppbinom(450:550, pp, method = "Mean")
+#' qpbinom(qq, pp, method = "Mean")
+#' rpbinom(100, pp, method = "Mean")
 #'
-#'dpbinom(NULL, pp, method = "GeoMeanCounter")
-#'ppbinom(450:550, pp, method = "GeoMeanCounter")
-#'qpbinom(qq, pp, method = "GeoMeanCounter")
-#'rpbinom(100, pp, method = "GeoMeanCounter")
+#' dpbinom(NULL, pp, method = "GeoMean")
+#' ppbinom(450:550, pp, method = "GeoMean")
+#' qpbinom(qq, pp, method = "GeoMean")
+#' rpbinom(100, pp, method = "GeoMean")
 #'
-#'dpbinom(NULL, pp, method = "Poisson")
-#'ppbinom(450:550, pp, method = "Poisson")
-#'qpbinom(qq, pp, method = "Poisson")
-#'rpbinom(100, pp, method = "Poisson")
+#' dpbinom(NULL, pp, method = "GeoMeanCounter")
+#' ppbinom(450:550, pp, method = "GeoMeanCounter")
+#' qpbinom(qq, pp, method = "GeoMeanCounter")
+#' rpbinom(100, pp, method = "GeoMeanCounter")
 #'
-#'dpbinom(NULL, pp, method = "Normal")
-#'ppbinom(450:550, pp, method = "Normal")
-#'qpbinom(qq, pp, method = "Normal")
-#'rpbinom(100, pp, method = "Normal")
+#' dpbinom(NULL, pp, method = "Poisson")
+#' ppbinom(450:550, pp, method = "Poisson")
+#' qpbinom(qq, pp, method = "Poisson")
+#' rpbinom(100, pp, method = "Poisson")
 #'
-#'dpbinom(NULL, pp, method = "RefinedNormal")
-#'ppbinom(450:550, pp, method = "RefinedNormal")
-#'qpbinom(qq, pp, method = "RefinedNormal")
-#'rpbinom(100, pp, method = "RefinedNormal")
+#' dpbinom(NULL, pp, method = "Normal")
+#' ppbinom(450:550, pp, method = "Normal")
+#' qpbinom(qq, pp, method = "Normal")
+#' rpbinom(100, pp, method = "Normal")
 #'
-#'@export
-dpbinom <- function(x, probs, wts = NULL, method = "DivideFFT", log = FALSE){
+#' dpbinom(NULL, pp, method = "RefinedNormal")
+#' ppbinom(450:550, pp, method = "RefinedNormal")
+#' qpbinom(qq, pp, method = "RefinedNormal")
+#' rpbinom(100, pp, method = "RefinedNormal")
+#'
+#' @export
+dpbinom <- function(x, probs, wts = NULL, method = "DivideFFT", log = FALSE) {
   ## preliminary checks
   # number of probabilities
   n <- length(probs)
   
   # check if 'x' contains only integers
-  if(!is.null(x) && any(x - round(x) != 0)){
+  if(!is.null(x) && any(x - round(x) != 0)) {
     warning("'x' should contain integers only! Using rounded off values.")
     x <- floor(x)
   }
@@ -157,8 +157,14 @@ dpbinom <- function(x, probs, wts = NULL, method = "DivideFFT", log = FALSE){
   if(is.null(probs) || any(is.na(probs) | probs < 0 | probs > 1))
     stop("'probs' must contain real numbers between 0 and 1!")
   
-  # make sure that the value of 'method' matches one of the implemented procedures
-  method <- match.arg(method, c("DivideFFT", "Convolve", "Characteristic", "Recursive", "Mean", "GeoMean", "GeoMeanCounter", "Poisson", "Normal", "RefinedNormal"))
+  # make sure that the value of 'method' matches an implemented procedure
+  method <- match.arg(
+    arg = method, 
+    choices = c(
+      "DivideFFT", "Convolve", "Characteristic", "Recursive", "Mean",
+      "GeoMean", "GeoMeanCounter", "Poisson", "Normal", "RefinedNormal"
+    )
+  )
   
   # check if 'wts' contains only integers (zeros are allowed)
   if(!is.null(wts) && any(is.na(wts) | wts < 0 | abs(wts - round(wts)) > 1e-07))
@@ -169,8 +175,7 @@ dpbinom <- function(x, probs, wts = NULL, method = "DivideFFT", log = FALSE){
   
   ## expand 'probs' according to the counts in 'wts'
   # if 'wts' is NULL, set it to be a vector of ones
-  if(is.null(wts))
-    wts <- rep(1, n)
+  if(is.null(wts)) wts <- rep(1, n)
   
   # expand 'probs'
   probs <- rep(probs, wts)
@@ -192,10 +197,10 @@ dpbinom <- function(x, probs, wts = NULL, method = "DivideFFT", log = FALSE){
   d <- double(length(x))
   
   # no computation needed, if there are no valid observations in 'x'
-  if(length(idx.x)){
+  if(length(idx.x)) {
     # which probabilities are 0 or 1
-    idx0 <- which(probs == 0)
-    idx1 <- which(probs == 1)
+    idx0  <- which(probs == 0)
+    idx1  <- which(probs == 1)
     probs <- probs[probs > 0 & probs < 1]
     
     # number of zeros and ones
@@ -206,31 +211,36 @@ dpbinom <- function(x, probs, wts = NULL, method = "DivideFFT", log = FALSE){
     # relevant observations
     idx.y <- which(y %in% n1:(n - n0))
     
-    if(length(idx.y)){
+    if(length(idx.y)) {
       z <- y[idx.y] - n1
     
-      if(np == 0){
-        # 'probs' contains only zeros and ones, i.e. only one possible observation
+      if(np == 0) {
+        # 'probs' contains only zeros and ones => only one possible observation
         d[idx.x][idx.y] <- 1
-      }else if(np == 1){
-        # 'probs' contains only one value that is not 0 or 1, i.e. a Bernoulli distribution
-        d[idx.x][idx.y] <- c(1 - probs, probs)[z + 1]
-      }else{
-        if(all(probs == probs[1])){
-          # all values of 'probs' are equal, i.e. a standard binomial distribution
-          d[idx.x][idx.y] <- dbinom(z, np, probs[1])
-        }else{
-          # otherwise, compute distribution according to 'method'
-          d[idx.x][idx.y] <- switch(method, DivideFFT = dpb_dc(z, probs),
-                                            Convolve = dpb_conv(z, probs),
-                                            Characteristic = dpb_dftcf(z, probs),
-                                            Recursive = dpb_rf(z, probs),
-                                            Mean = dpb_mean(z, probs),
-                                            GeoMean = dpb_gmba(z, probs, FALSE),
-                                            GeoMeanCounter = dpb_gmba(z, probs, TRUE),
-                                            Poisson = dpb_pa(z, probs),
-                                            Normal = dpb_na(z, probs, FALSE),
-                                            RefinedNormal = dpb_na(z, probs, TRUE))
+      } else {
+        if(np == 1) {
+          # 'probs' contains only one value in (0, 1) => Bernoulli distribution
+          d[idx.x][idx.y] <- c(1 - probs, probs)[z + 1]
+        } else {
+          if(all(probs == probs[1])) {
+            # all values of 'probs' are equal => standard binomial distribution
+            d[idx.x][idx.y] <- dbinom(z, np, probs[1])
+          } else {
+            # otherwise, compute distribution according to 'method'
+            d[idx.x][idx.y] <- switch(
+              EXPR = method,
+              DivideFFT = dpb_dc(z, probs),
+              Convolve = dpb_conv(z, probs),
+              Characteristic = dpb_dftcf(z, probs),
+              Recursive = dpb_rf(z, probs),
+              Mean = dpb_mean(z, probs),
+              GeoMean = dpb_gmba(z, probs, FALSE),
+              GeoMeanCounter = dpb_gmba(z, probs, TRUE),
+              Poisson = dpb_pa(z, probs),
+              Normal = dpb_na(z, probs, FALSE),
+              RefinedNormal = dpb_na(z, probs, TRUE)
+            )
+          }
         }
       }
     }
@@ -243,15 +253,22 @@ dpbinom <- function(x, probs, wts = NULL, method = "DivideFFT", log = FALSE){
   return(d)
 }
 
-#'@rdname PoissonBinomial-Distribution
-#'@export
-ppbinom <- function(x, probs, wts = NULL, method = "DivideFFT", lower.tail = TRUE, log.p = FALSE){
+#' @rdname PoissonBinomial-Distribution
+#' @export
+ppbinom <- function(
+  x,
+  probs,
+  wts = NULL,
+  method = "DivideFFT",
+  lower.tail = TRUE,
+  log.p = FALSE
+) {
   ## preliminary checks
   # number of probabilities
   n <- length(probs)
   
   # check if 'x' contains only integers
-  if(!is.null(x) && any(x - round(x) != 0)){
+  if(!is.null(x) && any(x - round(x) != 0)) {
     warning("'x' should contain integers only! Using rounded off values.")
     x <- floor(x)
   }
@@ -260,8 +277,14 @@ ppbinom <- function(x, probs, wts = NULL, method = "DivideFFT", lower.tail = TRU
   if(is.null(probs) || any(is.na(probs) | probs < 0 | probs > 1))
     stop("'probs' must contain real numbers between 0 and 1!")
   
-  # make sure that the value of 'method' matches one of the implemented procedures
-  method <- match.arg(method, c("DivideFFT", "Convolve", "Characteristic", "Recursive", "Mean", "GeoMean", "GeoMeanCounter", "Poisson", "Normal", "RefinedNormal"))
+  # make sure that the value of 'method' matches an implemented procedure
+  method <- match.arg(
+    arg = method, 
+    choices = c(
+      "DivideFFT", "Convolve", "Characteristic", "Recursive", "Mean",
+      "GeoMean", "GeoMeanCounter", "Poisson", "Normal", "RefinedNormal"
+    )
+  )
   
   # check if 'wts' contains only integers (zeros are allowed)
   if(!is.null(wts) && any(is.na(wts) | wts < 0 | abs(wts - round(wts)) > 1e-07))
@@ -272,8 +295,7 @@ ppbinom <- function(x, probs, wts = NULL, method = "DivideFFT", lower.tail = TRU
   
   ## expand 'probs' according to the counts in 'wts'
   # if 'wts' is NULL, set it to be a vector of ones
-  if(is.null(wts))
-    wts <- rep(1, n)
+  if(is.null(wts)) wts <- rep(1, n)
   
   # expand 'probs'
   probs <- rep(probs, wts)
@@ -295,10 +317,10 @@ ppbinom <- function(x, probs, wts = NULL, method = "DivideFFT", lower.tail = TRU
   d <- rep(as.numeric(!lower.tail), length(x))
   
   # no computation needed, if there are no valid observations in 'x'
-  if(length(idx.x)){
+  if(length(idx.x)) {
     # which probabilities are 0 or 1
-    idx0 <- which(probs == 0)
-    idx1 <- which(probs == 1)
+    idx0  <- which(probs == 0)
+    idx1  <- which(probs == 1)
     probs <- probs[probs > 0 & probs < 1]
     
     # number of zeros and ones
@@ -310,35 +332,42 @@ ppbinom <- function(x, probs, wts = NULL, method = "DivideFFT", lower.tail = TRU
     idx.y <- which(y %in% n1:(n - n0))
     idx.z <- which(y > n - n0)
     
-    if(length(idx.y)){
+    if(length(idx.y)) {
       z <- y[idx.y] - n1
       
-      if(np == 0){
-        # 'probs' contains only zeros and ones, i.e. there is only one possible observation
+      if(np == 0) {
+        # 'probs' contains only zeros and ones => only one possible observation
         d[idx.x][idx.y] <- if(lower.tail) 1 else 0
-      }else if(np == 1){
-        # 'probs' contains only one value that is not 0 or 1, i.e. a Bernoulli distribution
-        d[idx.x][idx.y] <- if(lower.tail) c(1 - probs, 1)[z + 1] else c(probs, 0)[z + 1]
-      }else{
-        if(all(probs == probs[1])){
-          # all values of 'probs' are equal, i.e. a standard binomial distribution
-          d[idx.x][idx.y] <- pbinom(q = z, size = np, prob = probs[1], lower.tail = lower.tail)
-        }else{
-          # otherwise, compute distribution according to 'method'
-          d[idx.x][idx.y] <- switch(method,
-                                    DivideFFT = ppb_dc(z, probs, lower.tail),
-                                    Convolve = ppb_conv(z, probs, lower.tail),
-                                    Characteristic = ppb_dftcf(z, probs, lower.tail),
-                                    Recursive = ppb_rf(z, probs, lower.tail),
-                                    Mean = ppb_mean(z, probs, lower.tail),
-                                    GeoMean = ppb_gmba(z, probs, FALSE, lower.tail),
-                                    GeoMeanCounter = ppb_gmba(z, probs, TRUE, lower.tail),
-                                    Poisson = ppb_pa(z, probs, lower.tail),
-                                    Normal = ppb_na(z, probs, FALSE, lower.tail),
-                                    RefinedNormal = ppb_na(z, probs, TRUE, lower.tail))
-          
-          # compute counter-probabilities, if necessary
-          #if(!lower.tail) d[idx.x][idx.y] <- 1 - d[idx.x][idx.y]
+      } else {
+        if(np == 1) {
+          # 'probs' contains only one value in (0, 1) => Bernoulli distribution
+          d[idx.x][idx.y] <- if(lower.tail) 
+            c(1 - probs, 1)[z + 1] else c(probs, 0)[z + 1]
+        } else {
+          if(all(probs == probs[1])) {
+            # all values of 'probs' are equal => standard binomial distribution
+            d[idx.x][idx.y] <- pbinom(
+              q = z,
+              size = np,
+              prob = probs[1],
+              lower.tail = lower.tail
+            )
+          } else {
+            # otherwise, compute distribution according to 'method'
+            d[idx.x][idx.y] <- switch(
+              EXPR = method,
+              DivideFFT = ppb_dc(z, probs, lower.tail),
+              Convolve = ppb_conv(z, probs, lower.tail),
+              Characteristic = ppb_dftcf(z, probs, lower.tail),
+              Recursive = ppb_rf(z, probs, lower.tail),
+              Mean = ppb_mean(z, probs, lower.tail),
+              GeoMean = ppb_gmba(z, probs, FALSE, lower.tail),
+              GeoMeanCounter = ppb_gmba(z, probs, TRUE, lower.tail),
+              Poisson = ppb_pa(z, probs, lower.tail),
+              Normal = ppb_na(z, probs, FALSE, lower.tail),
+              RefinedNormal = ppb_na(z, probs, TRUE, lower.tail)
+            )
+          }
         }
       }
     }
@@ -355,31 +384,41 @@ ppbinom <- function(x, probs, wts = NULL, method = "DivideFFT", lower.tail = TRU
   return(d)
 }
 
-#'@rdname PoissonBinomial-Distribution
-#'@importFrom stats stepfun
-#'@export
-qpbinom <- function(p, probs, wts = NULL, method = "DivideFFT", lower.tail = TRUE, log.p = FALSE){
+#' @rdname PoissonBinomial-Distribution
+#' @importFrom stats stepfun
+#' @export
+qpbinom <- function(
+  p,
+  probs,
+  wts = NULL,
+  method = "DivideFFT",
+  lower.tail = TRUE,
+  log.p = FALSE
+) {
   ## preliminary checks
   # check if 'p' contains only probabilities
-  if(!log.p){
+  if(!log.p) {
     if(is.null(p) || any(is.na(p) | p < 0 | p > 1))
       stop("'p' must contain real numbers between 0 and 1!")
-  }else{
+  } else {
     if(is.null(p) || any(is.na(p) | p > 0))
       stop("'p' must contain real numbers between -Inf and 0!")
   }
   
-  # make sure that the value of 'method' matches one of the implemented procedures
-  method <- match.arg(method, c("DivideFFT", "Convolve", "Characteristic", "Recursive", "Mean", "GeoMean", "GeoMeanCounter", "Poisson", "Normal", "RefinedNormal"))
+  # make sure that the value of 'method' matches an implemented procedure
+  method <- match.arg(
+    arg = method, 
+    choices = c(
+      "DivideFFT", "Convolve", "Characteristic", "Recursive", "Mean",
+      "GeoMean", "GeoMeanCounter", "Poisson", "Normal", "RefinedNormal"
+    )
+  )
   
   ## compute probabilities (does checking for the other variables)
   cdf <- ppbinom(NULL, probs, wts, method, lower.tail)
   
   # size of distribution
   size <- length(probs)
-  
-  # length of cdf
-  #len <- length(cdf)
   
   # logarithm, if required
   if(log.p) p <- exp(p)
@@ -390,11 +429,11 @@ qpbinom <- function(p, probs, wts = NULL, method = "DivideFFT", lower.tail = TRU
   n1 <- sum(probs == 1)
   hi <- size - n0
   range <- n1:hi
-  #idx <- range + 1
   
   # handle quantiles between 0 and 1
-  if(lower.tail) Q <- stepfun(cdf[range + 1], c(range, hi), right = TRUE)
-  else Q <- stepfun(rev(cdf[range + 1]), c(hi, rev(range)), right = TRUE)
+  Q <- if(lower.tail) 
+    stepfun(cdf[range + 1], c(range, hi), right = TRUE) else 
+      stepfun(rev(cdf[range + 1]), c(hi, rev(range)), right = TRUE)
   
   # vector to store results
   res <- Q(p)
@@ -407,10 +446,16 @@ qpbinom <- function(p, probs, wts = NULL, method = "DivideFFT", lower.tail = TRU
   return(res)
 }
 
-#'@rdname PoissonBinomial-Distribution
-#'@importFrom stats runif rbinom
-#'@export
-rpbinom <- function(n, probs, wts = NULL, method = "DivideFFT", generator = "Sample"){
+#' @rdname PoissonBinomial-Distribution
+#' @importFrom stats runif rbinom
+#' @export
+rpbinom <- function(
+  n,
+  probs,
+  wts = NULL,
+  method = "DivideFFT",
+  generator = "Sample"
+) {
   len <- length(n)
   if(len > 1) n <- len
   
@@ -433,21 +478,34 @@ rpbinom <- function(n, probs, wts = NULL, method = "DivideFFT", generator = "Sam
   
   ## expand 'probs' according to the counts in 'wts'
   # if 'wts' is NULL, set it to be a vector of ones
-  if(is.null(wts))
-    wts <- rep(1, len)
+  if(is.null(wts)) wts <- rep(1, len)
   
   # expand 'probs'
   probs <- rep(probs, wts)
   
-  # make sure that the value of 'method' matches one of the implemented procedures
-  method <- match.arg(method, c("DivideFFT", "Convolve", "Characteristic", "Recursive", "Mean", "GeoMean", "GeoMeanCounter", "Poisson", "Normal", "RefinedNormal"))
+  # make sure that the value of 'method' matches an implemented procedure
+  method <- match.arg(
+    arg = method, 
+    choices = c(
+      "DivideFFT", "Convolve", "Characteristic", "Recursive", "Mean",
+      "GeoMean", "GeoMeanCounter", "Poisson", "Normal", "RefinedNormal"
+    )
+  )
   
-  # make sure that the value of 'generator' matches one of the implemented procedures
+  # make sure that the value of 'generator' matches an implemented procedure
   generator <- match.arg(generator, c("Sample", "Bernoulli"))
   
   # generate random numbers
-  res <- switch(generator, Sample    = sample(0:length(probs), n, TRUE, dpbinom(NULL, probs, NULL, method)),
-                           Bernoulli = rpb_bernoulli(n, probs))
+  res <- switch(
+    EXPR = generator,
+    Sample = sample(
+      x = 0:length(probs),
+      size = n,
+      replace = TRUE,
+      prob = dpbinom(NULL, probs, NULL, method)
+    ),
+    Bernoulli = rpb_bernoulli(n, probs)
+  )
   
   # return results
   return(res)

@@ -1,124 +1,132 @@
-#'@name GenPoissonBinomial-Distribution
+#' @name GenPoissonBinomial-Distribution
 #'
-#'@title The Generalized Poisson Binomial Distribution
+#' @title The Generalised Poisson Binomial Distribution
 #'
-#'@description
-#'Density, distribution function, quantile function and random generation for
-#'the generalized Poisson binomial distribution with probability vector
-#'\code{probs}.
+#' @description
+#' Density, distribution function, quantile function and random generation for
+#' the generalised Poisson binomial distribution with probability vector
+#' \code{probs}.
 #'
-#'@param x           Either a vector of observed sums or NULL. If NULL,
-#'                   probabilities of all possible observations are
-#'                   returned.
-#'@param p           Vector of probabilities for computation of quantiles.
-#'@param n           Number of observations. If \code{length(n) > 1}, the
-#'                   length is taken to be the number required.
-#'@param probs       Vector of probabilities of success of each Bernoulli
-#'                   trial.
-#'@param val_p       Vector of values that each trial produces with probability
-#'                   in \code{probs}.
-#'@param val_q       Vector of values that each trial produces with probability
-#'                   in \code{1 - probs}.
-#'@param method      Character string that specifies the method of computation
-#'                   and must be one of \code{"DivideFFT"}, \code{"Convolve"}, 
-#'                   \code{"Characteristic"}, \code{"Normal"} or
-#'                   \code{"RefinedNormal"} (abbreviations are allowed).
-#'@param wts         Vector of non-negative integer weights for the input
-#'                   probabilities.
-#'@param log,log.p   Logical value indicating if results are given as
-#'                   logarithms.
-#'@param lower.tail  Logical value indicating if results are \eqn{P[X \leq x]}
-#'                   (if \code{TRUE}; default) or \eqn{P[X > x]} (if 
-#'                   \code{FALSE}).
-#'@param generator   Character string that specifies the random number
-#'                   generator and must either be \code{"Sample"} or
-#'                   \code{"Bernoulli"} (abbreviations are allowed).
+#' @param x           Either a vector of observed sums or NULL. If NULL,
+#'                    probabilities of all possible observations are
+#'                    returned.
+#' @param p           Vector of probabilities for computation of quantiles.
+#' @param n           Number of observations. If \code{length(n) > 1}, the
+#'                    length is taken to be the number required.
+#' @param probs       Vector of probabilities of success of each Bernoulli
+#'                    trial.
+#' @param val_p       Vector of values that each trial produces with probability
+#'                    in \code{probs}.
+#' @param val_q       Vector of values that each trial produces with probability
+#'                    in \code{1 - probs}.
+#' @param method      Character string that specifies the method of computation
+#'                    and must be one of \code{"DivideFFT"}, \code{"Convolve"}, 
+#'                    \code{"Characteristic"}, \code{"Normal"} or
+#'                    \code{"RefinedNormal"} (abbreviations are allowed).
+#' @param wts         Vector of non-negative integer weights for the input
+#'                    probabilities.
+#' @param log,log.p   Logical value indicating if results are given as
+#'                    logarithms.
+#' @param lower.tail  Logical value indicating if results are \eqn{P[X \leq x]}
+#'                    (if \code{TRUE}; default) or \eqn{P[X > x]} (if 
+#'                    \code{FALSE}).
+#' @param generator   Character string that specifies the random number
+#'                    generator and must either be \code{"Sample"} or
+#'                    \code{"Bernoulli"} (abbreviations are allowed).
 #'
-#'@details
-#'See the references for computational details. The \emph{Divide and Conquer}
-#'(\code{"DivideFFT"}) and \emph{Direct Convolution} (\code{"Convolve"})
-#'algorithms are derived and described in Biscarri, Zhao & Brunner (2018). They
-#'have been modified for use with the generalized Poisson binomial
-#'distribution. The
-#'\emph{Discrete Fourier Transformation of the Characteristic Function}
-#'(\code{"Characteristic"}) is derived in Zhang, Hong & Balakrishnan (2018),
-#'the \emph{Normal Approach} (\code{"Normal"}) and the
-#'\emph{Refined Normal Approach} (\code{"RefinedNormal"}) are described in Hong
-#'(2013). They were slightly adapted for the generalized Poisson binomial
-#'distribution.
+#' @details
+#' See the references for computational details. The \emph{Divide and Conquer}
+#' (\code{"DivideFFT"}) and \emph{Direct Convolution} (\code{"Convolve"})
+#' algorithms are derived and described in Biscarri, Zhao & Brunner (2018). They
+#' have been modified for use with the generalised Poisson binomial
+#' distribution. The
+#' \emph{Discrete Fourier Transformation of the Characteristic Function}
+#' (\code{"Characteristic"}) is derived in Zhang, Hong & Balakrishnan (2018),
+#' the \emph{Normal Approach} (\code{"Normal"}) and the
+#' \emph{Refined Normal Approach} (\code{"RefinedNormal"}) are described in Hong
+#' (2013). They were slightly adapted for the generalised Poisson binomial
+#' distribution.
 #'
-#'In some special cases regarding the values of \code{probs}, the \code{method}
-#'parameter is ignored (see Introduction vignette).
+#' In some special cases regarding the values of \code{probs}, the \code{method}
+#' parameter is ignored (see Introduction vignette).
 #'
-#'Random numbers can be generated in two ways. The \code{"Sample"} method
-#'uses \code{R}'s \code{sample} function to draw random values according to
-#'their probabilities that are calculated by \code{dgpbinom}. The
-#'\code{"Bernoulli"} procedure ignores the \code{method} parameter and
-#'simulates Bernoulli-distributed random numbers according to the probabilities
-#'in \code{probs} and sums them up. It is a bit slower than the \code{"Sample"}
-#'generator, but may yield better results, as it allows to obtain observations
-#'that cannot be generated by the \code{"Sample"} procedure, because
-#'\code{dgpbinom} may compute 0-probabilities, due to rounding, if the length
-#'of \code{probs} is large and/or its values contain a lot of very small
-#'values.
+#' Random numbers can be generated in two ways. The \code{"Sample"} method
+#' uses \code{R}'s \code{sample} function to draw random values according to
+#' their probabilities that are calculated by \code{dgpbinom}. The
+#' \code{"Bernoulli"} procedure ignores the \code{method} parameter and
+#' simulates Bernoulli-distributed random numbers according to the probabilities
+#' in \code{probs} and sums them up. It is a bit slower than the \code{"Sample"}
+#' generator, but may yield better results, as it allows to obtain observations
+#' that cannot be generated by the \code{"Sample"} procedure, because
+#' \code{dgpbinom} may compute 0-probabilities, due to rounding, if the length
+#' of \code{probs} is large and/or its values contain a lot of very small
+#' values.
 #'
-#'@return
-#'\code{dgpbinom} gives the density, \code{pgpbinom} computes the distribution
-#'function, \code{qgpbinom} gives the quantile function and \code{rgpbinom}
-#'generates random deviates.
+#' @return
+#' \code{dgpbinom} gives the density, \code{pgpbinom} computes the distribution
+#' function, \code{qgpbinom} gives the quantile function and \code{rgpbinom}
+#' generates random deviates.
 #'
-#'For \code{rgpbinom}, the length of the result is determined by \code{n}, and
-#'is the lengths of the numerical arguments for the other functions.
+#' For \code{rgpbinom}, the length of the result is determined by \code{n}, and
+#' is the lengths of the numerical arguments for the other functions.
 #'
-#'@section References:
-#'Hong, Y. (2018). On computing the distribution function for the Poisson
-#'    binomial distribution. \emph{Computational Statistics & Data Analysis},
-#'    \strong{59}, pp. 41-51. \doi{10.1016/j.csda.2012.10.006}
+#' @references
+#' Hong, Y. (2018). On computing the distribution function for the Poisson
+#'  binomial distribution. \emph{Computational Statistics & Data Analysis},
+#'  \strong{59}, pp. 41-51. \doi{10.1016/j.csda.2012.10.006}
 #'
-#'Biscarri, W., Zhao, S. D. and Brunner, R. J. (2018) A simple and fast method
-#'    for computing the Poisson binomial distribution.
-#'    \emph{Computational Statistics and Data Analysis}, \strong{31}, pp.
-#'    216–222. \doi{10.1016/j.csda.2018.01.007}
+#' Biscarri, W., Zhao, S. D. and Brunner, R. J. (2018) A simple and fast method
+#'   for computing the Poisson binomial distribution.
+#'   \emph{Computational Statistics and Data Analysis}, \strong{31}, pp.
+#'   216–222. \doi{10.1016/j.csda.2018.01.007}
 #'    
-#'Zhang, M., Hong, Y. and Balakrishnan, N. (2018). The generalized 
-#'    Poisson-binomial distribution and the computation of its distribution
-#'    function. \emph{Journal of Statistical Computational and Simulation},
-#'    \strong{88}(8), pp. 1515-1527. \doi{10.1080/00949655.2018.1440294}
+#' Zhang, M., Hong, Y. and Balakrishnan, N. (2018). The generalized 
+#'   Poisson-binomial distribution and the computation of its distribution
+#'   function. \emph{Journal of Statistical Computational and Simulation},
+#'   \strong{88}(8), pp. 1515-1527. \doi{10.1080/00949655.2018.1440294}
 #'    
-#'@examples
-#'set.seed(1)
-#'pp <- c(1, 0, runif(10), 1, 0, 1)
-#'qq <- seq(0, 1, 0.01)
-#'va <- rep(5, length(pp))
-#'vb <- 1:length(pp)
+#' @examples
+#' set.seed(1)
+#' pp <- c(1, 0, runif(10), 1, 0, 1)
+#' qq <- seq(0, 1, 0.01)
+#' va <- rep(5, length(pp))
+#' vb <- 1:length(pp)
 #'
-#'dgpbinom(NULL, pp, va, vb, method = "DivideFFT")
-#'pgpbinom(75:100, pp, va, vb, method = "DivideFFT")
-#'qgpbinom(qq, pp, va, vb, method = "DivideFFT")
-#'rgpbinom(100, pp, va, vb, method = "DivideFFT")
+#' dgpbinom(NULL, pp, va, vb, method = "DivideFFT")
+#' pgpbinom(75:100, pp, va, vb, method = "DivideFFT")
+#' qgpbinom(qq, pp, va, vb, method = "DivideFFT")
+#' rgpbinom(100, pp, va, vb, method = "DivideFFT")
+#' 
+#' dgpbinom(NULL, pp, va, vb, method = "Convolve")
+#' pgpbinom(75:100, pp, va, vb, method = "Convolve")
+#' qgpbinom(qq, pp, va, vb, method = "Convolve")
+#' rgpbinom(100, pp, va, vb, method = "Convolve")
+#' 
+#' dgpbinom(NULL, pp, va, vb, method = "Characteristic")
+#' pgpbinom(75:100, pp, va, vb, method = "Characteristic")
+#' qgpbinom(qq, pp, va, vb, method = "Characteristic")
+#' rgpbinom(100, pp, va, vb, method = "Characteristic")
 #'
-#'dgpbinom(NULL, pp, va, vb, method = "Convolve")
-#'pgpbinom(75:100, pp, va, vb, method = "Convolve")
-#'qgpbinom(qq, pp, va, vb, method = "Convolve")
-#'rgpbinom(100, pp, va, vb, method = "Convolve")
-#'
-#'dgpbinom(NULL, pp, va, vb, method = "Characteristic")
-#'pgpbinom(75:100, pp, va, vb, method = "Characteristic")
-#'qgpbinom(qq, pp, va, vb, method = "Characteristic")
-#'rgpbinom(100, pp, va, vb, method = "Characteristic")
-#'
-#'dgpbinom(NULL, pp, va, vb, method = "Normal")
-#'pgpbinom(75:100, pp, va, vb, method = "Normal")
-#'qgpbinom(qq, pp, va, vb, method = "Normal")
-#'rgpbinom(100, pp, va, vb, method = "Normal")
-#'
-#'dgpbinom(NULL, pp, va, vb, method = "RefinedNormal")
-#'pgpbinom(75:100, pp, va, vb, method = "RefinedNormal")
-#'qgpbinom(qq, pp, va, vb, method = "RefinedNormal")
-#'rgpbinom(100, pp, va, vb, method = "RefinedNormal")
-#'
-#'@export
-dgpbinom <- function(x, probs, val_p, val_q, wts = NULL, method = "DivideFFT", log = FALSE){
+#' dgpbinom(NULL, pp, va, vb, method = "Normal")
+#' pgpbinom(75:100, pp, va, vb, method = "Normal")
+#' qgpbinom(qq, pp, va, vb, method = "Normal")
+#' rgpbinom(100, pp, va, vb, method = "Normal")
+#' 
+#' dgpbinom(NULL, pp, va, vb, method = "RefinedNormal")
+#' pgpbinom(75:100, pp, va, vb, method = "RefinedNormal")
+#' qgpbinom(qq, pp, va, vb, method = "RefinedNormal")
+#' rgpbinom(100, pp, va, vb, method = "RefinedNormal")
+#' 
+#' @export
+dgpbinom <- function(
+  x,
+  probs,
+  val_p,
+  val_q,
+  wts = NULL,
+  method = "DivideFFT",
+  log = FALSE
+) {
   ## preliminary checks
   method <- check.args.GPB(x, probs, val_p, val_q, wts, method)
   
@@ -136,39 +144,46 @@ dgpbinom <- function(x, probs, val_p, val_q, wts = NULL, method = "DivideFFT", l
   d <- double(length(x))
   
   # no computation needed, if there are no valid observations in 'x'
-  if(length(idx.valid)){
+  if(length(idx.valid)) {
     # select valid observations in relevant range
     y <- x[idx.valid]
     
     # relevant observations
     idx.inner <- which(y %in% transf$inner.range)
     
-    # if no input value is in relevant range, they are impossible (i.e. return 0-probabilities)
-    if(length(idx.inner)){
+    # if input values are not in relevant range, they are impossible (i.e.
+    #  return 0-probabilities)
+    if(length(idx.inner)) {
       # transformed input parameters
       n <- transf$n
       probs <- transf$probs
       diffs <- transf$diffs
       
-      if(n == 0){
-        # 'probs' contains only zeros and ones, i.e. only one possible observation
+      if(n == 0) {
+        # 'probs' contains only zeros and ones => only one possible observation
         d[idx.valid][idx.inner] <- 1
-      }else{
+      } else {
         z <- y[idx.inner] - transf$inner.range[1]
         # compute distribution
-        if(all(diffs == diffs[1])){
-          # all values of 'diffs' are equal, i.e. a multiplied ordinary poisson binomial distribution
+        if(all(diffs == diffs[1])) {
+          # all values of 'diffs' are equal => scaled ordinary PBD
           remainder <- z %% diffs[1]
           idx.r <- which(remainder == 0)
-          d[idx.valid][idx.inner][idx.r] <- dpbinom((z %/% diffs[1])[idx.r], probs, method = method)
-        }else{
+          d[idx.valid][idx.inner][idx.r] <- dpbinom(
+            x = (z %/% diffs[1])[idx.r], 
+            probs = probs,
+            method = method
+          )
+        } else {
           # compute distribution according to 'method'
-          d[idx.valid][idx.inner] <- switch(method,
-                                            DivideFFT = dgpb_dc(z, probs, diffs, rep(0, n)),
-                                            Convolve = dgpb_conv(z, probs, diffs, rep(0, n)),
-                                            Characteristic = dgpb_dftcf(z, probs, diffs, rep(0, n)),
-                                            Normal = dgpb_na(z, probs, diffs, rep(0, n), FALSE),
-                                            RefinedNormal = dgpb_na(z, probs, diffs, rep(0, n), TRUE))
+          d[idx.valid][idx.inner] <- switch(
+            EXPR = method,
+            DivideFFT = dgpb_dc(z, probs, diffs, rep(0, n)),
+            Convolve = dgpb_conv(z, probs, diffs, rep(0, n)),
+            Characteristic = dgpb_dftcf(z, probs, diffs, rep(0, n)),
+            Normal = dgpb_na(z, probs, diffs, rep(0, n), FALSE),
+            RefinedNormal = dgpb_na(z, probs, diffs, rep(0, n), TRUE)
+          )
         }
       }
     }
@@ -181,9 +196,18 @@ dgpbinom <- function(x, probs, val_p, val_q, wts = NULL, method = "DivideFFT", l
   return(d)
 }
 
-#'@rdname GenPoissonBinomial-Distribution
-#'@export
-pgpbinom <- function(x, probs, val_p, val_q, wts = NULL, method = "DivideFFT", lower.tail = TRUE, log.p = FALSE){
+#' @rdname GenPoissonBinomial-Distribution
+#' @export
+pgpbinom <- function(
+  x,
+  probs,
+  val_p,
+  val_q,
+  wts = NULL,
+  method = "DivideFFT",
+  lower.tail = TRUE,
+  log.p = FALSE
+) {
   ## preliminary checks
   method <- check.args.GPB(x, probs, val_p, val_q, wts, method)
   
@@ -201,43 +225,52 @@ pgpbinom <- function(x, probs, val_p, val_q, wts = NULL, method = "DivideFFT", l
   d <- rep(as.numeric(!lower.tail), length(x))
   
   # no computation needed, if there are no valid observations in 'x'
-  if(length(idx.valid)){
+  if(length(idx.valid)) {
     # select valid observations in relevant range
     y <- x[idx.valid]
     
     # relevant observations
     idx.inner <- which(y %in% transf$inner.range)
     
-    if(length(idx.inner)){
+    if(length(idx.inner)) {
       # transformed input parameters
       n <- transf$n
       probs <- transf$probs
       diffs <- transf$diffs
       
-      if(n == 0){
-        # 'probs' contains only zeros and ones, i.e. only one possible observation
+      if(n == 0) {
+        # 'probs' contains only zeros and ones => only one possible observation
         d[idx.valid][idx.inner] <- as.numeric(lower.tail)
-      }else{
+      } else {
         # select and rescale relevant observations
         z <- y[idx.inner] - transf$inner.range[1]
         
         # compute distribution
-        if(all(diffs == diffs[1])){
-          # all GCD-optimized values of 'diffs' are equal, i.e. a standard binomial distribution
-          d[idx.valid][idx.inner] <- ppbinom(z %/% diffs[1], probs, method = method, lower.tail = lower.tail)
-        }else{
+        if(all(diffs == diffs[1])) {
+          # all GCD-optimised values are equal => standard binomial distribution
+          d[idx.valid][idx.inner] <- ppbinom(
+            x = z %/% diffs[1],
+            probs = probs,
+            method = method,
+            lower.tail = lower.tail
+          )
+        } else {
           # compute distribution according to 'method'
-          d[idx.valid][idx.inner] <- switch(method,
-                                            DivideFFT = pgpb_dc(z, probs, diffs, rep(0, n), lower.tail),
-                                            Convolve = pgpb_conv(z, probs, diffs, rep(0, n), lower.tail),
-                                            Characteristic = pgpb_dftcf(z, probs, diffs, rep(0, n), lower.tail),
-                                            Normal = pgpb_na(z, probs, diffs, rep(0, n), FALSE, lower.tail),
-                                            RefinedNormal = pgpb_na(z, probs, diffs, rep(0, n), TRUE, lower.tail))
+          d[idx.valid][idx.inner] <- switch(
+            EXPR = method,
+            DivideFFT = pgpb_dc(z, probs, diffs, rep(0, n), lower.tail),
+            Convolve = pgpb_conv(z, probs, diffs, rep(0, n), lower.tail),
+            Characteristic = pgpb_dftcf(z, probs, diffs, rep(0, n), lower.tail),
+            Normal = pgpb_na(z, probs, diffs, rep(0, n), FALSE, lower.tail),
+            RefinedNormal = pgpb_na(z, probs, diffs, rep(0, n), TRUE, lower.tail)
+          )
         }
       }
     }
+    
     # which valid observations are above relevant range
     idx.above <- which(y > max(transf$inner.range))
+    
     # fill cumulative probabilities of values above the relevant range
     if(length(idx.above)) d[idx.valid][idx.above] <- as.double(lower.tail)
   }
@@ -252,34 +285,43 @@ pgpbinom <- function(x, probs, val_p, val_q, wts = NULL, method = "DivideFFT", l
   return(d)
 }
 
-#'@rdname GenPoissonBinomial-Distribution
-#'@importFrom stats stepfun
-#'@export
-qgpbinom <- function(p, probs, val_p, val_q, wts = NULL, method = "DivideFFT", lower.tail = TRUE, log.p = FALSE){
+#' @rdname GenPoissonBinomial-Distribution
+#' @importFrom stats stepfun
+#' @export
+qgpbinom <- function(
+  p,
+  probs,
+  val_p,
+  val_q,
+  wts = NULL,
+  method = "DivideFFT",
+  lower.tail = TRUE,
+  log.p = FALSE
+) {
   ## preliminary checks
   method <- check.args.GPB(NULL, probs, val_p, val_q, wts, method)
   
   # check if 'q' contains only probabilities
-  if(!log.p){
+  if(!log.p) {
     if(is.null(p) || any(is.na(p) | p < 0 | p > 1))
       stop("'p' must contain real numbers between 0 and 1!")
-  }else{
+  } else {
     if(is.null(p) || any(is.na(p) | p > 0))
       stop("'p' must contain real numbers between -Inf and 0!")
   }
   
   ## transform input to relevant range
   transf <- transformGPB(NULL, probs, val_p, val_q, wts)
-  probs <- transf$probs
-  val_p <- transf$val_p
-  val_q <- transf$val_q
+  probs  <- transf$probs
+  val_p  <- transf$val_p
+  val_q  <- transf$val_q
   
   ## compute probabilities (does checking for the other variables)
   cdf <- pgpbinom(NULL, probs, val_p, val_q, NULL, method, lower.tail)
   
   # bounds of relevant observations
   first <- min(transf$inner.range)
-  last <- max(transf$inner.range)
+  last  <- max(transf$inner.range)
   
   # length of cdf
   len <- length(cdf)
@@ -289,8 +331,19 @@ qgpbinom <- function(p, probs, val_p, val_q, wts = NULL, method = "DivideFFT", l
   
   ## compute quantiles
   # handle quantiles between 0 and 1
-  if(lower.tail) Q <- stepfun(cdf[transf$inner.range - first + 1], c(transf$inner.range, last), right = TRUE)
-  else Q <- stepfun(rev(cdf[transf$inner.range - first + 1]), c(last, rev(transf$inner.range)), right = TRUE)
+  Q <- if(lower.tail) {
+    stepfun(
+      x = cdf[transf$inner.range - first + 1],
+      y = c(transf$inner.range, last),
+      right = TRUE
+    )
+  } else {
+    stepfun(
+      x = rev(cdf[transf$inner.range - first + 1]),
+      y = c(last, rev(transf$inner.range)),
+      right = TRUE
+    )
+  }
   
   # vector to store results
   res <- Q(p)
@@ -303,10 +356,18 @@ qgpbinom <- function(p, probs, val_p, val_q, wts = NULL, method = "DivideFFT", l
   return(res)
 }
 
-#'@rdname GenPoissonBinomial-Distribution
-#'@importFrom stats runif rbinom
-#'@export
-rgpbinom <- function(n, probs, val_p, val_q, wts = NULL, method = "DivideFFT", generator = "Sample"){
+#' @rdname GenPoissonBinomial-Distribution
+#' @importFrom stats runif rbinom
+#' @export
+rgpbinom <- function(
+  n,
+  probs,
+  val_p,
+  val_q,
+  wts = NULL,
+  method = "DivideFFT",
+  generator = "Sample"
+) {
   ## preliminary checks
   method <- check.args.GPB(NULL, probs, val_p, val_q, wts, method)
   
@@ -318,8 +379,7 @@ rgpbinom <- function(n, probs, val_p, val_q, wts = NULL, method = "DivideFFT", g
   
   ## expand 'probs', 'val_p' and 'val_q' according to the counts in 'wts'
   # if 'wts' is NULL, set it to be a vector of ones
-  if(is.null(wts))
-    wts <- rep(1, length(probs))
+  if(is.null(wts)) wts <- rep(1, length(probs))
   
   # expand 'probs', 'val_p', 'val_q'
   probs <- rep(probs, wts)
@@ -330,8 +390,16 @@ rgpbinom <- function(n, probs, val_p, val_q, wts = NULL, method = "DivideFFT", g
   generator <- match.arg(generator, c("Sample", "Bernoulli"))
   
   # generate random numbers
-  res <- switch(generator, Sample    = sample(sum(pmin(val_p, val_q)):sum(pmax(val_p, val_q)), n, TRUE, dgpbinom(NULL, probs, val_p, val_q, NULL, method)),
-                           Bernoulli = rgpb_bernoulli(n, probs, val_p, val_q))
+  res <- switch(
+    EXPR = generator,
+    Sample = sample(
+      x = sum(pmin(val_p, val_q)):sum(pmax(val_p, val_q)),
+      size = n,
+      replace = TRUE,
+      prob = dgpbinom(NULL, probs, val_p, val_q, NULL, method)
+    ),
+    Bernoulli = rgpb_bernoulli(n, probs, val_p, val_q)
+  )
   
   # return results
   return(res)

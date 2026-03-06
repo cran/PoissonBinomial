@@ -48,8 +48,9 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -518,7 +519,7 @@ success.</p>
 <span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt; [21] 1.747603e-07</span></span>
 <span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">dpbinom</span>(<span class="cn">NULL</span>, pp, <span class="at">method =</span> <span class="st">&quot;Mean&quot;</span>) <span class="sc">-</span> <span class="fu">dpbinom</span>(<span class="cn">NULL</span>, pp))</span>
 <span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></span>
-<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt; -3.801e-02  2.290e-06  6.360e-04  0.000e+00  8.837e-03  1.662e-02</span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt; -3.801e-02  2.289e-06  6.360e-04  0.000e+00  8.837e-03  1.662e-02</span></span>
 <span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a></span>
 <span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co"># U(0.3, 0.5) random probabilities of success</span></span>
 <span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">20</span>, <span class="fl">0.3</span>, <span class="fl">0.5</span>)</span>
@@ -536,7 +537,7 @@ success.</p>
 <span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a><span class="co">#&gt; [21] 7.008006e-09</span></span>
 <span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">dpbinom</span>(<span class="cn">NULL</span>, pp, <span class="at">method =</span> <span class="st">&quot;Mean&quot;</span>) <span class="sc">-</span> <span class="fu">dpbinom</span>(<span class="cn">NULL</span>, pp))</span>
 <span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></span>
-<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a><span class="co">#&gt; -1.155e-03  1.400e-09  1.735e-05  0.000e+00  3.508e-04  5.727e-04</span></span>
+<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a><span class="co">#&gt; -1.155e-03  1.450e-09  1.735e-05  0.000e+00  3.508e-04  5.727e-04</span></span>
 <span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a></span>
 <span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a><span class="co"># U(0.39, 0.41) random probabilities of success</span></span>
 <span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">20</span>, <span class="fl">0.39</span>, <span class="fl">0.41</span>)</span>
@@ -726,7 +727,7 @@ probabilities of success are closer to each other:</p>
 <span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co">#&gt; [21] 1.747603e-07</span></span>
 <span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">dpbinom</span>(<span class="cn">NULL</span>, pp, <span class="at">method =</span> <span class="st">&quot;GeoMeanCounter&quot;</span>) <span class="sc">-</span> <span class="fu">dpbinom</span>(<span class="cn">NULL</span>, pp))</span>
 <span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></span>
-<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="co">#&gt; -1.469e-01 -1.724e-02 -3.200e-07  0.000e+00  2.592e-02  1.528e-01</span></span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="co">#&gt; -1.469e-01 -1.724e-02 -3.180e-07  0.000e+00  2.592e-02  1.528e-01</span></span>
 <span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a></span>
 <span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a><span class="co"># U(0.4, 0.6) random probabilities of success</span></span>
 <span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">20</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>)</span>
@@ -832,7 +833,7 @@ probabilities of success:</p>
 <span id="cb10-25"><a href="#cb10-25" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">which</span>(dpn <span class="sc">!=</span> <span class="dv">0</span> <span class="sc">&amp;</span> dpd <span class="sc">!=</span> <span class="dv">0</span>)</span>
 <span id="cb10-26"><a href="#cb10-26" tabindex="-1"></a><span class="fu">summary</span>((dpn <span class="sc">-</span> dpd)[idx])</span>
 <span id="cb10-27"><a href="#cb10-27" tabindex="-1"></a><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></span>
-<span id="cb10-28"><a href="#cb10-28" tabindex="-1"></a><span class="co">#&gt; -4.484e-09  0.000e+00  8.990e-13  0.000e+00  4.919e-10  2.734e-09</span></span></code></pre></div>
+<span id="cb10-28"><a href="#cb10-28" tabindex="-1"></a><span class="co">#&gt; -4.484e-09  0.000e+00  8.986e-13  0.000e+00  4.919e-10  2.734e-09</span></span></code></pre></div>
 </div>
 <div id="refined-normal-approximation" class="section level3">
 <h3>Refined Normal Approximation</h3>
@@ -902,7 +903,7 @@ probabilities of success:</p>
 <span id="cb12-25"><a href="#cb12-25" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">which</span>(dpn <span class="sc">!=</span> <span class="dv">0</span> <span class="sc">&amp;</span> dpd <span class="sc">!=</span> <span class="dv">0</span>)</span>
 <span id="cb12-26"><a href="#cb12-26" tabindex="-1"></a><span class="fu">summary</span>((dpn <span class="sc">-</span> dpd)[idx])</span>
 <span id="cb12-27"><a href="#cb12-27" tabindex="-1"></a><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></span>
-<span id="cb12-28"><a href="#cb12-28" tabindex="-1"></a><span class="co">#&gt; -3.126e-09  0.000e+00  6.337e-13  0.000e+00  4.632e-10  2.293e-09</span></span></code></pre></div>
+<span id="cb12-28"><a href="#cb12-28" tabindex="-1"></a><span class="co">#&gt; -3.126e-09  1.000e-17  6.337e-13  0.000e+00  4.632e-10  2.293e-09</span></span></code></pre></div>
 </div>
 <div id="processing-speed-comparisons" class="section level3">
 <h3>Processing Speed Comparisons</h3>
@@ -911,7 +912,7 @@ probabilities of success:</p>
 PMF repeatedly based on random probability vectors. The run times are
 then summarized in a table that presents, among other statistics, their
 minima, maxima and means. The following results were recorded on an AMD
-Ryzen 9 5900X with 64 GiB of RAM and Windows 10 Education (22H2).</p>
+Ryzen 9 5900X with 64 GiB of RAM and Manjaro KDE Linux (26.0.2).</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">library</span>(microbenchmark)</span>
 <span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a></span>
@@ -924,15 +925,15 @@ Ryzen 9 5900X with 64 GiB of RAM and Windows 10 Education (22H2).</p>
 <span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>f7 <span class="ot">&lt;-</span> <span class="cf">function</span>() <span class="fu">dpbinom</span>(<span class="cn">NULL</span>, <span class="fu">runif</span>(<span class="dv">4000</span>), <span class="at">method =</span> <span class="st">&quot;DivideFFT&quot;</span>)</span>
 <span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a></span>
 <span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="fu">f1</span>(), <span class="fu">f2</span>(), <span class="fu">f3</span>(), <span class="fu">f4</span>(), <span class="fu">f5</span>(), <span class="fu">f6</span>(), <span class="fu">f7</span>(), <span class="at">times =</span> <span class="dv">51</span>)</span>
-<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a><span class="co">#&gt; Unit: milliseconds</span></span>
-<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a><span class="co">#&gt;  expr    min      lq      mean  median       uq     max neval</span></span>
-<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a><span class="co">#&gt;  f1() 1.1876 1.53675  1.679771  1.5947  1.70300  3.4220    51</span></span>
-<span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a><span class="co">#&gt;  f2() 1.9875 2.26175  2.435045  2.3336  2.45460  3.6417    51</span></span>
-<span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a><span class="co">#&gt;  f3() 1.3930 1.68645  2.429490  1.7691  1.92655 12.5523    51</span></span>
-<span id="cb13-18"><a href="#cb13-18" tabindex="-1"></a><span class="co">#&gt;  f4() 1.7601 2.06140  2.173573  2.0982  2.18380  3.8555    51</span></span>
-<span id="cb13-19"><a href="#cb13-19" tabindex="-1"></a><span class="co">#&gt;  f5() 1.9121 2.20370  2.425631  2.2512  2.47990  3.9196    51</span></span>
-<span id="cb13-20"><a href="#cb13-20" tabindex="-1"></a><span class="co">#&gt;  f6() 1.9034 2.16790  2.342341  2.2510  2.39340  3.2313    51</span></span>
-<span id="cb13-21"><a href="#cb13-21" tabindex="-1"></a><span class="co">#&gt;  f7() 9.1318 9.91850 10.900441 10.3446 10.67755 21.3331    51</span></span></code></pre></div>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a><span class="co">#&gt; Unit: microseconds</span></span>
+<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a><span class="co">#&gt;  expr      min       lq      mean   median        uq      max neval cld</span></span>
+<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a><span class="co">#&gt;  f1()  421.460  427.985  443.1782  430.380  436.0800 1007.690    51 a  </span></span>
+<span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a><span class="co">#&gt;  f2()  518.980  525.635  568.0118  529.020  532.6400 1860.439    51  b </span></span>
+<span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a><span class="co">#&gt;  f3()  561.440  569.555  614.7535  574.170  579.8450 2007.120    51  b </span></span>
+<span id="cb13-18"><a href="#cb13-18" tabindex="-1"></a><span class="co">#&gt;  f4()  465.920  475.820  521.0066  478.790  485.3945 1945.079    51 ab </span></span>
+<span id="cb13-19"><a href="#cb13-19" tabindex="-1"></a><span class="co">#&gt;  f5()  487.840  496.130  514.8600  498.829  505.3350 1236.700    51 ab </span></span>
+<span id="cb13-20"><a href="#cb13-20" tabindex="-1"></a><span class="co">#&gt;  f6()  486.840  496.050  538.7323  499.270  503.0600 1899.669    51 ab </span></span>
+<span id="cb13-21"><a href="#cb13-21" tabindex="-1"></a><span class="co">#&gt;  f7() 6443.899 6480.224 6564.0312 6497.119 6528.6340 7919.089    51   c</span></span></code></pre></div>
 <p>Clearly, the NA procedure is the fastest, followed by the PA and RNA
 methods. The next fastest algorithms are AMBA, GMBA-A and GMBA-B. They
 exhibit almost equal mean execution speed, with the AMBA algorithm being
@@ -1076,7 +1077,7 @@ probabilities of success:</p>
 <span id="cb15-31"><a href="#cb15-31" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">which</span>(dpn <span class="sc">!=</span> <span class="dv">0</span> <span class="sc">&amp;</span> dpd <span class="sc">!=</span> <span class="dv">0</span>)</span>
 <span id="cb15-32"><a href="#cb15-32" tabindex="-1"></a><span class="fu">summary</span>((dpn <span class="sc">-</span> dpd)[idx])</span>
 <span id="cb15-33"><a href="#cb15-33" tabindex="-1"></a><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></span>
-<span id="cb15-34"><a href="#cb15-34" tabindex="-1"></a><span class="co">#&gt; -3.152e-08  0.000e+00  3.060e-12  0.000e+00  8.992e-10  3.707e-08</span></span></code></pre></div>
+<span id="cb15-34"><a href="#cb15-34" tabindex="-1"></a><span class="co">#&gt; -3.152e-08  0.000e+00  3.063e-12  0.000e+00  8.992e-10  3.707e-08</span></span></code></pre></div>
 </div>
 <div id="generalized-refined-normal-approximation" class="section level3">
 <h3>Generalized Refined Normal Approximation</h3>
@@ -1201,7 +1202,7 @@ probabilities of success:</p>
 <span id="cb17-20"><a href="#cb17-20" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">which</span>(dpn <span class="sc">!=</span> <span class="dv">0</span> <span class="sc">&amp;</span> dpd <span class="sc">!=</span> <span class="dv">0</span>)</span>
 <span id="cb17-21"><a href="#cb17-21" tabindex="-1"></a><span class="fu">summary</span>((dpn <span class="sc">-</span> dpd)[idx])</span>
 <span id="cb17-22"><a href="#cb17-22" tabindex="-1"></a><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></span>
-<span id="cb17-23"><a href="#cb17-23" tabindex="-1"></a><span class="co">#&gt; -8.831e-06  0.000e+00  1.000e-12  9.000e-12  3.642e-07  1.333e-05</span></span>
+<span id="cb17-23"><a href="#cb17-23" tabindex="-1"></a><span class="co">#&gt; -8.831e-06  0.000e+00  1.300e-12  9.200e-12  3.642e-07  1.333e-05</span></span>
 <span id="cb17-24"><a href="#cb17-24" tabindex="-1"></a></span>
 <span id="cb17-25"><a href="#cb17-25" tabindex="-1"></a><span class="co"># 1000 random probabilities of success</span></span>
 <span id="cb17-26"><a href="#cb17-26" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1000</span>)</span>
@@ -1212,7 +1213,7 @@ probabilities of success:</p>
 <span id="cb17-31"><a href="#cb17-31" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">which</span>(dpn <span class="sc">!=</span> <span class="dv">0</span> <span class="sc">&amp;</span> dpd <span class="sc">!=</span> <span class="dv">0</span>)</span>
 <span id="cb17-32"><a href="#cb17-32" tabindex="-1"></a><span class="fu">summary</span>((dpn <span class="sc">-</span> dpd)[idx])</span>
 <span id="cb17-33"><a href="#cb17-33" tabindex="-1"></a><span class="co">#&gt;       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span></span>
-<span id="cb17-34"><a href="#cb17-34" tabindex="-1"></a><span class="co">#&gt; -1.980e-08  0.000e+00  4.960e-12  0.000e+00  1.561e-09  3.197e-08</span></span></code></pre></div>
+<span id="cb17-34"><a href="#cb17-34" tabindex="-1"></a><span class="co">#&gt; -1.980e-08  0.000e+00  4.963e-12  0.000e+00  1.561e-09  3.197e-08</span></span></code></pre></div>
 </div>
 <div id="processing-speed-comparisons-1" class="section level3">
 <h3>Processing Speed Comparisons</h3>
@@ -1221,7 +1222,7 @@ probabilities of success:</p>
 PMF repeatedly based on random probability vectors. The run times are
 then summarized in a table that presents, among other statistics, their
 minima, maxima and means. The following results were recorded on an AMD
-Ryzen 9 5900X with 64 GiB of RAM and Windows 10 Education (22H2).</p>
+Ryzen 9 5900X with 64 GiB of RAM and Manjaro KDE Linux (26.0.2).</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">library</span>(microbenchmark)</span>
 <span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">1500</span></span>
 <span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2</span>)</span>
@@ -1234,10 +1235,14 @@ Ryzen 9 5900X with 64 GiB of RAM and Windows 10 Education (22H2).</p>
 <span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a></span>
 <span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="fu">f1</span>(), <span class="fu">f2</span>(), <span class="fu">f3</span>(), <span class="at">times =</span> <span class="dv">51</span>)</span>
 <span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a><span class="co">#&gt; Unit: milliseconds</span></span>
-<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a><span class="co">#&gt;  expr     min       lq     mean  median       uq     max neval</span></span>
-<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a><span class="co">#&gt;  f1() 13.9485 15.06530 16.01232 15.3961 15.75495 21.7301    51</span></span>
-<span id="cb18-15"><a href="#cb18-15" tabindex="-1"></a><span class="co">#&gt;  f2() 14.9863 16.63805 17.31783 16.9915 17.42155 24.1676    51</span></span>
-<span id="cb18-16"><a href="#cb18-16" tabindex="-1"></a><span class="co">#&gt;  f3() 47.9939 49.83140 51.69420 50.4454 51.70345 71.8334    51</span></span></code></pre></div>
+<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a><span class="co">#&gt;  expr        min         lq       mean     median         uq        max neval</span></span>
+<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a><span class="co">#&gt;  f1()   3.657419   3.704120   3.922845   3.746480   3.792559   5.731199    51</span></span>
+<span id="cb18-15"><a href="#cb18-15" tabindex="-1"></a><span class="co">#&gt;  f2()   4.225169   4.317684   4.544897   4.381199   4.454629   6.315749    51</span></span>
+<span id="cb18-16"><a href="#cb18-16" tabindex="-1"></a><span class="co">#&gt;  f3() 157.595435 157.791035 160.024228 158.055726 158.462775 244.181072    51</span></span>
+<span id="cb18-17"><a href="#cb18-17" tabindex="-1"></a><span class="co">#&gt;  cld</span></span>
+<span id="cb18-18"><a href="#cb18-18" tabindex="-1"></a><span class="co">#&gt;   a </span></span>
+<span id="cb18-19"><a href="#cb18-19" tabindex="-1"></a><span class="co">#&gt;   a </span></span>
+<span id="cb18-20"><a href="#cb18-20" tabindex="-1"></a><span class="co">#&gt;    b</span></span></code></pre></div>
 <p>Clearly, the G-NA procedure is the fastest, followed by the G-RNA
 method. Both are hugely faster than G-DC-FFT.</p>
 </div>

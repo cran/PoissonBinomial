@@ -48,8 +48,9 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -492,7 +493,7 @@ Function</em> (DFT-CF) approach is requested with
 <span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="fu">dpbinom</span>(<span class="cn">NULL</span>, pp, wt, <span class="st">&quot;Characteristic&quot;</span>)</span>
 <span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt;  [1] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00</span></span>
 <span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt;  [6] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00</span></span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; [11] 0.000000e+00 2.238353e-16 3.549132e-15 4.829828e-14 5.804377e-13</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; [11] 0.000000e+00 2.238353e-16 3.549580e-15 4.829828e-14 5.804377e-13</span></span>
 <span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; [16] 6.158818e-12 5.784702e-11 4.822438e-10 3.576566e-09 2.364563e-08</span></span>
 <span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; [21] 1.395965e-07 7.370448e-07 3.484836e-06 1.477208e-05 5.619632e-05</span></span>
 <span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; [26] 1.920240e-04 5.897928e-04 1.629272e-03 4.049768e-03 9.060183e-03</span></span>
@@ -506,7 +507,7 @@ Function</em> (DFT-CF) approach is requested with
 <span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="fu">ppbinom</span>(<span class="cn">NULL</span>, pp, wt, <span class="st">&quot;Characteristic&quot;</span>)</span>
 <span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="co">#&gt;  [1] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00</span></span>
 <span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="co">#&gt;  [6] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00</span></span>
-<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a><span class="co">#&gt; [11] 0.000000e+00 2.238353e-16 3.772968e-15 5.207125e-14 6.325089e-13</span></span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a><span class="co">#&gt; [11] 0.000000e+00 2.238353e-16 3.773415e-15 5.207170e-14 6.325094e-13</span></span>
 <span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a><span class="co">#&gt; [16] 6.791327e-12 6.463834e-11 5.468822e-10 4.123448e-09 2.776908e-08</span></span>
 <span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a><span class="co">#&gt; [21] 1.673656e-07 9.044104e-07 4.389247e-06 1.916133e-05 7.535765e-05</span></span>
 <span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a><span class="co">#&gt; [26] 2.673817e-04 8.571745e-04 2.486446e-03 6.536215e-03 1.559640e-02</span></span>
@@ -575,7 +576,7 @@ the DC method.</p>
 PMF repeatedly based on random probability vectors. The run times are
 then summarized in a table that presents, among other statistics, their
 minima, maxima and means. The following results were recorded on an AMD
-Ryzen 9 5900X with 64 GiB of RAM and Windows 10 Education (22H2).</p>
+Ryzen 9 5900X with 64 GiB of RAM and Manjaro KDE Linux (26.0.2).</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">library</span>(microbenchmark)</span>
 <span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a></span>
@@ -586,11 +587,11 @@ Ryzen 9 5900X with 64 GiB of RAM and Windows 10 Education (22H2).</p>
 <span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a></span>
 <span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="fu">f1</span>(), <span class="fu">f2</span>(), <span class="fu">f3</span>(), <span class="fu">f4</span>(), <span class="at">times =</span> <span class="dv">51</span>)</span>
 <span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt; Unit: milliseconds</span></span>
-<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co">#&gt;  expr      min        lq      mean   median        uq      max neval</span></span>
-<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co">#&gt;  f1()  20.9010  21.82365  23.03580  22.3124  22.60315  33.6471    51</span></span>
-<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co">#&gt;  f2()  44.1096  44.98895  45.64250  45.2764  45.94010  53.8505    51</span></span>
-<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="co">#&gt;  f3()  80.0998  80.81575  83.09995  81.6625  82.49565 129.9786    51</span></span>
-<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="co">#&gt;  f4() 198.8036 203.35170 206.31347 205.5394 207.87380 237.2220    51</span></span></code></pre></div>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co">#&gt;  expr       min        lq      mean    median        uq       max neval  cld</span></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co">#&gt;  f1()  13.07579  13.15514  13.36714  13.21309  13.31875  15.36777    51 a   </span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co">#&gt;  f2()  29.92647  30.13225  30.31903  30.24783  30.40398  31.16131    51  b  </span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="co">#&gt;  f3() 101.75260 102.25100 102.66471 102.45865 102.67339 105.97325    51   c </span></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="co">#&gt;  f4()  26.76124  27.09709  27.32482  27.25463  27.39380  29.12581    51    d</span></span></code></pre></div>
 <p>Clearly, the DC-FFT procedure is the fastest, followed by DC, RF and
 DFT-CF methods.</p>
 </div>
@@ -857,10 +858,10 @@ Characteristic Function</em> (G-DFT-CF) approach is requested with
 <span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a><span class="co">#&gt;   [6] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00</span></span>
 <span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="co">#&gt;  [11] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00</span></span>
 <span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a><span class="co">#&gt;  [16] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00</span></span>
-<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="co">#&gt;  [21] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 2.837237e-16</span></span>
-<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a><span class="co">#&gt;  [26] 6.250144e-16 1.365163e-15 2.931811e-15 6.199773e-15 1.292382e-14</span></span>
-<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a><span class="co">#&gt;  [31] 2.657288e-14 5.394142e-14 1.081912e-13 2.144812e-13 4.201536e-13</span></span>
-<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a><span class="co">#&gt;  [36] 8.135511e-13 1.557734e-12 2.949810e-12 5.527683e-12 1.025814e-11</span></span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="co">#&gt;  [21] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 2.834667e-16</span></span>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a><span class="co">#&gt;  [26] 6.267492e-16 1.366657e-15 2.934638e-15 6.199773e-15 1.292305e-14</span></span>
+<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a><span class="co">#&gt;  [31] 2.657237e-14 5.394091e-14 1.081907e-13 2.144792e-13 4.201547e-13</span></span>
+<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a><span class="co">#&gt;  [36] 8.135498e-13 1.557735e-12 2.949809e-12 5.527682e-12 1.025814e-11</span></span>
 <span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a><span class="co">#&gt;  [41] 1.885776e-11 3.434640e-11 6.196980e-11 1.106787e-10 1.956340e-10</span></span>
 <span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a><span class="co">#&gt;  [46] 3.425394e-10 5.948077e-10 1.025224e-09 1.753750e-09 2.972596e-09</span></span>
 <span id="cb13-18"><a href="#cb13-18" tabindex="-1"></a><span class="co">#&gt;  [51] 4.985314e-09 8.275458e-09 1.362195e-08 2.227979e-08 3.622799e-08</span></span>
@@ -892,9 +893,9 @@ Characteristic Function</em> (G-DFT-CF) approach is requested with
 <span id="cb13-44"><a href="#cb13-44" tabindex="-1"></a><span class="co">#&gt; [181] 1.515662e-07 9.401686e-08 5.742327e-08 3.451481e-08 2.039831e-08</span></span>
 <span id="cb13-45"><a href="#cb13-45" tabindex="-1"></a><span class="co">#&gt; [186] 1.184350e-08 6.751380e-09 3.777327e-09 2.073644e-09 1.116337e-09</span></span>
 <span id="cb13-46"><a href="#cb13-46" tabindex="-1"></a><span class="co">#&gt; [191] 5.887148e-10 3.036829e-10 1.529887e-10 7.516829e-11 3.598151e-11</span></span>
-<span id="cb13-47"><a href="#cb13-47" tabindex="-1"></a><span class="co">#&gt; [196] 1.676155e-11 7.585978e-12 3.326431e-12 1.407528e-12 5.717366e-13</span></span>
-<span id="cb13-48"><a href="#cb13-48" tabindex="-1"></a><span class="co">#&gt; [201] 2.216380e-13 8.149294e-14 2.825106e-14 9.182984e-15 2.782753e-15</span></span>
-<span id="cb13-49"><a href="#cb13-49" tabindex="-1"></a><span class="co">#&gt; [206] 7.822960e-16 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00</span></span>
+<span id="cb13-47"><a href="#cb13-47" tabindex="-1"></a><span class="co">#&gt; [196] 1.676154e-11 7.585978e-12 3.326430e-12 1.407530e-12 5.717376e-13</span></span>
+<span id="cb13-48"><a href="#cb13-48" tabindex="-1"></a><span class="co">#&gt; [201] 2.216360e-13 8.149551e-14 2.825312e-14 9.182470e-15 2.781982e-15</span></span>
+<span id="cb13-49"><a href="#cb13-49" tabindex="-1"></a><span class="co">#&gt; [206] 7.815893e-16 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00</span></span>
 <span id="cb13-50"><a href="#cb13-50" tabindex="-1"></a><span class="co">#&gt; [211] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00</span></span>
 <span id="cb13-51"><a href="#cb13-51" tabindex="-1"></a><span class="co">#&gt; [216] 0.000000e+00</span></span>
 <span id="cb13-52"><a href="#cb13-52" tabindex="-1"></a><span class="fu">pgpbinom</span>(<span class="cn">NULL</span>, pp, va, vb, wt, <span class="st">&quot;Characteristic&quot;</span>)</span>
@@ -902,11 +903,11 @@ Characteristic Function</em> (G-DFT-CF) approach is requested with
 <span id="cb13-54"><a href="#cb13-54" tabindex="-1"></a><span class="co">#&gt;   [6] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00</span></span>
 <span id="cb13-55"><a href="#cb13-55" tabindex="-1"></a><span class="co">#&gt;  [11] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00</span></span>
 <span id="cb13-56"><a href="#cb13-56" tabindex="-1"></a><span class="co">#&gt;  [16] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00</span></span>
-<span id="cb13-57"><a href="#cb13-57" tabindex="-1"></a><span class="co">#&gt;  [21] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 2.837237e-16</span></span>
-<span id="cb13-58"><a href="#cb13-58" tabindex="-1"></a><span class="co">#&gt;  [26] 9.087381e-16 2.273901e-15 5.205712e-15 1.140549e-14 2.432930e-14</span></span>
-<span id="cb13-59"><a href="#cb13-59" tabindex="-1"></a><span class="co">#&gt;  [31] 5.090218e-14 1.048436e-13 2.130348e-13 4.275160e-13 8.476697e-13</span></span>
-<span id="cb13-60"><a href="#cb13-60" tabindex="-1"></a><span class="co">#&gt;  [36] 1.661221e-12 3.218955e-12 6.168765e-12 1.169645e-11 2.195459e-11</span></span>
-<span id="cb13-61"><a href="#cb13-61" tabindex="-1"></a><span class="co">#&gt;  [41] 4.081235e-11 7.515874e-11 1.371285e-10 2.478072e-10 4.434412e-10</span></span>
+<span id="cb13-57"><a href="#cb13-57" tabindex="-1"></a><span class="co">#&gt;  [21] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 2.834667e-16</span></span>
+<span id="cb13-58"><a href="#cb13-58" tabindex="-1"></a><span class="co">#&gt;  [26] 9.102158e-16 2.276873e-15 5.211511e-15 1.141128e-14 2.433433e-14</span></span>
+<span id="cb13-59"><a href="#cb13-59" tabindex="-1"></a><span class="co">#&gt;  [31] 5.090670e-14 1.048476e-13 2.130383e-13 4.275175e-13 8.476721e-13</span></span>
+<span id="cb13-60"><a href="#cb13-60" tabindex="-1"></a><span class="co">#&gt;  [36] 1.661222e-12 3.218957e-12 6.168766e-12 1.169645e-11 2.195459e-11</span></span>
+<span id="cb13-61"><a href="#cb13-61" tabindex="-1"></a><span class="co">#&gt;  [41] 4.081234e-11 7.515874e-11 1.371285e-10 2.478072e-10 4.434412e-10</span></span>
 <span id="cb13-62"><a href="#cb13-62" tabindex="-1"></a><span class="co">#&gt;  [46] 7.859806e-10 1.380788e-09 2.406013e-09 4.159763e-09 7.132359e-09</span></span>
 <span id="cb13-63"><a href="#cb13-63" tabindex="-1"></a><span class="co">#&gt;  [51] 1.211767e-08 2.039313e-08 3.401508e-08 5.629487e-08 9.252285e-08</span></span>
 <span id="cb13-64"><a href="#cb13-64" tabindex="-1"></a><span class="co">#&gt;  [56] 1.509756e-07 2.442977e-07 3.915989e-07 6.218786e-07 9.795436e-07</span></span>
@@ -954,8 +955,8 @@ library.</p>
 PMF repeatedly based on random probability and value vectors. The run
 times are then summarized in a table that presents, among other
 statistics, their minima, maxima and means. The following results were
-recorded on an AMD Ryzen 9 5900X with 64 GiB of RAM and Windows 10
-Education (22H2).</p>
+recorded on an AMD Ryzen 9 5900X with 64 GiB of RAM and Manjaro KDE
+Linux (26.0.2).</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">library</span>(microbenchmark)</span>
 <span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">2500</span></span>
 <span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
@@ -968,10 +969,10 @@ Education (22H2).</p>
 <span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a></span>
 <span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="fu">f1</span>(), <span class="fu">f2</span>(), <span class="fu">f3</span>(), <span class="at">times =</span> <span class="dv">51</span>)</span>
 <span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a><span class="co">#&gt; Unit: milliseconds</span></span>
-<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a><span class="co">#&gt;  expr      min        lq      mean   median        uq      max neval</span></span>
-<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a><span class="co">#&gt;  f1()  78.0103  80.94265  85.83106  82.3256  84.77965 222.4554    51</span></span>
-<span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a><span class="co">#&gt;  f2() 185.1651 189.36355 192.53650 191.5913 194.92825 216.8803    51</span></span>
-<span id="cb14-16"><a href="#cb14-16" tabindex="-1"></a><span class="co">#&gt;  f3() 639.9733 721.50785 739.89051 747.7238 764.83850 801.4566    51</span></span></code></pre></div>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a><span class="co">#&gt;  expr      min       lq     mean   median       uq      max neval cld</span></span>
+<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a><span class="co">#&gt;  f1() 219.9748 220.9257 223.7835 221.5285 222.6737 314.3657    51 a  </span></span>
+<span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a><span class="co">#&gt;  f2() 520.5125 523.9758 526.6830 525.7864 528.2880 539.0341    51  b </span></span>
+<span id="cb14-16"><a href="#cb14-16" tabindex="-1"></a><span class="co">#&gt;  f3() 438.7773 441.9658 444.4786 443.4892 445.4671 460.3026    51   c</span></span></code></pre></div>
 <p>Clearly, the G-DC-FFT procedure is the fastest one. It outperforms
 both the G-DC and G-DFT-CF approaches. The latter one needs a lot more
 time than the others. Generally, the computational speed advantage of
